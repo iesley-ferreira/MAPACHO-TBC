@@ -13,6 +13,7 @@ export default {
         warning: '#fbbf24',
         error: '#f87171',
       },
+
       maxWidth: {
         'product-card': '244px',
       },
