@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  front-end:
+    build:
+      context: ./FRONTEND
+      dockerfile: Dockerfile
+
+    container_name: front-end
+
+    ports:
+      - "5173:5173"
+
+    volumes:
+      - ./FRONTEND:/app/front-end
+
+  back-end:
+    build:
+      context: ./BACKEND
+      dockerfile: Dockerfile
+
+    container_name: back-end
+
+    ports:
+      - "3333:3333"
+    
+    volumes:
+      - ./BACKEND:/app/back-end
+
+    depends_on:
+      - db
+
+  db:
+    image: postgres:9.6
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"
