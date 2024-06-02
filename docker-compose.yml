@@ -5,31 +5,25 @@ services:
     build:
       context: ./FRONTEND
       dockerfile: Dockerfile
-
     container_name: front-end
-
     ports:
       - "5173:5173"
-
     volumes:
       - ./FRONTEND:/app/front-end
 
-  back-end:
-    build:
-      context: ./BACKEND
-      dockerfile: Dockerfile
-
-    container_name: back-end
-
-    ports:
-      - "3333:3333"
-    
-    volumes:
-      - ./BACKEND:/app/back-end
-    depends_on:
-      - db
-    networks:
-      - back-db-network
+  # back-end:
+  #   container_name: back-end
+  #   build:
+  #     context: ./BACKEND
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3333:3333"
+  #   volumes:
+  #     - ./BACKEND:/app/back-end
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - networkName
 
   db:
     image: postgres:9.6
@@ -39,10 +33,4 @@ services:
       POSTGRES_DB: postgres
     ports:
       - "5433:5432"
-    networks:
-      - back-db-network
-
-
-networks:
-  back-db-network:
-    driver: bridge
+    
