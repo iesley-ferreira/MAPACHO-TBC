@@ -1,3 +1,4 @@
+import { QueryType } from "../types/Query.type";
 import axiosRequest from "./requests.axios";
 
 const BASE_URL = 'https://www.bling.com.br'
@@ -14,9 +15,10 @@ type BlingRequestTypes = {
     refresh_token: string | undefined,
   }
   token?: string
+  query?: QueryType
 }
 
-const blingRequestAxios = async ({ url,  credentials, data, token, method }: BlingRequestTypes) => axiosRequest({
+const blingRequestAxios = async ({ url,  credentials, data, token, method, query, }: BlingRequestTypes) => axiosRequest({
   BASE_URL,
   method,
   url,
@@ -26,6 +28,7 @@ const blingRequestAxios = async ({ url,  credentials, data, token, method }: Bli
     "Accept": "application/json",
   },
   data,
+  query,
 });
 
 // ================== BLING_TOKEN =============================== //
@@ -35,12 +38,7 @@ const refreshToken = async (credentials: string, refresh_token: string) => bling
 
 // ================== BLING_PRODUCTS =========================== //
 
-const getAllProducts = async (token: string) => {
-  console.log(token);
-  
-  return blingRequestAxios({ url: "/Api/v3/produtos", method: 'get', token })
-} 
-  
+const getAllProducts = async (token: string, query?: any) => blingRequestAxios({ url: "/Api/v3/produtos", method: 'get', token, query })
 
 const bling_request = {
   getToken,

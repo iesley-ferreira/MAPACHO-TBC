@@ -1,11 +1,11 @@
 import bling_request from "../../api/bling.request";
-import cache from "../../cache";
+import { QueryType } from "../../types/Query.type";
 import { ReturnServiceType } from "../../types/ReturnService.type";
 
 
-const getAllProducts = async (): Promise<ReturnServiceType> => {
-  const bling_acess_token = cache.blingToken.get();  
-  const allProducts = await bling_request.getAllProducts(bling_acess_token);
+const getAllProducts = async (bling_token: string, query: QueryType): Promise<ReturnServiceType> => {
+
+  const allProducts = await bling_request.getAllProducts(bling_token, query);
 
   return {
     data: allProducts.data,
