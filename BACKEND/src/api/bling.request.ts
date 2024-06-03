@@ -23,7 +23,7 @@ const blingRequestAxios = async ({ url,  credentials, data, token, method, query
   method,
   url,
   headers: {
-    // "Content-Type": "application/x-www-form-urlencoded",
+    "Content-Type": "application/x-www-form-urlencoded",
     "Authorization": token ? `Bearer ${token}` : `Basic ${credentials}`,
     "Accept": "application/json",
   },
@@ -38,7 +38,7 @@ const refreshToken = async (credentials: string, refresh_token: string) => bling
 
 // ================== BLING_PRODUCTS =========================== //
 
-const getAllProducts = async (token: string, query?: any) => blingRequestAxios({ url: "/Api/v3/produtos", method: 'get', token, query })
+const getAllProducts = async (token: string, query?: QueryType) => blingRequestAxios({ url: "/Api/v3/produtos", method: 'get', token, query })
 
 const bling_request = {
   getToken,
