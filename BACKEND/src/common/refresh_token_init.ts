@@ -1,5 +1,5 @@
 import bling_request from "../api/bling.request";
-import authBlingModel from "../app/model/authBling.model"
+import authBlingModel from "../app/models/authBling.model"
 import scheduleUtils from "../utils/scheduler.utils";
 import { AuthBlingUpdateType } from "../types/AuthBling.type";
 import { env } from "../env";

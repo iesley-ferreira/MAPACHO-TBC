@@ -15,6 +15,7 @@ COPY wait-for-it.sh /app/back-end/wait-for-it.sh
 RUN chmod +x /app/back-end/wait-for-it.sh
 
 EXPOSE 3333
+EXPOSE 5555
 
 # Use wait-for-it.sh para esperar pelo banco de dados antes de iniciar o backend
 ENTRYPOINT ["./wait-for-it.sh", "db:5432", "--", "npm", "run", "dev"]
