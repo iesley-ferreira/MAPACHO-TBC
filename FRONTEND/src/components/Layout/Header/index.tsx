@@ -1,10 +1,10 @@
-import { Badge } from '@mui/material'
+import { Badge, useMediaQuery } from '@mui/material'
 import { BadgeProps } from '@mui/material/Badge'
 import { styled } from '@mui/material/styles'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import 'remixicon/fonts/remixicon.css'
-import Logo01 from './icons/Logo01'
+import Logo01 from '../../common/Logo/Logo01'
 
 interface HeaderProps {
   showMenu: boolean
@@ -32,6 +32,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(() => ({
 
 const Header: React.FC<HeaderProps> = ({ showMenu, setShowMenu }) => {
   const [showSearch, setShowSearch] = useState(false)
+  const isMobile = useMediaQuery('(max-width: 640px)')
 
   const toggleMenu = () => {
     setShowMenu(!showMenu)
@@ -44,9 +45,11 @@ const Header: React.FC<HeaderProps> = ({ showMenu, setShowMenu }) => {
   return (
     <>
       <header className="bg-brand-primary flex items-center justify-between px-6 py-2 text-xl shadow-md">
-        <button onClick={toggleMenu}>
-          <i className="ri-menu-line text-brand-secondary"></i>
-        </button>
+        {location.pathname === '/' && isMobile && (
+          <button onClick={toggleMenu}>
+            <i className="ri-menu-fill text-brand-secondary"></i>
+          </button>
+        )}
 
         <div>
           <Link to="/">
