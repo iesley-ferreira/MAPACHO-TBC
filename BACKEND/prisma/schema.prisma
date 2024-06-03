@@ -20,5 +20,6 @@ model AuthBling {
   expires_in    Int
   token_type    String
   scope         String
+  updated_at    DateTime @updatedAt()
   created_at    DateTime @default(now())
 }
