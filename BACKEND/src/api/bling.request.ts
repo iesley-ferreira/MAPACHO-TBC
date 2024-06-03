@@ -9,10 +9,10 @@ type BlingRequestTypes = {
   method: 'post' | 'get' | 'delete' | 'put'
   data?: {
     grant_type: "authorization_code",
-    code: string | undefined,
+    code: string,
   } | {
     grant_type: "refresh_token",
-    refresh_token: string | undefined,
+    refresh_token: string,
   }
   token?: string
   query?: QueryType
@@ -33,7 +33,7 @@ const blingRequestAxios = async ({ url,  credentials, data, token, method, query
 
 // ================== BLING_TOKEN =============================== //
 
-const getToken = async (credentials: string, AUTHORIZATION_CODE: string | undefined) => blingRequestAxios({ url: "/Api/v3/oauth/token", method: 'post', credentials, data: { code: AUTHORIZATION_CODE, grant_type: 'authorization_code' } })
+const getToken = async (credentials: string, AUTHORIZATION_CODE: string) => blingRequestAxios({ url: "/Api/v3/oauth/token", method: 'post', credentials, data: { code: AUTHORIZATION_CODE, grant_type: 'authorization_code' } })
 const refreshToken = async (credentials: string, refresh_token: string) => blingRequestAxios({ url: "/Api/v3/oauth/token", method: 'post', credentials, data: { refresh_token, grant_type: "refresh_token" } })
 
 // ================== BLING_PRODUCTS =========================== //
