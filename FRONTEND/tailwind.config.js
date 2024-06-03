@@ -13,6 +13,9 @@ export default {
         warning: '#fbbf24',
         error: '#f87171',
       },
+      fontFamily: {
+        sans: ['Montserrat', 'sans-serif'],
+      },
 
       maxWidth: {
         'product-card': '244px',
