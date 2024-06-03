@@ -1,3 +1,6 @@
+import { Badge } from '@mui/material'
+import { BadgeProps } from '@mui/material/Badge'
+import { styled } from '@mui/material/styles'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import 'remixicon/fonts/remixicon.css'
@@ -7,6 +10,25 @@ interface HeaderProps {
   showMenu: boolean
   setShowMenu: (show: boolean) => void
 }
+
+const brandSecondaryColor = 'var(--brand-secondary)'
+
+const StyledBadge = styled(Badge)<BadgeProps>(() => ({
+  '& .MuiBadge-badge': {
+    right: -2,
+    top: 7,
+    color: '#f3af16',
+    backgroundColor: '#0d5e53',
+    fontFamily: 'Arial, sans-serif',
+    fontSize: '0.65rem',
+    fontWeight: 'bold',
+    padding: '0',
+    maxWidth: '15px',
+    width: '15px',
+    minWidth: '15px',
+    height: '15px',
+  },
+}))
 
 const Header: React.FC<HeaderProps> = ({ showMenu, setShowMenu }) => {
   const [showSearch, setShowSearch] = useState(false)
@@ -18,8 +40,6 @@ const Header: React.FC<HeaderProps> = ({ showMenu, setShowMenu }) => {
   const toggleSearch = () => {
     setShowSearch(!showSearch)
   }
-
-  const brandSecondaryColor = 'var(--brand-secondary)'
 
   return (
     <>
@@ -38,10 +58,12 @@ const Header: React.FC<HeaderProps> = ({ showMenu, setShowMenu }) => {
             <i className="ri-search-line text-brand-secondary"></i>
           </button>
           <Link to="/carrinho" className="text-brand-secondary hover:scale-105">
-            <i className="ri-shopping-cart-line text-xl hover:scale-105"></i>
+            <StyledBadge badgeContent={3} color="secondary">
+              <i className="ri-shopping-cart-line text-xl hover:scale-105"></i>
+            </StyledBadge>
           </Link>
-          <Link to="/usuário" className="text-brand-secondary hover:scale-105">
-            <i className="ri-user-line text-xl hover:scale-105"></i>
+          <Link to="/usuario" className="text-brand-secondary hover:scale-105">
+            <i className="ri-user-3-line text-xl hover:scale-105"></i>
           </Link>
         </nav>
       </header>
@@ -53,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ showMenu, setShowMenu }) => {
             className="w-full p-2 pr-10 border border-gray-300 rounded-md shadow focus:outline-none focus:ring-1 focus:ring-brand-secondary focus:border-transparent"
           />
           <button
-            onClick={() => setShowSearch(false)} // Função para fechar o input
+            onClick={() => setShowSearch(false)}
             className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-700"
           >
             <i className="ri-close-line px-4"></i>
