@@ -2,34 +2,30 @@ import axios, { AxiosResponse } from 'axios'
 import { call, put, takeEvery } from 'redux-saga/effects'
 import myIp from '../../devConfig.json'
 import {
-  FETCH_PRODUCTS_FAILURE,
   FETCH_PRODUCTS_REQUEST,
-  FETCH_PRODUCTS_SUCCESS,
+  fetchProductsFailure,
+  fetchProductsSuccess,
 } from '../actions/actionTypes'
-import { ProductResponse } from '../interfaces/Product'
+import { IProduct } from '../interfaces/Product'
 
-function* fetchProducts() {
+function* fetchProductsSaga() {
   try {
-    const response: AxiosResponse<ProductResponse> = yield call(
+    const response: AxiosResponse<{ data: IProduct[] }> = (yield call(
       axios.get,
-      `http://${myIp}:3001/bling/produtos`
-    )
+      `http://${myIp.myIp}:3001/bling/produtos`
+    )) as AxiosResponse<{ data: IProduct[] }>
 
-    yield put({ type: FETCH_PRODUCTS_SUCCESS, payload: response.data.data })
+    const products: IProduct[] = response.data.data
+    yield put(fetchProductsSuccess(products))
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      yield put({ type: FETCH_PRODUCTS_FAILURE, payload: error.message })
+      yield put(fetchProductsFailure(error.message))
     } else {
-      yield put({
-        type: FETCH_PRODUCTS_FAILURE,
-        payload: 'An unknown error occurred',
-      })
+      yield put(fetchProductsFailure('An unknown error occurred'))
     }
   }
 }
 
-function* productSaga() {
-  yield takeEvery(FETCH_PRODUCTS_REQUEST, fetchProducts)
+export function* watchFetchProducts() {
+  yield takeEvery(FETCH_PRODUCTS_REQUEST, fetchProductsSaga)
 }
-
-export default productSaga

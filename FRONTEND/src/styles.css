@@ -8,14 +8,10 @@
   --success-color: theme('colors.success');
   --warning-color: theme('colors.warning');
   --error-color: theme('colors.error');
+  --text-title: #4b5563;
+  --text-body: #9ca3af;
 }
 
 body {
-  @apply bg-gray-200 text-gray-900;
-}
-
-h1,
-h2,
-h3 {
-  @apply font-serif;
+  @apply bg-gray-200;
 }

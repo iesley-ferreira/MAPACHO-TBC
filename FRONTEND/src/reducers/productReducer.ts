@@ -6,7 +6,7 @@ import {
 } from '../actions/actionTypes'
 import { IProduct } from '../interfaces/Product'
 
-export interface ProductState {
+interface ProductState {
   products: IProduct[]
   isLoading: boolean
   error: string | null
