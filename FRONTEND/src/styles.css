@@ -2,12 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-gray-200 text-gray-900;
+:root {
+  --brand-primary: theme('colors.brand.primary');
+  --brand-secondary: theme('colors.brand.secondary');
+  --success-color: theme('colors.success');
+  --warning-color: theme('colors.warning');
+  --error-color: theme('colors.error');
+  --text-title: #4b5563;
+  --text-body: #9ca3af;
 }
 
-h1,
-h2,
-h3 {
-  @apply font-serif;
+body {
+  @apply bg-gray-200;
 }

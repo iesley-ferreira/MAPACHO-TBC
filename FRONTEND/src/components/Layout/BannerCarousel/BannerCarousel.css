@@ -1,0 +1,26 @@
+.carousel-item {
+  @apply relative overflow-hidden;
+  border-radius: 0 !important;
+}
+
+.carousel-image {
+  @apply w-full h-auto;
+}
+
+@screen sm {
+  .carousel-image {
+    @apply h-48 object-cover;
+  }
+}
+
+@screen md {
+  .carousel-image {
+    @apply h-64 object-cover;
+  }
+}
+
+@screen lg {
+  .carousel-image {
+    @apply h-80 object-cover;
+  }
+}

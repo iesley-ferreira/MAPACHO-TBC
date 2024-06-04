@@ -13,6 +13,14 @@ export default {
         warning: '#fbbf24',
         error: '#f87171',
       },
+      text: {
+        title: '#4B5563',
+        body: '#9CA3AF',
+      },
+      fontFamily: {
+        sans: ['Montserrat', 'sans-serif'],
+      },
+
       maxWidth: {
         'product-card': '244px',
       },
