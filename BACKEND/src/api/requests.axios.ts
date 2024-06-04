@@ -1,24 +1,25 @@
 import axios from 'axios'
-import dotenv from 'dotenv';
+import qs from 'qs';
+import { QueryType } from '../types/Query.type';
 
-dotenv.config();
 
 type AxiosRequestType = {
   method: 'get' | 'post' | 'put' | 'delete';
   BASE_URL: string;
   url: string;
-  query?: string;
+  query?: QueryType;
   data?: any;
   headers?: object
 }
-const axiosRequest = async ({ method, BASE_URL, url, data, headers  }: AxiosRequestType) => {
+
+const axiosRequest = async ({ method, BASE_URL, url, data, headers, query }: AxiosRequestType) => {  
   const response = await axios({
     baseURL: BASE_URL,
     method,
-    url,
+    url: query ? `${url}?${qs.stringify(query)}` : url,
     data,
     headers,
-  })
+  });
 
 
   return response
