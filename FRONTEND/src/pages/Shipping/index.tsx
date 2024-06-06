@@ -1,6 +1,7 @@
 import React from 'react'
 import AddressForm from '../../components/UI/AddressForm'
 import CustomStepper from '../../components/UI/CustomStepper'
+import ShippingOptions from '../../components/UI/ShippingOptions'
 import CustomButton from '../../components/common/CustomButton'
 
 interface ShippingProps {
@@ -9,28 +10,33 @@ interface ShippingProps {
 
 const Shipping: React.FC<ShippingProps> = () => {
   const [isFormValid, setIsFormValid] = React.useState(false)
+  const [shippingOption, setShippingOption] = React.useState('')
   return (
     <div className=" flex flex-col items-center w-full px-4 py-2 ">
-      <div className="customStepper w-full max-w-4xl my-6">
+      <div className="customStepper w-full max-w-2xl my-6">
         <CustomStepper activeStep={0} />
       </div>
       <div className="addressForm my-6 w-full max-w-xl">
         <AddressForm setIsFormValid={setIsFormValid} />
       </div>
       <div>
-        <p className="text-lg font-medium mt-6">Opções de Envio</p>
-        <p className="text-base text-gray-600">Envio padrão</p>
+        <ShippingOptions />
       </div>
-      <CustomButton
-        type="button"
-        variant="contained"
-        color="success"
-        size="large"
-        disabled={!isFormValid}
-        className="mt-4 w-full  max-w-xl"
-      >
-        Pagamento
-      </CustomButton>
+      <div className="button-pagamento py-10 w-full max-w-xl">
+        <CustomButton
+          type="button"
+          variant="contained"
+          color="success"
+          size="large"
+          disabled={!isFormValid || !shippingOption}
+          className=" w-full  max-w-xl"
+          onClick={() => {
+            // envia para pagina de pagamento
+          }}
+        >
+          Pagamento
+        </CustomButton>
+      </div>
     </div>
   )
 }

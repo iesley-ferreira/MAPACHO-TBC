@@ -7,7 +7,7 @@ import Login from './pages/Login'
 import Payment from './pages/Payment'
 import Product from './pages/Product/index'
 import Register from './pages/Register'
-import Shipping from './pages/Shipping/Shipping'
+import Shipping from './pages/Shipping'
 import Success from './pages/Success/Success'
 import User from './pages/User'
 

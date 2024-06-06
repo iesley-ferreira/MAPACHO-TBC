@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAddressRequest } from '../../../store/ducks/address/actions'
 import { RootState } from '../../../store/ducks/rootReducer'
@@ -9,6 +9,9 @@ import { RootState } from '../../../store/ducks/rootReducer'
 interface AddressFormProps {
   setIsFormValid: (isFormValid: boolean) => void
 }
+
+//Salvar numero formData no estado global
+//Mais ajustes no preenchimento do form
 
 const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
   const dispatch = useDispatch()
@@ -24,6 +27,15 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
     complement: '',
     city: '',
     state: '',
+  })
+  const [fieldTouched, setFieldTouched] = useState({
+    userName: false,
+    postalCode: false,
+    address: false,
+    addressNumber: false,
+    complement: false,
+    city: false,
+    state: false,
   })
 
   const formatPostalCode = (postalCode: string) => {
@@ -44,93 +56,70 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
     }
   }
 
-  // useEffect(() => {
-  //   setAddressLoaded(!loading && !error && address.localidade !== '')
-  //   console.log('AQUIIII', address)
-
-  //   if (address && !error && !loading) {
-  //     setFormData({
-  //       ...formData,
-  //       postalCode: address.cep,
-  //       address: address.logradouro,
-  //       complement: address.complemento,
-  //       city: address.localidade,
-  //       state: address.uf,
-  //       userName: formData.userName,
-  //     })
-  //     setIsFormValid(formData.userName !== '' && formData.userName.length > 2)
-  //   }
-  // }, [loading, address, error])
   useEffect(() => {
-    console.log('Endereço carregado:', address)
     if (!loading && address && !error) {
-      if (address.localidade && address.cep && address.logradouro) {
-        // Verifica se as propriedades necessárias existem
-        setFormData((prevState) => ({
-          ...prevState,
-          postalCode: address.cep,
-          address: address.logradouro,
-          complement: address.complemento || '',
-          city: address.localidade,
-          state: address.uf,
-        }))
-        setAddressLoaded(true)
-        setIsFormValid(formData.userName !== '' && formData.userName.length > 2)
-      } else {
-        console.error('Dados de endereço incompletos:', address)
-        setAddressLoaded(false)
-        setIsFormValid(false)
-      }
-    } else if (!loading && error) {
-      console.error('Erro ao carregar endereço:', error)
-      setAddressLoaded(false)
-      setIsFormValid(false)
+      setFormData((prev) => ({
+        ...prev,
+        postalCode: address.cep,
+        address: address.logradouro,
+        complement: address.complemento || '',
+        city: address.localidade,
+        state: address.uf,
+      }))
+      setAddressLoaded(true)
+      // Atualiza todos os campos para não tocados, exceto os que já foram alterados
+      setFieldTouched((prev) => ({
+        ...prev,
+        address: false,
+        complement: false,
+        city: false,
+        state: false,
+        postalCode: false, // Adicione postalCode aqui se for necessário
+      }))
     }
-  }, [loading, address, error])
+  }, [address, loading, error])
 
-  const isFormValid = useMemo(() => {
+  useEffect(() => {
     const requiredFieldsFilled =
-      formData.postalCode &&
-      formData.address &&
-      formData.addressNumber &&
-      formData.city &&
-      formData.state
+      formData.userName !== '' &&
+      formData.postalCode !== '' &&
+      formData.address !== '' &&
+      formData.addressNumber !== '' &&
+      formData.city !== '' &&
+      formData.state !== ''
+
     const isValidPostalCode = /^[0-9]{8}$/.test(
       normalizeZipCode(formData.postalCode)
     )
-    return requiredFieldsFilled && isValidPostalCode
+
+    setIsFormValid(requiredFieldsFilled && isValidPostalCode)
   }, [formData])
+
+  useEffect(() => {
+    if (formData.postalCode.replace(/\D/g, '').length === 8) {
+      fetchAddress(formData.postalCode)
+    }
+  }, [formData.postalCode])
+
+  const isError = (field: keyof typeof formData) => {
+    // Só verifica erros se o campo foi tocado ou se o endereço foi carregado
+    return (fieldTouched[field] || addressLoaded) && !formData[field]
+  }
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target
-
-    const formattedValue =
-      name === 'postalCode' ? formatPostalCode(value) : value
-
-    setFormData({ ...formData, [name]: formattedValue })
-
-    if (name === 'postalCode' && normalizeZipCode(value).length === 8) {
-      fetchAddress(value)
+    setFormData((prev) => ({ ...prev, [name]: value }))
+    // Marca como tocado só quando o usuário interage
+    if (!fieldTouched[name]) {
+      setFieldTouched((prev) => ({ ...prev, [name]: true }))
     }
-  }
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    const normalizedData = {
-      ...formData,
-      postalCode: normalizeZipCode(formData.postalCode),
-    }
-
-    console.log('normalizedData', normalizedData)
-    //Salvar os dados no estado do usuário
   }
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={(e) => e.preventDefault()}
       className="p-6 bg-white shadow-lg w-full max-w-4xl mx-auto rounded-lg"
     >
       <Typography
@@ -151,7 +140,12 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
           label="Nome"
           value={formData.userName}
           onChange={handleChange}
-          className="bg-gray-50 focus:bg-white"
+          className=" bg-white focus:bg-white"
+          variant="standard"
+          error={isError('addressNumber')}
+          helperText={
+            isError('addressNumber') ? 'Este campo é obrigatório' : ''
+          }
         />
         <TextField
           fullWidth
@@ -163,9 +157,10 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
           value={formData.postalCode}
           onChange={handleChange}
           inputProps={{ maxLength: 9 }}
-          className="bg-gray-50 focus:bg-white"
+          className="bg-white focus:bg-white"
+          variant="standard"
         />
-        {addressLoaded && (
+        {addressLoaded && formData.postalCode.length === 9 && (
           <>
             <TextField
               fullWidth
@@ -176,7 +171,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
               label="Endereço"
               value={formData.address}
               onChange={handleChange}
-              className="bg-gray-50 focus:bg-white"
+              className="bg-white focus:bg-white"
+              variant="standard"
             />
             <TextField
               fullWidth
@@ -189,7 +185,12 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
               onChange={handleChange}
               type="number"
               placeholder="Ex: 92"
-              className="bg-gray-50 focus:bg-white"
+              className="bg-white focus:bg-white"
+              variant="standard"
+              error={isError('addressNumber')}
+              helperText={
+                isError('addressNumber') ? 'Este campo é obrigatório' : ''
+              }
             />
             <TextField
               fullWidth
@@ -200,7 +201,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
               value={formData.complement}
               onChange={handleChange}
               placeholder="Ex: apartamento, bloco, etc."
-              className="bg-gray-50 focus:bg-white"
+              className="bg-white focus:bg-white"
+              variant="standard"
             />
             <TextField
               fullWidth
@@ -211,7 +213,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
               label="Cidade"
               value={formData.city}
               onChange={handleChange}
-              className="bg-gray-50 focus:bg-white"
+              className="bg-white focus:bg-white"
+              variant="standard"
             />
             <TextField
               fullWidth
@@ -222,7 +225,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
               label="Estado"
               value={formData.state}
               onChange={handleChange}
-              className="bg-gray-50 focus:bg-white"
+              className="bg-white focus:bg-white"
+              variant="standard"
             />
           </>
         )}
