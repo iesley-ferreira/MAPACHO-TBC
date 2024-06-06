@@ -1,13 +1,14 @@
 import { Grid } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProductsRequest } from '../../../actions/actionTypes'
-import { AppDispatch, RootState } from '../../../store'
+import { fetchProductsRequest } from '../../../store/ducks/products/actions'
+import { Product } from '../../../store/ducks/products/types'
+import { RootState } from '../../../store/ducks/rootReducer'
 import ProductCard from '../ProductCard'
 
 const Products: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch()
-  const { products, isLoading, error } = useSelector(
+  const dispatch = useDispatch()
+  const { products, loading, error } = useSelector(
     (state: RootState) => state.products
   )
 
@@ -15,13 +16,14 @@ const Products: React.FC = () => {
     dispatch(fetchProductsRequest())
   }, [dispatch])
 
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error: {error}</div>
+
   return (
     <div className="container mx-auto mt-10">
-      {isLoading && <p>Carregando...</p>}
-      {error && <p>Erro: {error}</p>}
       <Grid container spacing={2}>
-        {Array.isArray(products) &&
-          products.map((product) => (
+        {products.map((product: Product) => {
+          return (
             <Grid
               item
               xs={12}
@@ -34,7 +36,8 @@ const Products: React.FC = () => {
             >
               <ProductCard productData={product} />
             </Grid>
-          ))}
+          )
+        })}
       </Grid>
     </div>
   )
