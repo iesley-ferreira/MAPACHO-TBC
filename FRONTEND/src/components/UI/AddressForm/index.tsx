@@ -1,11 +1,23 @@
 import { Typography } from '@mui/material'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
-import React, { useMemo } from 'react'
-import CustomButton from '../../common/Button/Button'
+import React, { useEffect, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchAddressRequest } from '../../../store/ducks/address/actions'
+import { RootState } from '../../../store/ducks/rootReducer'
 
-const AddressForm: React.FC = () => {
+interface AddressFormProps {
+  setIsFormValid: (isFormValid: boolean) => void
+}
+
+const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
+  const dispatch = useDispatch()
+  const { address, loading, error } = useSelector(
+    (state: RootState) => state.address
+  )
+  const [addressLoaded, setAddressLoaded] = React.useState(false)
   const [formData, setFormData] = React.useState({
+    userName: '',
     postalCode: '',
     address: '',
     addressNumber: '',
@@ -21,9 +33,60 @@ const AddressForm: React.FC = () => {
       : cleaned
   }
 
-  const normalizePostalCode = (postalCode: string) => {
+  const normalizeZipCode = (postalCode: string) => {
     return postalCode.replace(/\D/g, '')
   }
+
+  const fetchAddress = async (postalCode: string) => {
+    const cleanedZipCode = normalizeZipCode(postalCode)
+    if (cleanedZipCode.length === 8) {
+      dispatch(fetchAddressRequest({ zipCode: cleanedZipCode }))
+    }
+  }
+
+  // useEffect(() => {
+  //   setAddressLoaded(!loading && !error && address.localidade !== '')
+  //   console.log('AQUIIII', address)
+
+  //   if (address && !error && !loading) {
+  //     setFormData({
+  //       ...formData,
+  //       postalCode: address.cep,
+  //       address: address.logradouro,
+  //       complement: address.complemento,
+  //       city: address.localidade,
+  //       state: address.uf,
+  //       userName: formData.userName,
+  //     })
+  //     setIsFormValid(formData.userName !== '' && formData.userName.length > 2)
+  //   }
+  // }, [loading, address, error])
+  useEffect(() => {
+    console.log('Endereço carregado:', address)
+    if (!loading && address && !error) {
+      if (address.localidade && address.cep && address.logradouro) {
+        // Verifica se as propriedades necessárias existem
+        setFormData((prevState) => ({
+          ...prevState,
+          postalCode: address.cep,
+          address: address.logradouro,
+          complement: address.complemento || '',
+          city: address.localidade,
+          state: address.uf,
+        }))
+        setAddressLoaded(true)
+        setIsFormValid(formData.userName !== '' && formData.userName.length > 2)
+      } else {
+        console.error('Dados de endereço incompletos:', address)
+        setAddressLoaded(false)
+        setIsFormValid(false)
+      }
+    } else if (!loading && error) {
+      console.error('Erro ao carregar endereço:', error)
+      setAddressLoaded(false)
+      setIsFormValid(false)
+    }
+  }, [loading, address, error])
 
   const isFormValid = useMemo(() => {
     const requiredFieldsFilled =
@@ -33,7 +96,7 @@ const AddressForm: React.FC = () => {
       formData.city &&
       formData.state
     const isValidPostalCode = /^[0-9]{8}$/.test(
-      normalizePostalCode(formData.postalCode)
+      normalizeZipCode(formData.postalCode)
     )
     return requiredFieldsFilled && isValidPostalCode
   }, [formData])
@@ -46,89 +109,123 @@ const AddressForm: React.FC = () => {
     const formattedValue =
       name === 'postalCode' ? formatPostalCode(value) : value
 
-    console.log('formattedValue', formattedValue)
-
     setFormData({ ...formData, [name]: formattedValue })
+
+    if (name === 'postalCode' && normalizeZipCode(value).length === 8) {
+      fetchAddress(value)
+    }
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    // Normaliza o CEP antes de enviar
     const normalizedData = {
       ...formData,
-      postalCode: normalizePostalCode(formData.postalCode),
+      postalCode: normalizeZipCode(formData.postalCode),
     }
 
-    console.log(normalizedData)
-    // Implemente o envio dos dados aqui
+    console.log('normalizedData', normalizedData)
+    //Salvar os dados no estado do usuário
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Typography variant="h5" component="h1" sx={{ mt: 2, mb: 4 }}>
+    <form
+      onSubmit={handleSubmit}
+      className="p-6 bg-white shadow-lg w-full max-w-4xl mx-auto rounded-lg"
+    >
+      <Typography
+        variant="h5"
+        component="h1"
+        sx={{ mt: 2, mb: 4 }}
+        className="text-xl font-semibold mb-4"
+      >
         Formulário de Envio
       </Typography>
-      <Stack spacing={2}>
+      <Stack spacing={3} className="w-full">
         <TextField
+          fullWidth
           required
+          size="small"
+          id="userName"
+          name="userName"
+          label="Nome"
+          value={formData.userName}
+          onChange={handleChange}
+          className="bg-gray-50 focus:bg-white"
+        />
+        <TextField
+          fullWidth
+          required
+          size="small"
           id="postalCode"
           name="postalCode"
           label="CEP"
           value={formData.postalCode}
           onChange={handleChange}
           inputProps={{ maxLength: 9 }}
+          className="bg-gray-50 focus:bg-white"
         />
-        <TextField
-          required
-          id="address"
-          name="address"
-          label="Endereço"
-          value={formData.address}
-          onChange={handleChange}
-        />
-        <TextField
-          required
-          id="addressNumber"
-          name="addressNumber"
-          label="Número"
-          value={formData.addressNumber}
-          onChange={handleChange}
-          type="number"
-        />
-        <TextField
-          id="complement"
-          name="complement"
-          label="Complemento"
-          value={formData.complement}
-          onChange={handleChange}
-          placeholder="Ex: apartamento, bloco, etc."
-        />
-        <TextField
-          required
-          id="city"
-          name="city"
-          label="Cidade"
-          value={formData.city}
-          onChange={handleChange}
-        />
-        <TextField
-          required
-          id="state"
-          name="state"
-          label="Estado"
-          value={formData.state}
-          onChange={handleChange}
-        />
-        <CustomButton
-          type="submit"
-          variant="contained"
-          color="success"
-          size="large"
-          disabled={!isFormValid}
-        >
-          Pagamento
-        </CustomButton>
+        {addressLoaded && (
+          <>
+            <TextField
+              fullWidth
+              required
+              size="small"
+              id="address"
+              name="address"
+              label="Endereço"
+              value={formData.address}
+              onChange={handleChange}
+              className="bg-gray-50 focus:bg-white"
+            />
+            <TextField
+              fullWidth
+              required
+              size="small"
+              id="addressNumber"
+              name="addressNumber"
+              label="Número"
+              value={formData.addressNumber}
+              onChange={handleChange}
+              type="number"
+              placeholder="Ex: 92"
+              className="bg-gray-50 focus:bg-white"
+            />
+            <TextField
+              fullWidth
+              size="small"
+              id="complement"
+              name="complement"
+              label="Complemento"
+              value={formData.complement}
+              onChange={handleChange}
+              placeholder="Ex: apartamento, bloco, etc."
+              className="bg-gray-50 focus:bg-white"
+            />
+            <TextField
+              fullWidth
+              required
+              size="small"
+              id="city"
+              name="city"
+              label="Cidade"
+              value={formData.city}
+              onChange={handleChange}
+              className="bg-gray-50 focus:bg-white"
+            />
+            <TextField
+              fullWidth
+              required
+              size="small"
+              id="state"
+              name="state"
+              label="Estado"
+              value={formData.state}
+              onChange={handleChange}
+              className="bg-gray-50 focus:bg-white"
+            />
+          </>
+        )}
       </Stack>
     </form>
   )
