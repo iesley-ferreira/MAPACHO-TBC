@@ -1,8 +1,13 @@
 export interface IProduct {
-  id: string
+  id: number
   nome: string
   preco: number
-  imageUrl: string
+  imagemURL: string
+}
+
+export interface ICartItem {
+  id: number
+  quantity: number
 }
 
 export interface ProductResponse {
