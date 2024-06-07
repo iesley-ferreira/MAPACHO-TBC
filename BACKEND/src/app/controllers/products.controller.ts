@@ -8,8 +8,18 @@ const getAllProducts = async (req: Request, res: Response) => {
   return res.status(status).json(data)
 }
 
+const getProductByVariation = async (req: Request, res: Response) => {
+  const bling_token = cache.blingToken.get();
+  const { idProduct } = req.params;
+  
+  const { data, status } = await productsService.getProductByVariation(bling_token, idProduct);
+
+  return res.status(status).json(data);
+}
+
 const productsController = {
   getAllProducts,
+  getProductByVariation,
 }
 
 export default productsController;

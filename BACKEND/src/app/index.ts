@@ -1,6 +1,7 @@
 import express from 'express';
 import cache from '../cache';
 import productsRouter from './routers/products.router';
+import loginRouter from './routers/login.router';
 
 const app = express();
 
@@ -13,7 +14,7 @@ app.get('/', (req, res) => {
 
 // ========================= Rotas da API ================================== //
 app.use('/products', productsRouter);
-
+app.use('login', loginRouter);
 
 export {
   app,
