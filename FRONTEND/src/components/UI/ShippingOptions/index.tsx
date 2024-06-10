@@ -1,50 +1,48 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState } from 'react'
 // Ajuste de acordo com suas actions
-import { RootState } from '../../../store/ducks/rootReducer'
 
 interface ShippingOptionsProps {}
 
 //Disparar ação para calcular fretes
 
 const ShippingOptions: React.FC<ShippingOptionsProps> = () => {
-  const { address, loading, error } = useSelector(
-    (state: RootState) => state.address
-  )
-  const dispatch = useDispatch()
+  // const { address, loading, error } = useSelector(
+  //   (state: RootState) => state.address
+  // )
+  // const dispatch = useDispatch()
 
   const [selectedOption, setSelectedOption] = useState('')
   const [showDeliveryMethods, setShowDeliveryMethods] = useState(false)
 
-  const handleDeliveryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = event.target.value
-    setSelectedOption(selected)
-    dispatch(updateShippingOption(selected)) // Envio da opção selecionada para o Redux
-  }
+  // const handleDeliveryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const selected = event.target.value
+  //   setSelectedOption(selected)
+  //   dispatch(updateShippingOption(selected)) // Envio da opção selecionada para o Redux
+  // }
 
-  useEffect(() => {
-    // Supondo que existam funções de fetch para calcular preços de envio baseados no CEP do endereço
-    if (!loading && address.zipCode && !error) {
-      calculateDeliveryOptions()
-    } else {
-      setShowDeliveryMethods(false)
-    }
-  }, [address.zipCode])
+  // useEffect(() => {
+  //   // Supondo que existam funções de fetch para calcular preços de envio baseados no CEP do endereço
+  //   if (!loading && address.zipCode && !error) {
+  //     calculateDeliveryOptions()
+  //   } else {
+  //     setShowDeliveryMethods(false)
+  //   }
+  // }, [address.zipCode])
 
-  const calculateDeliveryOptions = async () => {
-    try {
-      dispatch(setLoading(true))
-      // Suponha que você tenha funções para calcular as opções de entrega
-      const options = await fetchDeliveryOptions(address.zipCode)
-      // Simulando a obtenção de opções de entrega
-      dispatch(setDeliveryOptions(options))
-      setShowDeliveryMethods(true)
-      dispatch(setLoading(false))
-    } catch (error) {
-      console.error('Erro ao calcular opções de envio: ', error)
-      dispatch(setError(error.message))
-    }
-  }
+  // const calculateDeliveryOptions = async () => {
+  //   try {
+  //     dispatch(setLoading(true))
+  //     // Suponha que você tenha funções para calcular as opções de entrega
+  //     const options = await fetchDeliveryOptions(address.zipCode)
+  //     // Simulando a obtenção de opções de entrega
+  //     dispatch(setDeliveryOptions(options))
+  //     setShowDeliveryMethods(true)
+  //     dispatch(setLoading(false))
+  //   } catch (error) {
+  //     console.error('Erro ao calcular opções de envio: ', error)
+  //     dispatch(setError(error.message))
+  //   }
+  // }
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow">
@@ -61,7 +59,7 @@ const ShippingOptions: React.FC<ShippingOptionsProps> = () => {
             <label className="flex items-center space-x-4">
               <input
                 type="radio"
-                onChange={handleDeliveryChange}
+                // onChange={handleDeliveryChange}
                 name="shipping-option"
                 checked={selectedOption === 'standard'}
                 value="standard"

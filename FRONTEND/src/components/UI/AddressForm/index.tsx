@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+import { CircularProgress, Typography } from '@mui/material'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import React, { useEffect, useState } from 'react'
@@ -10,15 +10,14 @@ interface AddressFormProps {
   setIsFormValid: (isFormValid: boolean) => void
 }
 
-//Salvar numero formData no estado global
-//Mais ajustes no preenchimento do form
-
 const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
   const dispatch = useDispatch()
   const { address, loading, error } = useSelector(
     (state: RootState) => state.address
   )
+
   const [addressLoaded, setAddressLoaded] = React.useState(false)
+
   const [formData, setFormData] = React.useState({
     userName: '',
     postalCode: '',
@@ -28,6 +27,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
     city: '',
     state: '',
   })
+
   const [fieldTouched, setFieldTouched] = useState({
     userName: false,
     postalCode: false,
@@ -38,90 +38,148 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
     state: false,
   })
 
-  const formatPostalCode = (postalCode: string) => {
-    const cleaned = postalCode.replace(/\D/g, '')
-    return cleaned.length > 5
-      ? `${cleaned.slice(0, 5)}-${cleaned.slice(5)}`
-      : cleaned
-  }
+  const [errors, setErrors] = useState({
+    userName: '',
+    postalCode: '',
+    address: '',
+    addressNumber: '',
+    complement: '',
+    city: '',
+    state: '',
+  })
 
-  const normalizeZipCode = (postalCode: string) => {
-    return postalCode.replace(/\D/g, '')
-  }
+  useEffect(() => {
+    const newErrors = { ...errors }
 
-  const fetchAddress = async (postalCode: string) => {
-    const cleanedZipCode = normalizeZipCode(postalCode)
-    if (cleanedZipCode.length === 8) {
-      dispatch(fetchAddressRequest({ zipCode: cleanedZipCode }))
+    if (addressLoaded) {
+      Object.keys(formData).forEach((field) => {
+        if (!formData[field as keyof typeof formData].trim()) {
+          newErrors[field as keyof typeof formData] = 'Este campo é obrigatório'
+        }
+      })
     }
-  }
+
+    if (formData.postalCode.length === 8) {
+      if (!formData.userName.trim()) {
+        newErrors.userName = 'Este campo é obrigatório'
+      }
+      if (!formData.addressNumber.trim()) {
+        newErrors.addressNumber = 'Este campo é obrigatório'
+      }
+    }
+
+    setErrors(newErrors)
+  }, [addressLoaded, formData, errors])
 
   useEffect(() => {
     if (!loading && address && !error) {
-      setFormData((prev) => ({
-        ...prev,
+      setFormData({
+        userName: formData.userName,
         postalCode: address.cep,
         address: address.logradouro,
         complement: address.complemento || '',
         city: address.localidade,
         state: address.uf,
-      }))
+        addressNumber: formData.addressNumber,
+      })
+      setErrors({
+        ...errors,
+        postalCode: '',
+        address: '',
+        addressNumber: '',
+        complement: '',
+        city: '',
+        state: '',
+      })
       setAddressLoaded(true)
-      // Atualiza todos os campos para não tocados, exceto os que já foram alterados
-      setFieldTouched((prev) => ({
-        ...prev,
-        address: false,
-        complement: false,
-        city: false,
-        state: false,
-        postalCode: false, // Adicione postalCode aqui se for necessário
-      }))
+    } else if (!loading && error) {
+      setErrors((prev) => ({ ...prev, postalCode: 'CEP inválido' }))
     }
   }, [address, loading, error])
 
-  useEffect(() => {
-    const requiredFieldsFilled =
-      formData.userName !== '' &&
-      formData.postalCode !== '' &&
-      formData.address !== '' &&
-      formData.addressNumber !== '' &&
-      formData.city !== '' &&
-      formData.state !== ''
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target
+    let newValue = value
 
-    const isValidPostalCode = /^[0-9]{8}$/.test(
-      normalizeZipCode(formData.postalCode)
-    )
+    if (name === 'postalCode') {
+      newValue = value.replace(/\D/g, '')
 
-    setIsFormValid(requiredFieldsFilled && isValidPostalCode)
-  }, [formData])
-
-  useEffect(() => {
-    if (formData.postalCode.replace(/\D/g, '').length === 8) {
-      fetchAddress(formData.postalCode)
+      if (newValue.length === 8) {
+        dispatch(fetchAddressRequest({ zipCode: newValue }))
+        setErrors((prev) => ({ ...prev, postalCode: '' }))
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          postalCode:
+            newValue.length > 0
+              ? 'CEP precisa ter 8 dígitos'
+              : 'Este campo é obrigatório',
+        }))
+      }
+    } else if (name === 'userName') {
+      const nameParts = value.trim().split(' ')
+      if (
+        nameParts.length >= 2 &&
+        nameParts.every((part) => part.length >= 2)
+      ) {
+        setErrors((prev) => ({ ...prev, userName: '' }))
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          userName:
+            value.trim() !== ''
+              ? 'Nome e sobrenome são obrigatórios'
+              : 'Este campo é obrigatório',
+        }))
+      }
+    } else {
+      if (
+        addressLoaded &&
+        !newValue.trim() &&
+        ['address', 'city', 'state'].includes(name)
+      ) {
+        setErrors((prev) => ({ ...prev, [name]: 'Este campo é obrigatório' }))
+      } else {
+        setErrors((prev) => ({ ...prev, [name]: '' }))
+      }
     }
-  }, [formData.postalCode])
+
+    setFormData({ ...formData, [name]: newValue })
+    setFieldTouched({ ...fieldTouched, [name]: true })
+  }
 
   const isError = (field: keyof typeof formData) => {
-    // Só verifica erros se o campo foi tocado ou se o endereço foi carregado
-    return (fieldTouched[field] || addressLoaded) && !formData[field]
+    if (
+      addressLoaded &&
+      ['address', 'city', 'state'].includes(field) &&
+      !formData[field]
+    ) {
+      return true
+    }
+    return !!errors[field]
   }
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = event.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-    // Marca como tocado só quando o usuário interage
-    if (!fieldTouched[name]) {
-      setFieldTouched((prev) => ({ ...prev, [name]: true }))
-    }
-  }
+  useEffect(() => {
+    const requiredFieldsFilled = Object.values(formData).every(
+      (value) => value !== ''
+    )
+    const noErrors = Object.values(errors).every((value) => !value)
+    setIsFormValid(requiredFieldsFilled && noErrors)
+  }, [formData, errors])
 
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
-      className="p-6 bg-white shadow-lg w-full max-w-4xl mx-auto rounded-lg"
+      className="p-6 bg-white shadow-lg w-full max-w-4xl mx-auto rounded-lg relative"
     >
+      {loading && (
+        <>
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50"></div>
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <CircularProgress />
+          </div>
+        </>
+      )}
       <Typography
         variant="h5"
         component="h1"
@@ -137,16 +195,28 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
           size="small"
           id="userName"
           name="userName"
-          label="Nome"
+          label="Nome Completo"
           value={formData.userName}
           onChange={handleChange}
           className=" bg-white focus:bg-white"
           variant="standard"
-          error={isError('addressNumber')}
+          error={isError('userName')}
           helperText={
-            isError('addressNumber') ? 'Este campo é obrigatório' : ''
+            errors.userName ||
+            (isError('userName') ? 'Este campo é obrigatório' : '')
           }
+          InputLabelProps={{
+            style: {
+              color: isError('userName') ? 'red' : 'green',
+            },
+          }}
+          inputProps={{
+            style: {
+              color: isError('userName') ? 'red' : 'green',
+            },
+          }}
         />
+
         <TextField
           fullWidth
           required
@@ -156,10 +226,23 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
           label="CEP"
           value={formData.postalCode}
           onChange={handleChange}
-          inputProps={{ maxLength: 9 }}
-          className="bg-white focus:bg-white"
+          className=" bg-white focus:bg-white"
           variant="standard"
+          error={!!errors.postalCode || error}
+          helperText={errors.postalCode}
+          InputLabelProps={{
+            style: {
+              color: isError('postalCode') ? 'red' : 'green',
+            },
+          }}
+          inputProps={{
+            style: {
+              color: isError('postalCode') ? 'red' : 'green',
+            },
+            maxLength: 8,
+          }}
         />
+
         {addressLoaded && formData.postalCode.length === 9 && (
           <>
             <TextField
@@ -173,6 +256,22 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
               onChange={handleChange}
               className="bg-white focus:bg-white"
               variant="standard"
+              error={isError('address')}
+              helperText={
+                errors.address || isError('address')
+                  ? 'Este campo é obrigatório'
+                  : ''
+              }
+              InputLabelProps={{
+                style: {
+                  color: isError('address') ? 'red' : 'green',
+                },
+              }}
+              inputProps={{
+                style: {
+                  color: isError('address') ? 'red' : 'green',
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -189,8 +288,20 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
               variant="standard"
               error={isError('addressNumber')}
               helperText={
-                isError('addressNumber') ? 'Este campo é obrigatório' : ''
+                errors.addressNumber || isError('addressNumber')
+                  ? 'Este campo é obrigatório'
+                  : ''
               }
+              InputLabelProps={{
+                style: {
+                  color: isError('addressNumber') ? 'red' : 'green',
+                },
+              }}
+              inputProps={{
+                style: {
+                  color: isError('addressNumber') ? 'red' : 'green',
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -203,6 +314,16 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
               placeholder="Ex: apartamento, bloco, etc."
               className="bg-white focus:bg-white"
               variant="standard"
+              InputLabelProps={{
+                style: {
+                  color: isError('complement') ? 'red' : 'green',
+                },
+              }}
+              inputProps={{
+                style: {
+                  color: isError('complement') ? 'red' : 'green',
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -215,6 +336,20 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
               onChange={handleChange}
               className="bg-white focus:bg-white"
               variant="standard"
+              error={isError('city')}
+              helperText={
+                errors.city || isError('city') ? 'Este campo é obrigatório' : ''
+              }
+              InputLabelProps={{
+                style: {
+                  color: isError('city') ? 'red' : 'green',
+                },
+              }}
+              inputProps={{
+                style: {
+                  color: isError('city') ? 'red' : 'green',
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -227,6 +362,22 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
               onChange={handleChange}
               className="bg-white focus:bg-white"
               variant="standard"
+              error={isError('state')}
+              helperText={
+                errors.state || isError('state')
+                  ? 'Este campo é obrigatório'
+                  : ''
+              }
+              InputLabelProps={{
+                style: {
+                  color: isError('state') ? 'red' : 'green',
+                },
+              }}
+              inputProps={{
+                style: {
+                  color: isError('state') ? 'red' : 'green',
+                },
+              }}
             />
           </>
         )}
