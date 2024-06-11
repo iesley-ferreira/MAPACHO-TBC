@@ -1,14 +1,18 @@
 import { Badge, useMediaQuery } from '@mui/material'
 import { BadgeProps } from '@mui/material/Badge'
 import { styled } from '@mui/material/styles'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import 'remixicon/fonts/remixicon.css'
+import { RootState } from '../../../store/ducks/rootReducer'
 import Logo01 from '../../common/Logo/Logo01'
 
 interface HeaderProps {
   showMenu: boolean
+  drawerOpen: boolean
   setShowMenu: (show: boolean) => void
+  setDrawerOpen: (drawerOpen: boolean) => void
 }
 
 const brandSecondaryColor = 'var(--brand-secondary)'
@@ -30,12 +34,50 @@ const StyledBadge = styled(Badge)<BadgeProps>(() => ({
   },
 }))
 
-const Header: React.FC<HeaderProps> = ({ showMenu, setShowMenu }) => {
+const Header: React.FC<HeaderProps> = ({
+  showMenu,
+  setShowMenu,
+  drawerOpen,
+  setDrawerOpen,
+}) => {
+  const { items } = useSelector((state: RootState) => state.cart)
   const [showSearch, setShowSearch] = useState(false)
   const isMobile = useMediaQuery('(max-width: 640px)')
+  const [animateBadge, setAnimateBadge] = useState(false)
+  const [prevScrollPos, setPrevScrollPos] = useState(0)
+  const [visible, setVisible] = useState(true)
+
+  const totalItems = items.reduce((sum, item) => sum + item.quantidade, 0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset
+      const windowHeight = window.innerHeight
+      const threshold = windowHeight * 0.4
+      const isVisible =
+        prevScrollPos > currentScrollPos || currentScrollPos < threshold
+
+      setVisible(isVisible)
+      setPrevScrollPos(currentScrollPos)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [prevScrollPos])
+
+  useEffect(() => {
+    if (items.length > 0) {
+      setAnimateBadge(true)
+      setTimeout(() => setAnimateBadge(false), 300)
+    }
+  }, [items])
 
   const toggleMenu = () => {
     setShowMenu(!showMenu)
+  }
+
+  const toggleCartDrawer = () => {
+    setDrawerOpen(!drawerOpen)
   }
 
   const toggleSearch = () => {
@@ -44,7 +86,12 @@ const Header: React.FC<HeaderProps> = ({ showMenu, setShowMenu }) => {
 
   return (
     <>
-      <header className="bg-brand-primary flex items-center justify-between px-6 py-2 text-xl shadow-md">
+      <header
+        className={`bg-brand-primary flex items-center justify-between px-6 py-2 text-xl shadow-md transition-transform duration-300 ${
+          visible ? 'translate-y-0' : '-translate-y-full'
+        }`}
+        style={{ position: 'fixed', top: 0, width: '100%', zIndex: 10 }}
+      >
         {location.pathname === '/' && isMobile && (
           <button onClick={toggleMenu}>
             <i className="ri-menu-fill text-brand-secondary"></i>
@@ -60,18 +107,33 @@ const Header: React.FC<HeaderProps> = ({ showMenu, setShowMenu }) => {
           <button onClick={toggleSearch}>
             <i className="ri-search-line text-brand-secondary"></i>
           </button>
-          <Link to="/carrinho" className="text-brand-secondary hover:scale-105">
-            <StyledBadge badgeContent={3} color="secondary">
+          <button
+            className="text-brand-secondary hover:scale-105"
+            onClick={toggleCartDrawer}
+          >
+            <StyledBadge
+              badgeContent={totalItems}
+              color="secondary"
+              className={animateBadge ? 'animate-wiggle' : ''}
+            >
               <i className="ri-shopping-cart-line text-xl hover:scale-105"></i>
             </StyledBadge>
-          </Link>
+          </button>
           <Link to="/usuario" className="text-brand-secondary hover:scale-105">
             <i className="ri-user-3-line text-xl hover:scale-105"></i>
           </Link>
         </nav>
       </header>
-      {showSearch && (
-        <div className="relative w-full px-4 py-2">
+      {showSearch && visible && (
+        <div
+          className="relative w-full px-4 py-2"
+          style={{
+            marginTop: '40px',
+            position: 'fixed',
+            top: '60px',
+            zIndex: 9,
+          }}
+        >
           <input
             type="text"
             placeholder="Pesquisar..."

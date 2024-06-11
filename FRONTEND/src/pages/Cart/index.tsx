@@ -1,42 +1,67 @@
+import { Container, Grid, Typography } from '@mui/material'
 import React from 'react'
-
-// Aqui você pode definir o tipo para os itens do carrinho, se necessário.
-interface CartItem {
-  id: number
-  name: string
-  price: number
-  quantity: number
-}
-
-// Simulação de dados do carrinho para exemplo.
-const cartItems: CartItem[] = [
-  { id: 1, name: 'Product 1', price: 10, quantity: 2 },
-  { id: 2, name: 'Product 2', price: 20, quantity: 1 },
-]
+import { useDispatch, useSelector } from 'react-redux'
+import CartList from '../../components/UI/CartList'
+import CartSummary from '../../components/UI/CartSummary'
+import {
+  decrementProductQuantity,
+  incrementProductQuantity,
+  removeProductFromCart,
+} from '../../store/ducks/cart/actions'
+import { RootState } from '../../store/ducks/rootReducer'
 
 const Cart: React.FC = () => {
-  // Calcula o total do carrinho.
-  const total = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  )
+  const dispatch = useDispatch()
+  const { items: cartItems } = useSelector((state: RootState) => state.cart)
+
+  const handleIncrement = (id: number) => {
+    dispatch(incrementProductQuantity(id))
+  }
+
+  const handleDecrement = (id: number) => {
+    dispatch(decrementProductQuantity(id))
+  }
+
+  const handleRemove = (id: number) => {
+    dispatch(removeProductFromCart(id))
+  }
 
   return (
-    <div>
-      <h1>Your Shopping Cart</h1>
-      {cartItems.length > 0 ? (
-        <ul>
-          {cartItems.map((item) => (
-            <li key={item.id}>
-              {item.name} - ${item.price} x {item.quantity}
-            </li>
-          ))}
-        </ul>
+    <Container maxWidth="lg" sx={{ marginTop: 10 }}>
+      <Typography
+        variant="h5"
+        component="h1"
+        gutterBottom
+        sx={{ textAlign: 'center' }}
+      >
+        Carrinho
+      </Typography>
+      {cartItems.length === 0 ? (
+        <Typography variant="body1" sx={{ textAlign: 'center' }}>
+          Carrinho vazio
+        </Typography>
       ) : (
-        <p>Your cart is empty.</p>
+        <Grid container spacing={3} justifyContent="center" paddingTop={10}>
+          <Grid item xs={12} md={8} spacing={3}>
+            <CartList
+              cartItems={cartItems}
+              onIncrement={handleIncrement}
+              onDecrement={handleDecrement}
+              onRemove={handleRemove}
+              showActions={true}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <CartSummary
+              totalPrice={cartItems.reduce(
+                (total, item) => total + item.preco * item.quantidade,
+                0
+              )}
+            />
+          </Grid>
+        </Grid>
       )}
-      <h2>Total: ${total}</h2>
-    </div>
+    </Container>
   )
 }
 

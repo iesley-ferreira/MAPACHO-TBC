@@ -119,7 +119,7 @@ const ShippingOptions: React.FC<ShippingOptionsProps> = ({
         </div>
         {loadingOptions === true ? (
           <div className="flex justify-center">
-            <CircularProgress />
+            <CircularProgress sx={{ color: 'darkgreen' }} />
           </div>
         ) : (
           completeAddress.postalCode.length === 9 && (
