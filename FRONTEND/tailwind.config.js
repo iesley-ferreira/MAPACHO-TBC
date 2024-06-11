@@ -20,9 +20,17 @@ export default {
       fontFamily: {
         sans: ['Montserrat', 'sans-serif'],
       },
-
       maxWidth: {
         'product-card': '244px',
+      },
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.3)' },
+        },
+      },
+      animation: {
+        wiggle: 'wiggle 0.3s ease-in-out',
       },
     },
   },

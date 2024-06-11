@@ -1,52 +1,118 @@
+import InfoIcon from '@mui/icons-material/Info'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Typography,
+  useMediaQuery,
+} from '@mui/material'
 import React from 'react'
-// import { useDispatch } from 'react-redux'
-import { IProductCardProps } from '../../../interfaces/ProductCard'
+import { useDispatch } from 'react-redux'
+import { IProduct } from '../../../interfaces/Product'
+import { addProductToCart } from '../../../store/ducks/cart/actions'
+import InstallmentPlan from '../InstallmentPlan'
+
+interface IProductCardProps {
+  productData: IProduct
+}
+
+const defaultImageURL = '/public/assets/noImageAvailable.png'
 
 const ProductCard: React.FC<IProductCardProps> = ({ productData }) => {
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
+  const isMobile = useMediaQuery('(max-width: 640px)')
 
-  // const handleAddToCart = () => {
-  //   dispatch(addToCart(productData.id)) // Despacha a ação ADD_TO_CART com os dados do produto
-  // }
+  const handleAddToCart = () => {
+    dispatch(addProductToCart(productData))
+  }
 
   return (
-    <li
-      key={productData.id}
-      className="max-w-sm rounded-lg overflow-hidden shadow-lg grid grid-rows-[auto_1fr_auto] h-96 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-2xl bg-white"
+    <Card
+      sx={{
+        minWidth: isMobile ? 320 : 340,
+        maxWidth: isMobile ? 360 : 345,
+        height: '100%',
+        margin: 'auto',
+        transition: 'transform 0.3s, box-shadow 0.3s',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        '&:hover': {
+          transform: 'translateY(-8px)',
+          boxShadow: 6,
+        },
+      }}
     >
-      <img
-        src={productData.imagemURL || '/assets/seda.png'}
+      <CardMedia
+        component="img"
+        height="180"
+        image={productData.imagemURL || defaultImageURL}
         alt={productData.nome}
-        className="w-full h-48 px-6  object-contain "
+        sx={{
+          maxHeight: 300,
+          padding: 2,
+          objectFit: 'contain',
+        }}
       />
-      <div className="px-6 py-4 ">
-        <div
-          className="font-semibold text-xl"
-          style={{ color: 'var(--text-title)' }}
+      <CardContent>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{
+            color: 'text.primary',
+            fontWeight: 'bold',
+            height: '3em',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+          }}
         >
           {productData.nome}
-        </div>
-        <div className="text-xl mt-2" style={{ color: 'var(--text-body)' }}>
-          R$ {productData.preco}
-        </div>
-        <div className="text-sm mt-2" style={{ color: 'var(--text-body)' }}>
-          <p>Ou 2x de R$ 2,50 sem juros</p>
-        </div>
-      </div>
-      <div className="px-6 py-4 flex justify-between items-center">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out flex items-center"
-          // onClick={handleAddToCart}
+        </Typography>
+        <Typography
+          variant="h5"
+          component="div"
+          sx={{ color: 'text.secondary', mt: 1 }}
         >
-          Add to Cart
-          <i className="ri-shopping-cart-2-line ml-2"></i>
-        </button>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out flex items-center">
-          View
-          <i className="ri-information-line ml-2"></i>
-        </button>
-      </div>
-    </li>
+          R$ {productData.preco.toFixed(2).replace('.', ',')}
+        </Typography>
+        <InstallmentPlan totalPrice={productData.preco} />
+      </CardContent>
+      <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
+        <Button
+          variant="contained"
+          sx={{
+            background: 'linear-gradient(20deg, #0d5e53 0%, #14a098 100%)',
+            color: '#fff',
+            '&:hover': {
+              background: 'linear-gradient(20deg, #0b4d45 0%, #12a38b 100%)',
+            },
+          }}
+          startIcon={<ShoppingCartIcon />}
+          onClick={handleAddToCart}
+        >
+          Add ao carrinho
+        </Button>
+        <Button
+          variant="contained"
+          sx={{
+            background: 'linear-gradient(20deg, #f3af16 0%, #ffcc33 100%)',
+            color: '#fff',
+            '&:hover': {
+              background: 'linear-gradient(20deg, #e09913 0%, #e0b127 100%)',
+            },
+          }}
+          startIcon={<InfoIcon />}
+        >
+          Ver
+        </Button>
+      </CardActions>
+    </Card>
   )
 }
 

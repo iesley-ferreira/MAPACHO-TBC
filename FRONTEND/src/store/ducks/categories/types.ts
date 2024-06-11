@@ -6,6 +6,7 @@ export enum CategoriesActionTypes {
   FETCH_CATEGORIES_SUCCESS = 'FETCH_CATEGORIES_SUCCESS',
   FETCH_CATEGORIES_FAILURE = 'FETCH_CATEGORIES_FAILURE',
 }
+export type CategoriesActions = ActionType<typeof actions>
 
 export interface Category {
   id: number
@@ -21,5 +22,3 @@ export interface CategoriesState {
   readonly loading: boolean
   readonly error: boolean
 }
-
-export type CategoriesActions = ActionType<typeof actions>
