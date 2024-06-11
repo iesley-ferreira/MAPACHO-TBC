@@ -18,7 +18,7 @@ const updateAuthBling = async (id: string, data: AuthBlingUpdateType) => prisma.
     scope: data.scope,
     token_type: data.token_type
   }
-})
+});
 
 const authBlingModel = {
   getAuthBling,

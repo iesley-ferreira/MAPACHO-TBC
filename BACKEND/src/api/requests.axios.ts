@@ -16,11 +16,11 @@ const axiosRequest = async ({ method, BASE_URL, url, data, headers, query }: Axi
   const response = await axios({
     baseURL: BASE_URL,
     method,
-    url: query ? `${url}?${qs.stringify(query)}` : url,
+    url,
     data,
     headers,
-  });
-
+    params: query
+  });  
 
   return response
 } 

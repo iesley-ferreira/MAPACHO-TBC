@@ -13,8 +13,19 @@ const getAllProducts = async (bling_token: string, query: QueryType): Promise<Re
   }
 }
 
+const getProductByVariation = async (bling_token: string, fatherProductId: string): Promise<ReturnServiceType> => {
+  const productsByVariation = await bling_request.getProductsByVariation(bling_token, fatherProductId);
+
+
+  return {
+    data: productsByVariation.data,
+    status: productsByVariation.status,
+  }
+}
+
 const productsService = {
   getAllProducts,
+  getProductByVariation,
 }
 
 export default productsService;
