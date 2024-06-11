@@ -1,10 +1,13 @@
-import { CircularProgress, Typography } from '@mui/material'
+import { Button, CircularProgress, Typography } from '@mui/material'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAddressRequest } from '../../../store/ducks/address/actions'
 import { RootState } from '../../../store/ducks/rootReducer'
+import {
+  addHouseNumber,
+  fetchAddressRequest,
+} from '../../../store/ducks/shipping/actions'
 
 interface AddressFormProps {
   setIsFormValid: (isFormValid: boolean) => void
@@ -12,8 +15,8 @@ interface AddressFormProps {
 
 const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
   const dispatch = useDispatch()
-  const { address, loading, error } = useSelector(
-    (state: RootState) => state.address
+  const { completeAddress, loading, error } = useSelector(
+    (state: RootState) => state.shipping
   )
 
   const [addressLoaded, setAddressLoaded] = React.useState(false)
@@ -22,8 +25,9 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
     userName: '',
     postalCode: '',
     address: '',
-    addressNumber: '',
+    houseNumber: '',
     complement: '',
+    neighborhood: '',
     city: '',
     state: '',
   })
@@ -32,8 +36,9 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
     userName: false,
     postalCode: false,
     address: false,
-    addressNumber: false,
+    houseNumber: false,
     complement: false,
+    neighborhood: false,
     city: false,
     state: false,
   })
@@ -42,8 +47,9 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
     userName: '',
     postalCode: '',
     address: '',
-    addressNumber: '',
+    houseNumber: '',
     complement: '',
+    neighborhood: '',
     city: '',
     state: '',
   })
@@ -63,8 +69,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
       if (!formData.userName.trim()) {
         newErrors.userName = 'Este campo é obrigatório'
       }
-      if (!formData.addressNumber.trim()) {
-        newErrors.addressNumber = 'Este campo é obrigatório'
+      if (!formData.houseNumber.trim()) {
+        newErrors.houseNumber = 'Este campo é obrigatório'
       }
     }
 
@@ -72,21 +78,21 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
   }, [addressLoaded, formData, errors])
 
   useEffect(() => {
-    if (!loading && address && !error) {
+    if (!loading && completeAddress && !error) {
       setFormData({
-        userName: formData.userName,
-        postalCode: address.cep,
-        address: address.logradouro,
-        complement: address.complemento || '',
-        city: address.localidade,
-        state: address.uf,
-        addressNumber: formData.addressNumber,
+        ...formData,
+        address: completeAddress.address,
+        neighborhood: completeAddress.neighborhood,
+        complement: completeAddress.complement || '',
+        city: completeAddress.city,
+        state: completeAddress.state,
       })
       setErrors({
         ...errors,
         postalCode: '',
         address: '',
-        addressNumber: '',
+        neighborhood: '',
+        houseNumber: '',
         complement: '',
         city: '',
         state: '',
@@ -95,7 +101,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
     } else if (!loading && error) {
       setErrors((prev) => ({ ...prev, postalCode: 'CEP inválido' }))
     }
-  }, [address, loading, error])
+  }, [completeAddress, loading, error])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
@@ -146,6 +152,10 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
 
     setFormData({ ...formData, [name]: newValue })
     setFieldTouched({ ...fieldTouched, [name]: true })
+  }
+
+  const handleCalculateShipping = () => {
+    dispatch(addHouseNumber(formData.houseNumber))
   }
 
   const isError = (field: keyof typeof formData) => {
@@ -243,145 +253,187 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
           }}
         />
 
-        {addressLoaded && formData.postalCode.length === 9 && (
-          <>
-            <TextField
-              fullWidth
-              required
-              size="small"
-              id="address"
-              name="address"
-              label="Endereço"
-              value={formData.address}
-              onChange={handleChange}
-              className="bg-white focus:bg-white"
-              variant="standard"
-              error={isError('address')}
-              helperText={
-                errors.address || isError('address')
-                  ? 'Este campo é obrigatório'
-                  : ''
-              }
-              InputLabelProps={{
-                style: {
-                  color: isError('address') ? 'red' : 'green',
-                },
-              }}
-              inputProps={{
-                style: {
-                  color: isError('address') ? 'red' : 'green',
-                },
-              }}
-            />
-            <TextField
-              fullWidth
-              required
-              size="small"
-              id="addressNumber"
-              name="addressNumber"
-              label="Número"
-              value={formData.addressNumber}
-              onChange={handleChange}
-              type="number"
-              placeholder="Ex: 92"
-              className="bg-white focus:bg-white"
-              variant="standard"
-              error={isError('addressNumber')}
-              helperText={
-                errors.addressNumber || isError('addressNumber')
-                  ? 'Este campo é obrigatório'
-                  : ''
-              }
-              InputLabelProps={{
-                style: {
-                  color: isError('addressNumber') ? 'red' : 'green',
-                },
-              }}
-              inputProps={{
-                style: {
-                  color: isError('addressNumber') ? 'red' : 'green',
-                },
-              }}
-            />
-            <TextField
-              fullWidth
-              size="small"
-              id="complement"
-              name="complement"
-              label="Complemento"
-              value={formData.complement}
-              onChange={handleChange}
-              placeholder="Ex: apartamento, bloco, etc."
-              className="bg-white focus:bg-white"
-              variant="standard"
-              InputLabelProps={{
-                style: {
-                  color: isError('complement') ? 'red' : 'green',
-                },
-              }}
-              inputProps={{
-                style: {
-                  color: isError('complement') ? 'red' : 'green',
-                },
-              }}
-            />
-            <TextField
-              fullWidth
-              required
-              size="small"
-              id="city"
-              name="city"
-              label="Cidade"
-              value={formData.city}
-              onChange={handleChange}
-              className="bg-white focus:bg-white"
-              variant="standard"
-              error={isError('city')}
-              helperText={
-                errors.city || isError('city') ? 'Este campo é obrigatório' : ''
-              }
-              InputLabelProps={{
-                style: {
-                  color: isError('city') ? 'red' : 'green',
-                },
-              }}
-              inputProps={{
-                style: {
-                  color: isError('city') ? 'red' : 'green',
-                },
-              }}
-            />
-            <TextField
-              fullWidth
-              required
-              size="small"
-              id="state"
-              name="state"
-              label="Estado"
-              value={formData.state}
-              onChange={handleChange}
-              className="bg-white focus:bg-white"
-              variant="standard"
-              error={isError('state')}
-              helperText={
-                errors.state || isError('state')
-                  ? 'Este campo é obrigatório'
-                  : ''
-              }
-              InputLabelProps={{
-                style: {
-                  color: isError('state') ? 'red' : 'green',
-                },
-              }}
-              inputProps={{
-                style: {
-                  color: isError('state') ? 'red' : 'green',
-                },
-              }}
-            />
-          </>
-        )}
+        {!error &&
+          !loading &&
+          addressLoaded &&
+          formData.postalCode.length === 8 && (
+            <>
+              <TextField
+                fullWidth
+                required
+                size="small"
+                id="address"
+                name="address"
+                label="Endereço"
+                value={formData.address}
+                onChange={handleChange}
+                className="bg-white focus:bg-white"
+                variant="standard"
+                error={isError('address')}
+                helperText={
+                  errors.address || isError('address')
+                    ? 'Este campo é obrigatório'
+                    : ''
+                }
+                InputLabelProps={{
+                  style: {
+                    color: isError('address') ? 'red' : 'green',
+                  },
+                }}
+                inputProps={{
+                  style: {
+                    color: isError('address') ? 'red' : 'green',
+                  },
+                }}
+              />
+              <TextField
+                fullWidth
+                required
+                size="small"
+                id="houseNumber"
+                name="houseNumber"
+                label="Número"
+                value={formData.houseNumber}
+                onChange={handleChange}
+                type="number"
+                placeholder="Ex: 92"
+                className="bg-white focus:bg-white"
+                variant="standard"
+                error={isError('houseNumber')}
+                helperText={
+                  errors.houseNumber || isError('houseNumber')
+                    ? 'Este campo é obrigatório'
+                    : ''
+                }
+                InputLabelProps={{
+                  style: {
+                    color: isError('houseNumber') ? 'red' : 'green',
+                  },
+                }}
+                inputProps={{
+                  style: {
+                    color: isError('houseNumber') ? 'red' : 'green',
+                  },
+                }}
+              />
+              <TextField
+                fullWidth
+                size="small"
+                id="complement"
+                name="complement"
+                label="Complemento"
+                value={formData.complement}
+                onChange={handleChange}
+                placeholder="Ex: apartamento, bloco, etc."
+                className="bg-white focus:bg-white"
+                variant="standard"
+                InputLabelProps={{
+                  style: {
+                    color: isError('complement') ? 'red' : 'green',
+                  },
+                }}
+                inputProps={{
+                  style: {
+                    color: isError('complement') ? 'red' : 'green',
+                  },
+                }}
+              />
+              <TextField
+                fullWidth
+                required
+                size="small"
+                id="neighborhood"
+                name="neighborhood"
+                label="Bairro"
+                value={formData.neighborhood}
+                onChange={handleChange}
+                className="bg-white focus:bg-white"
+                variant="standard"
+                error={isError('neighborhood')}
+                helperText={
+                  errors.neighborhood || isError('neighborhood')
+                    ? 'Este campo é obrigatório'
+                    : ''
+                }
+                InputLabelProps={{
+                  style: {
+                    color: isError('neighborhood') ? 'red' : 'green',
+                  },
+                }}
+                inputProps={{
+                  style: {
+                    color: isError('neighborhood') ? 'red' : 'green',
+                  },
+                }}
+              />
+              <TextField
+                fullWidth
+                required
+                size="small"
+                id="city"
+                name="city"
+                label="Cidade"
+                value={formData.city}
+                onChange={handleChange}
+                className="bg-white focus:bg-white"
+                variant="standard"
+                error={isError('city')}
+                helperText={
+                  errors.city || isError('city')
+                    ? 'Este campo é obrigatório'
+                    : ''
+                }
+                InputLabelProps={{
+                  style: {
+                    color: isError('city') ? 'red' : 'green',
+                  },
+                }}
+                inputProps={{
+                  style: {
+                    color: isError('city') ? 'red' : 'green',
+                  },
+                }}
+              />
+              <TextField
+                fullWidth
+                required
+                size="small"
+                id="state"
+                name="state"
+                label="Estado"
+                value={formData.state}
+                onChange={handleChange}
+                className="bg-white focus:bg-white"
+                variant="standard"
+                error={isError('state')}
+                helperText={
+                  errors.state || isError('state')
+                    ? 'Este campo é obrigatório'
+                    : ''
+                }
+                InputLabelProps={{
+                  style: {
+                    color: isError('state') ? 'red' : 'green',
+                  },
+                }}
+                inputProps={{
+                  style: {
+                    color: isError('state') ? 'red' : 'green',
+                  },
+                }}
+              />
+            </>
+          )}
       </Stack>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleCalculateShipping}
+        disabled={!formData.houseNumber}
+        sx={{ mt: 3 }}
+      >
+        Calcular Frete
+      </Button>
     </form>
   )
 }

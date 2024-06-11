@@ -1,4 +1,4 @@
-import { IAddress } from '../store/ducks/address/types'
+import { IAddress } from '../store/ducks/shipping/types'
 import axios from './axiosConfig'
 
 export const fetchAddress = async (zipCode: string): Promise<IAddress> => {

@@ -1,14 +1,14 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import addressReducer from './address'
 import categoryReducer from './categories'
 import productReducer from './products'
+import shippingReducer from './shipping'
 import userReducer from './user'
 
 const rootReducer = combineReducers({
   products: productReducer,
   categories: categoryReducer,
   user: userReducer,
-  address: addressReducer,
+  shipping: shippingReducer,
   // cart: cartReducer,
   // checkout: checkoutReducer,
   // order: orderReducer,
