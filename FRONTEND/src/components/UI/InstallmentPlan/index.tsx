@@ -24,7 +24,14 @@ const renderInstallment = (price: number): string => {
 
 const InstallmentPlan: React.FC<InstallmentPlanProps> = ({ totalPrice }) => {
   return (
-    <Typography variant="subtitle1" color="textSecondary">
+    <Typography
+      variant="subtitle1"
+      color="textSecondary"
+      sx={{
+        fontFamily: 'Montserrat',
+        fontSize: '14px',
+      }}
+    >
       ou {renderInstallment(totalPrice)} sem Juros
     </Typography>
   )

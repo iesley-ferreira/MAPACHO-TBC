@@ -11,6 +11,7 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { IProduct } from '../../../interfaces/Product'
 import { addProductToCart } from '../../../store/ducks/cart/actions'
 import InstallmentPlan from '../InstallmentPlan'
@@ -23,10 +24,15 @@ const defaultImageURL = '/public/assets/noImageAvailable.png'
 
 const ProductCard: React.FC<IProductCardProps> = ({ productData }) => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const isMobile = useMediaQuery('(max-width: 640px)')
 
   const handleAddToCart = () => {
     dispatch(addProductToCart(productData))
+  }
+
+  const handleViewProduct = () => {
+    navigate(`/produto?idProduto=${productData.id}`)
   }
 
   return (
@@ -107,6 +113,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ productData }) => {
               background: 'linear-gradient(20deg, #e09913 0%, #e0b127 100%)',
             },
           }}
+          onClick={handleViewProduct}
           startIcon={<InfoIcon />}
         >
           Ver

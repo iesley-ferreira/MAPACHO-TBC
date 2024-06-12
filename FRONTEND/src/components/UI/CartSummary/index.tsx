@@ -1,4 +1,3 @@
-import { Box, Button, Typography } from '@mui/material'
 import React from 'react'
 import InstallmentPlan from '../InstallmentPlan'
 
@@ -8,77 +7,49 @@ interface CartSummaryProps {
 
 const CartSummary: React.FC<CartSummaryProps> = ({ totalPrice }) => {
   return (
-    <Box
-      sx={{
-        border: '1px solid #ccc',
-        borderRadius: '8px',
-        padding: '16px',
-        backgroundColor: '#f9f9f9',
-        width: '100%',
-        maxWidth: 420,
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-      }}
-    >
-      <Typography
-        variant="h6"
-        gutterBottom
-        sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 2 }}
-      >
-        Resumo do Pedido
-      </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          mb: 2,
-          position: 'relative',
-          maxWidth: '100%',
-        }}
-      >
-        <Typography variant="body1" sx={{ textAlign: 'left' }}>
-          Total:
-        </Typography>
-        <Box
-          sx={{
-            flex: 1,
-            position: 'relative',
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}
+    <div className="bg-white rounded-xl shadow-md p-6 md:mt-12 sticky top-20 lg:w-96">
+      <h2 className="text-rhino-700 text-lg mb-4 font-semibold">
+        Total do carrinho
+      </h2>
+      <div className="pb-4 border-b border-coolGray-200 flex flex-wrap gap-2 justify-between items-center mb-4">
+        <p className="text-rhino-300">Subtotal</p>
+        <p className="text-rhino-800">
+          R$ {totalPrice.toFixed(2).replace('.', ',')}
+        </p>
+      </div>
+      <p className="text-rhino-800 mb-4">Frete</p>
+      <div className="mb-4">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <p className="text-rhino-300">Retirada na loja</p>
+          <p className="text-rhino-800">Grátis</p>
+        </div>
+      </div>
+      <div className="pb-4 border-b border-coolGray-200 mb-4">
+        <a
+          className="text-green-500 hover:text-green-600 transition duration-200"
+          href="#"
         >
-          <Box
-            sx={{
-              flexGrow: 1,
-              height: '1px',
-              backgroundColor: '#ccc',
-              marginRight: '8px',
-              marginLeft: '8px',
-            }}
-          />
-          <Typography variant="body1">
-            R$ {totalPrice.toFixed(2).replace('.', ',')}
-          </Typography>
-        </Box>
-      </Box>
-      <InstallmentPlan totalPrice={totalPrice} />
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        sx={{
-          background: 'linear-gradient(20deg, #0d5e53 0%, #14a098 100%)',
-          color: '#fff',
-          '&:hover': {
-            background: 'linear-gradient(20deg, #0b4d45 0%, #12a38b 100%)',
-          },
-          marginTop: 2,
-        }}
+          Selecione o endereço de entrega
+        </a>
+      </div>
+      <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
+        <h2 className="text-rhino-700 font-semibold text-lg">
+          Total da compra
+        </h2>
+        <h2 className="text-rhino-700 font-semibold text-lg">
+          R$ {totalPrice.toFixed(2).replace('.', ',')}
+        </h2>
+      </div>
+      <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
+        <InstallmentPlan totalPrice={totalPrice} />
+      </div>
+      <a
+        className="bg-green-500 py-3 px-4 rounded-sm text-white text-center hover:bg-green-600 transition duration-200 w-full inline-block"
+        href="#"
       >
-        Fechar Pedido
-      </Button>
-    </Box>
+        Fechar pedido
+      </a>
+    </div>
   )
 }
 

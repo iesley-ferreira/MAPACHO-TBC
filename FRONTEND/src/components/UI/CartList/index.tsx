@@ -3,8 +3,8 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import RemoveIcon from '@mui/icons-material/Remove'
 import { Box, IconButton, List, ListItem, Typography } from '@mui/material'
 import React from 'react'
+import 'tailwindcss/tailwind.css'
 import { ICartItem } from '../../../interfaces/Cart'
-
 interface CartListProps {
   cartItems: ICartItem[]
   onIncrement?: (id: number) => void
@@ -23,7 +23,19 @@ const CartList: React.FC<CartListProps> = ({
   showActions = true,
 }) => {
   return (
-    <Box sx={{ width: '100%', maxWidth: 400, mx: 'auto' }}>
+    <Box
+      sx={{
+        width: {
+          xs: 360,
+          md: 510,
+        },
+        mx: 'auto',
+        pb: {
+          xs: 1,
+          md: 12,
+        },
+      }}
+    >
       <List>
         {cartItems.map((product: ICartItem, index: number) => (
           <ListItem
@@ -35,7 +47,17 @@ const CartList: React.FC<CartListProps> = ({
               alignItems: 'flex-start',
             }}
           >
-            <Box display="flex" alignItems="center" width="100%">
+            <Box
+              display="flex"
+              alignItems="center"
+              width="100%"
+              sx={{
+                backgroundColor: '#f9f9f9',
+                borderRadius: '8px',
+                padding: 2,
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              }}
+            >
               <img
                 src={product.imagemURL || defaultImageURL}
                 alt={product.nome}
@@ -56,6 +78,8 @@ const CartList: React.FC<CartListProps> = ({
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     maxWidth: '210px',
+                    fontFamily: 'Montserrat',
+                    color: '#484646',
                   }}
                 >
                   {product.nome}
@@ -66,7 +90,14 @@ const CartList: React.FC<CartListProps> = ({
                   alignItems="center"
                   width="100%"
                 >
-                  <Typography variant="body1" color="textSecondary">
+                  <Typography
+                    color="textSecondary"
+                    sx={{
+                      width: '100%',
+                      fontFamily: 'Montserrat',
+                      fontSize: '16px',
+                    }}
+                  >
                     R$ {product.preco.toFixed(2).replace('.', ',')}
                   </Typography>
                   <Box
@@ -78,17 +109,29 @@ const CartList: React.FC<CartListProps> = ({
                   >
                     {showActions ? (
                       <Box display="flex" alignItems="center">
+                        <IconButton
+                          onClick={() => onRemove?.(product.id)}
+                          sx={{ paddingRight: 2 }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
                         <IconButton onClick={() => onDecrement?.(product.id)}>
                           <RemoveIcon />
                         </IconButton>
-                        <Typography variant="body1" sx={{ margin: '0 8px' }}>
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            margin: '0 8px',
+                            fontFamily: 'Montserrat',
+                            fontSize: '16px',
+                            color: '#484646',
+                            fontWeight: 550,
+                          }}
+                        >
                           {product.quantidade}
                         </Typography>
                         <IconButton onClick={() => onIncrement?.(product.id)}>
                           <AddIcon />
-                        </IconButton>
-                        <IconButton onClick={() => onRemove?.(product.id)}>
-                          <DeleteIcon />
                         </IconButton>
                       </Box>
                     ) : (
