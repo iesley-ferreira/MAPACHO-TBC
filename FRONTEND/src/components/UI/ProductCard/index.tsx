@@ -1,14 +1,3 @@
-import InfoIcon from '@mui/icons-material/Info'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Typography,
-  useMediaQuery,
-} from '@mui/material'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -17,109 +6,56 @@ import { addProductToCart } from '../../../store/ducks/cart/actions'
 import InstallmentPlan from '../InstallmentPlan'
 
 interface IProductCardProps {
-  productData: IProduct
+  product: IProduct
 }
 
-const defaultImageURL = '/public/assets/noImageAvailable.png'
+const defaultImageURL = '/public/assets/seda.png'
 
-const ProductCard: React.FC<IProductCardProps> = ({ productData }) => {
+const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const isMobile = useMediaQuery('(max-width: 640px)')
 
-  const handleAddToCart = () => {
-    dispatch(addProductToCart(productData))
+  const handleAddToCart = (event: React.MouseEvent) => {
+    event.stopPropagation()
+    dispatch(addProductToCart(product))
   }
 
   const handleViewProduct = () => {
-    navigate(`/produto?idProduto=${productData.id}`)
+    navigate(`/produto?idProduto=${product.id}`)
   }
 
   return (
-    <Card
-      sx={{
-        minWidth: isMobile ? 320 : 340,
-        maxWidth: isMobile ? 360 : 345,
-        height: '100%',
-        margin: 'auto',
-        transition: 'transform 0.3s, box-shadow 0.3s',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        '&:hover': {
-          transform: 'translateY(-8px)',
-          boxShadow: 6,
-        },
-      }}
+    <div
+      key={product.id}
+      className="w-full md:w-1/2 xl:w-1/4 px-2 mb-6"
+      onClick={handleViewProduct}
     >
-      <CardMedia
-        component="img"
-        height="180"
-        image={productData.imagemURL || defaultImageURL}
-        alt={productData.nome}
-        sx={{
-          maxHeight: 300,
-          padding: 2,
-          objectFit: 'contain',
-        }}
-      />
-      <CardContent>
-        <Typography
-          variant="h6"
-          component="div"
-          sx={{
-            color: 'text.primary',
-            fontWeight: 'bold',
-            height: '3em',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-          }}
-        >
-          {productData.nome}
-        </Typography>
-        <Typography
-          variant="h5"
-          component="div"
-          sx={{ color: 'text.secondary', mt: 1 }}
-        >
-          R$ {productData.preco.toFixed(2).replace('.', ',')}
-        </Typography>
-        <InstallmentPlan totalPrice={productData.preco} />
-      </CardContent>
-      <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
-        <Button
-          variant="contained"
-          sx={{
-            background: 'linear-gradient(20deg, #0d5e53 0%, #14a098 100%)',
-            color: '#fff',
-            '&:hover': {
-              background: 'linear-gradient(20deg, #0b4d45 0%, #12a38b 100%)',
-            },
-          }}
-          startIcon={<ShoppingCartIcon />}
+      <div className="flex flex-col h-full pt-4 pb-4 px-4 border border-blueGray-800">
+        <img
+          className="block mb-4 w-full  md:h-48 object-contain"
+          src={product.imagemURL || defaultImageURL}
+          alt={product.nome}
+        />
+        <div className="flex-grow flex flex-col justify-between pb-3">
+          <h6 className="line-clamp-1 desc mb-3 font-medium text-gray-800">
+            {product.nome}
+          </h6>
+          <div className="flex mb-2 items-center justify-between">
+            <span className="text-xm font-bold text-gray-700">
+              R$ {product.preco.toFixed(2).replace('.', ',')}
+            </span>
+          </div>
+          <InstallmentPlan totalPrice={product.preco} />
+        </div>
+        <button
+          className="flex justify-center items-center gap-3 mt-auto px-10 py-2 text-center text-black text-sm font-bold bg-yellow-500 hover:bg-yellow-600 uppercase transition duration-200"
           onClick={handleAddToCart}
         >
-          Add ao carrinho
-        </Button>
-        <Button
-          variant="contained"
-          sx={{
-            background: 'linear-gradient(20deg, #f3af16 0%, #ffcc33 100%)',
-            color: '#fff',
-            '&:hover': {
-              background: 'linear-gradient(20deg, #e09913 0%, #e0b127 100%)',
-            },
-          }}
-          onClick={handleViewProduct}
-          startIcon={<InfoIcon />}
-        >
-          Ver
-        </Button>
-      </CardActions>
-    </Card>
+          Add
+          <i className="ri-shopping-cart-line text-md"></i>
+        </button>
+      </div>
+    </div>
   )
 }
 

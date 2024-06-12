@@ -25,7 +25,13 @@ const Home: React.FC = () => {
       <div className="mt-20">
         <BannerCarousel />
       </div>
-      <Container sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+      <Container
+        sx={{
+          mt: 4,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         {loading ? (
           <Box
             sx={{

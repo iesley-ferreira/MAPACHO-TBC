@@ -1,4 +1,3 @@
-import { Container, Grid } from '@mui/material'
 import React from 'react'
 import { IProduct } from '../../../interfaces/Product'
 import ProductCard from '../ProductCard'
@@ -9,15 +8,17 @@ interface ProductsProps {
 
 const Products: React.FC<ProductsProps> = ({ products }) => {
   return (
-    <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-      <Grid container spacing={4} justifyContent="center">
-        {products.map((product: IProduct) => (
-          <Grid item xs={12} sm={6} md={4} key={product.id}>
-            <ProductCard productData={product} />
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+    <section className="py-12 md:pt-24 md:pb-32">
+      <div className="container mx-auto px-4">
+        <div className="max-w-sm md:max-w-xl mx-auto xl:max-w-none">
+          <div className="flex flex-wrap -mb-6 -mx-4">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
 
