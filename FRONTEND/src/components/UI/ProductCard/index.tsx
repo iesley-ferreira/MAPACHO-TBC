@@ -17,7 +17,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
 
   const handleAddToCart = (event: React.MouseEvent) => {
     event.stopPropagation()
-    dispatch(addProductToCart(product))
+    dispatch(addProductToCart({ product, quantidade: 1 }))
   }
 
   const handleViewProduct = () => {
@@ -27,7 +27,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   return (
     <div
       key={product.id}
-      className="w-full md:w-1/2 xl:w-1/4 px-2 mb-6"
+      className="w-full md:w-1/2 xl:w-1/4 xl:min-w-[288px] px-2 mb-6"
       onClick={handleViewProduct}
     >
       <div className="flex flex-col h-full pt-4 pb-4 px-4 border border-blueGray-800">
@@ -37,18 +37,18 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
           alt={product.nome}
         />
         <div className="flex-grow flex flex-col justify-between pb-3">
-          <h6 className="line-clamp-1 desc mb-3 font-medium text-gray-800">
+          <h6 className="line-clamp-1 desc mb-3 font-semibold text-lg text-gray-800">
             {product.nome}
           </h6>
           <div className="flex mb-2 items-center justify-between">
-            <span className="text-xm font-bold text-gray-700">
+            <span className="text-lg font-bold text-green-900">
               R$ {product.preco.toFixed(2).replace('.', ',')}
             </span>
           </div>
           <InstallmentPlan totalPrice={product.preco} />
         </div>
         <button
-          className="flex justify-center items-center gap-3 mt-auto px-10 py-2 text-center text-black text-sm font-bold bg-yellow-500 hover:bg-yellow-600 uppercase transition duration-200"
+          className="flex justify-center items-center gap-3 mt-auto px-10 py-3 text-center text-white text-sm font-bold bg-green-500 hover:bg-green-600 rounded-sm uppercase transition duration-200"
           onClick={handleAddToCart}
         >
           Add

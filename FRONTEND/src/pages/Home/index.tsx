@@ -14,7 +14,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchProductsRequest())
-  }, [dispatch])
+  }, [])
 
   if (error) {
     return <div>Erro ao carregar os produtos</div>

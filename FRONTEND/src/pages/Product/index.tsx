@@ -1,12 +1,14 @@
-import AddIcon from '@mui/icons-material/Add'
-import RemoveIcon from '@mui/icons-material/Remove'
 import { IconButton } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import InstallmentPlan from '../../components/UI/InstallmentPlan'
+import AddIcon from '../../components/common/AddIcon'
+import RemoveIcon from '../../components/common/RemoveIcon'
+import { addProductToCart } from '../../store/ducks/cart/actions'
 import { fetchProductRequest } from '../../store/ducks/products/actions'
 import { RootState } from '../../store/ducks/rootReducer'
+import { convertProductIdToProduct } from './helpers'
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search)
@@ -15,8 +17,9 @@ const useQuery = () => {
 const Product: React.FC = () => {
   const query = useQuery()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const productId = query.get('idProduto')
-  const [productQuantity, setProductQuantity] = useState(0)
+  const [productQuantity, setProductQuantity] = useState(1)
   const { product, loading, error } = useSelector(
     (state: RootState) => state.products
   )
@@ -50,9 +53,16 @@ const Product: React.FC = () => {
   const variationsImages = product?.variacoes?.map((variacao) => {
     return {
       variationId: variacao.id,
-      image: variacao.midia?.imagens?.externas[0].link || '',
+      image: variacao.midia?.imagens?.externas[0]?.link || '',
     }
   })
+
+  const handleAddToCart = () => {
+    const productToAdd = convertProductIdToProduct(product)
+    dispatch(
+      addProductToCart({ product: productToAdd, quantidade: productQuantity })
+    )
+  }
 
   if (loading) {
     return <div>Loading...</div>
@@ -67,7 +77,7 @@ const Product: React.FC = () => {
   }
 
   return (
-    <section className="py-20 mt-14">
+    <section className="py-6 md:py-20 mt-14">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap -mx-4 mb-24">
           <div className="w-full md:w-1/2 px-4 mb-8 md:mb-0">
@@ -76,92 +86,111 @@ const Product: React.FC = () => {
                 className="object-cover w-full h-full"
                 style={{ objectFit: 'contain' }}
                 src={
-                  product?.midia?.imagens?.externas[0].link ||
+                  product?.midia?.imagens?.externas[0]?.link ||
                   '/public/assets/noImageAvailable.png'
                 }
                 alt="Product"
               />
             </div>
-            <div className="flex flex-wrap -mx-2">
+            <div className="flex align-center content-center md:justify-center flex-wrap -mx-2">
               {variationsImages?.map((variation, index) => (
-                <div className="w-1/2 sm:w-1/4 p-2">
-                  <a
-                    key={index}
-                    className="block border border-blue-300"
-                    href="#"
-                  >
-                    <img
-                      className="w-full h-32 object-cover"
-                      src={variation.image}
-                      alt="Product Thumbnail"
-                    />
-                  </a>
+                <div key={index} className="w-1/2 sm:w-1/4 p-2">
+                  <img
+                    className="object-cover"
+                    src={
+                      variation.image || '/public/assets/noImageAvailable.png'
+                    }
+                    alt="Product Thumbnail"
+                  />
                 </div>
               ))}
             </div>
           </div>
-          <div className="w-full md:w-1/2 px-4">
+          <div className="w-full max-w-xl md:w-1/2 px-4">
             <div className="lg:pl-20">
               <div className="mb-10 pb-10 border-b">
-                <h2 className="mt-2 mb-6 max-w-xl text-2xl md:text-4xl font-bold font-heading">
+                <h1 className="text-rhino-700 font-semibold text-4xl mb-2 font-heading">
                   {product?.nome}
-                </h2>
+                </h1>
                 <p className="inline-block mb-8 text-2xl font-bold font-heading text-green-500">
                   <span>R$ </span>
                   <span>{product?.preco?.toFixed(2).replace('.', ',')}</span>
                 </p>
                 <InstallmentPlan totalPrice={product?.preco} />
                 <p className="max-w-md text-gray-500">
-                  {product.descricaoCurta}
+                  {product?.descricaoCurta}
                 </p>
               </div>
-              <div className="flex mb-12">
-                <div className="mr-6">
-                  <span className="block mb-4 font-bold font-heading text-gray-400 uppercase">
-                    QTD
-                  </span>
-                  <div className="inline-flex items-center px-4 font-semibold font-heading text-gray-500 border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md">
-                    <IconButton
-                      onClick={() => setProductQuantity(productQuantity - 1)}
-                      disabled={productQuantity === 1}
-                    >
-                      <RemoveIcon />
-                    </IconButton>
-                    <div className="flex justify-center w-12 m-0 px-2 py-4 text-center md:text-right border-0 rounded-md bg-slate-100">
-                      {productQuantity}
+              <div className="flex items-center justify-between flex-wrap mb-8">
+                <div className="w-full">
+                  <div className="mb-4">
+                    <div className="flex gap-4 mb-10">
+                      <div>
+                        <p className="uppercase text-xs font-bold text-rhino-500 mb-3">
+                          QUANTIDADE
+                        </p>
+                        <div className="py-3 px-4 rounded-sm border border-coolGray-200 gap-4 flex items-center">
+                          <div className="cursor-pointer text-coolGray-300 hover:text-coolGray-400 transition duration-200">
+                            <IconButton
+                              onClick={() =>
+                                setProductQuantity(productQuantity - 1)
+                              }
+                              disabled={productQuantity === 1}
+                            >
+                              <RemoveIcon />
+                            </IconButton>
+                          </div>
+                          <span className="text-coolGray-700 text-md">
+                            {productQuantity}
+                          </span>
+                          <div className="cursor-pointer text-coolGray-300 hover:text-coolGray-400 transition duration-200">
+                            <IconButton
+                              onClick={() =>
+                                setProductQuantity(productQuantity + 1)
+                              }
+                            >
+                              <AddIcon />
+                            </IconButton>
+                          </div>
+                        </div>
+                      </div>
+                      {product?.variacoes?.length > 0 && (
+                        <div>
+                          <p className="uppercase text-xs font-bold text-rhino-500 mb-3">
+                            {variationType}
+                          </p>
+                          <select className="rounded-sm border bg-white border-coolGray-200 py-4 px-4 text-coolGray-700 text-sm">
+                            {variationsOptions?.map((variation, index) => (
+                              <option key={index} value={variation.variationId}>
+                                {variation.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
                     </div>
-                    <IconButton
-                      onClick={() => setProductQuantity(productQuantity + 1)}
+                  </div>
+                  <div className="mb-4 flex flex-wrap gap-4">
+                    <button
+                      className="uppercase inline-block flex-1 w-full px-3 py-4 rounded-sm text-center text-green-500 border border-green-500 text-sm font-medium bg-white hover:bg-green-100 transition duration-200"
+                      onClick={() => navigate(-1)}
                     >
-                      <AddIcon />
-                    </IconButton>
+                      Continuar comprando
+                    </button>
+                  </div>
+                  <div className="mb-8 flex flex-wrap gap-4">
+                    <button
+                      className="uppercase inline-block flex-1 w-full px-3 py-4 rounded-sm text-center text-white text-sm font-medium bg-green-500 hover:bg-green-600 transition duration-200"
+                      onClick={handleAddToCart}
+                    >
+                      Adicionar ao carrinho
+                    </button>
                   </div>
                 </div>
-                <div>
-                  <span className="block mb-4 font-bold font-heading text-gray-400 uppercase">
-                    {variationType}
-                  </span>
-                  <select
-                    className="pl-6 pr-10 py-4 font-semibold font-heading text-gray-500 border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md bg-slate-100"
-                    name="size"
-                    id="size"
-                  >
-                    {variationsOptions?.map((variation, index) => (
-                      <option key={index} value={variation.variationId}>
-                        {variation.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
               </div>
-              <div className="flex flex-wrap -mx-4 mb-14 items-center">
-                <div className="w-full xl:w-2/3 px-4 mb-4 xl:mb-0">
-                  <a
-                    className="block bg-orange-300 hover:bg-orange-400 text-center text-white font-bold font-heading py-5 px-8 rounded-md uppercase transition duration-200"
-                    href="#"
-                  >
-                    Add to cart
-                  </a>
+              <div className="flex flex-wrap w-full mb-8">
+                <div className="flex-1">
+                  <div className="w-full h-full border-b border-rhino-200"></div>
                 </div>
               </div>
             </div>

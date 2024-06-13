@@ -22,8 +22,6 @@ function* fetchProductSaga(action: {
   payload: string
 }) {
   try {
-    console.log('ACTION', action)
-
     const product: IProductId = yield call(
       productsApi.fetchProduct,
       action.payload
