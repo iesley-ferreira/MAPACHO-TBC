@@ -1,109 +1,122 @@
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import RemoveIcon from '@mui/icons-material/Remove'
-import { Box, IconButton, List, ListItem, Typography } from '@mui/material'
+import { IconButton } from '@mui/material'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import 'tailwindcss/tailwind.css'
 import { ICartItem } from '../../../interfaces/Cart'
+import {
+  decrementProductQuantity,
+  incrementProductQuantity,
+  removeProductFromCart,
+} from '../../../store/ducks/cart/actions'
 
 interface CartListProps {
   cartItems: ICartItem[]
-  onIncrement?: (id: number) => void
-  onDecrement?: (id: number) => void
-  onRemove?: (id: number) => void
-  showActions?: boolean
+  onClose: () => void
 }
 
 const defaultImageURL = '/public/assets/noImageAvailable.png'
 
-const CartList: React.FC<CartListProps> = ({
-  cartItems,
-  onIncrement,
-  onDecrement,
-  onRemove,
-  showActions = true,
-}) => {
+const CartList: React.FC<CartListProps> = ({ cartItems, onClose }) => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleGoToCart = () => {
+    navigate('/carrinho')
+    onClose()
+  }
+
+  const handleIncrement = (id: number) => {
+    dispatch(incrementProductQuantity(id))
+  }
+
+  const handleDecrement = (id: number) => {
+    dispatch(decrementProductQuantity(id))
+  }
+
+  const handleRemove = (id: number) => {
+    dispatch(removeProductFromCart(id))
+  }
+
   return (
-    <Box sx={{ width: '100%', maxWidth: 400, mx: 'auto' }}>
-      <List>
-        {cartItems.map((product: ICartItem, index: number) => (
-          <ListItem
-            key={index}
-            alignItems="flex-start"
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-            }}
+    <div className="relative p-4  h-full bg-white overflow-y-auto flex flex-col justify-between">
+      <div>
+        {cartItems.map((item) => (
+          <div
+            key={item.id}
+            className="pb-4 border-b border-gray-50 flex gap-5 flex-wrap mb-6"
           >
-            <Box display="flex" alignItems="center" width="100%">
-              <img
-                src={product.imagemURL || defaultImageURL}
-                alt={product.nome}
-                style={{
-                  width: 76,
-                  height: 76,
-                  marginRight: 16,
-                  objectFit: 'cover',
-                  borderRadius: '6px',
-                }}
-              />
-              <Box flex="1">
-                <Typography
-                  variant="body1"
-                  fontWeight="bold"
-                  sx={{
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    maxWidth: '210px',
-                  }}
-                >
-                  {product.nome}
-                </Typography>
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  width="100%"
-                >
-                  <Typography variant="body1" color="textSecondary">
-                    R$ {product.preco.toFixed(2).replace('.', ',')}
-                  </Typography>
-                  <Box
-                    display="flex"
-                    justifyContent="flex-end"
-                    alignItems="center"
-                    width="100%"
-                    mt={1}
+            <img
+              className="w-20 h-20 object-cover rounded-xl"
+              src={item.imagemURL || defaultImageURL}
+              alt={item.nome}
+            />
+            <div className="flex-1">
+              <div className="flex justify-between mb-4">
+                <p className="text-sm font-semibold pr-3">{item.nome}</p>
+              </div>
+              <div className="flex items-center justify-between flex-wrap">
+                <p className="font-semibold text-green-900 whitespace-nowrap">
+                  R$ {item.preco.toFixed(2).replace('.', ',')}
+                </p>
+                <div className="flex items-center gap-2">
+                  {item.quantidade > 1 ? (
+                    <IconButton
+                      onClick={() => handleDecrement(item.id)}
+                      disabled={item.quantidade === 1}
+                      className="bg-white border border-gray-200 rounded-full hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 w-6 h-6 flex items-center justify-center transition duration-200"
+                    >
+                      <RemoveIcon />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      onClick={() => handleRemove(item.id)}
+                      className="group bg-white border border-gray-200 rounded-full hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 w-6 h-6 flex items-center justify-center transition duration-200"
+                    >
+                      <DeleteIcon className="text-gray-400 group-hover:text-gray-500 transition duration-200" />
+                    </IconButton>
+                  )}
+                  <span className="text-sm font-semibold">
+                    {item.quantidade}
+                  </span>
+                  <IconButton
+                    onClick={() => handleIncrement(item.id)}
+                    className="bg-white border border-gray-200 rounded-full hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 w-6 h-6 flex items-center justify-center transition duration-200"
                   >
-                    {showActions ? (
-                      <Box display="flex" alignItems="center">
-                        <IconButton onClick={() => onDecrement?.(product.id)}>
-                          <RemoveIcon />
-                        </IconButton>
-                        <Typography variant="body1" sx={{ margin: '0 8px' }}>
-                          {product.quantidade}
-                        </Typography>
-                        <IconButton onClick={() => onIncrement?.(product.id)}>
-                          <AddIcon />
-                        </IconButton>
-                        <IconButton onClick={() => onRemove?.(product.id)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </Box>
-                    ) : (
-                      <Typography variant="body2" color="textSecondary">
-                        Quantidade: {product.quantidade}
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </ListItem>
+                    <AddIcon />
+                  </IconButton>
+                </div>
+              </div>
+            </div>
+          </div>
         ))}
-      </List>
-    </Box>
+        <div className="pt-5 border-t border-gray-50">
+          <div className="flex items-center justify-between flex-wrap px-2 mb-6">
+            <p className="text-xl font-semibold">Total</p>
+            <p className="text-xl font-semibold text-green-900">
+              R${' '}
+              {cartItems
+                .reduce(
+                  (total, item) => total + item.preco * item.quantidade,
+                  0
+                )
+                .toFixed(2)
+                .replace('.', ',')}
+            </p>
+          </div>
+
+          <button
+            className="bg-green-500 py-3 px-4 rounded-sm text-white text-center hover:bg-green-600 transition uppercase duration-200 w-full inline-block"
+            onClick={handleGoToCart}
+          >
+            Carrinho
+          </button>
+        </div>
+      </div>
+    </div>
   )
 }
 

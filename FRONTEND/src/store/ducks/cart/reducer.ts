@@ -10,7 +10,7 @@ const initialState: CartState = {
 
 const cartReducer = createReducer<CartState, CartActions>(initialState)
   .handleAction(actions.addProductToCart, (state, action) => {
-    const product = action.payload
+    const { product, quantidade } = action.payload
     const existingProduct = state.items.find((item) => item.id === product.id)
 
     if (existingProduct) {
@@ -18,7 +18,7 @@ const cartReducer = createReducer<CartState, CartActions>(initialState)
         ...state,
         items: state.items.map((item) =>
           item.id === product.id
-            ? { ...item, quantidade: item.quantidade + 1 }
+            ? { ...item, quantidade: item.quantidade + quantidade }
             : item
         ),
       }
@@ -26,7 +26,7 @@ const cartReducer = createReducer<CartState, CartActions>(initialState)
 
     return {
       ...state,
-      items: [...state.items, { ...product, quantidade: 1 }],
+      items: [...state.items, { ...product, quantidade }],
     }
   })
   .handleAction(actions.incrementProductQuantity, (state, action) => ({
@@ -54,6 +54,22 @@ const cartReducer = createReducer<CartState, CartActions>(initialState)
   .handleAction(actions.removeProductFromCart, (state, action) => ({
     ...state,
     items: state.items.filter((item) => item.id !== action.payload),
+  }))
+  .handleAction(actions.fetchCartProductsRequest, (state) => ({
+    ...state,
+    loading: true,
+    error: false,
+  }))
+  .handleAction(actions.fetchCartProductsSuccess, (state, action) => ({
+    ...state,
+    items: action.payload,
+    loading: false,
+    error: false,
+  }))
+  .handleAction(actions.fetchCartProductsFailure, (state) => ({
+    ...state,
+    loading: false,
+    error: true,
   }))
 
 export default cartReducer

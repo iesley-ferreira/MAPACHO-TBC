@@ -1,17 +1,15 @@
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import {
-  Alert,
   Collapse,
   Drawer,
   IconButton,
   List,
   ListItem,
   ListItemText,
-  Typography,
 } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchCategoriesRequest } from '../../../store/ducks/categories/actions'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+// import { fetchCategoriesRequest } from '../../../store/ducks/categories/actions'
 import { Category } from '../../../store/ducks/categories/types'
 import { RootState } from '../../../store/ducks/rootReducer'
 
@@ -20,8 +18,8 @@ interface DrawerMenuProps {
   onClose: () => void
 }
 const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
-  const dispatch = useDispatch()
-  const { categories, subCategories, loading, error } = useSelector(
+  // const dispatch = useDispatch()
+  const { categories, subCategories } = useSelector(
     (state: RootState) => state.categories
   )
   const [expandedItemId, setExpandedItemId] = useState<number | null>(null)
@@ -29,9 +27,9 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
     number | null
   >(null)
 
-  useEffect(() => {
-    dispatch(fetchCategoriesRequest())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(fetchCategoriesRequest())
+  // }, [dispatch])
 
   const renderSubcategory = (id: number) => {
     setExpandedItemId(expandedItemId === id ? null : id)
@@ -44,9 +42,6 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
   const getSubCategories = (parentId: number) => {
     return subCategories.filter((s: Category) => s.categoriaPai.id === parentId)
   }
-
-  if (loading) return <div>Loading...</div>
-  if (error) return <div>Error: {error}</div>
 
   return (
     <Drawer
@@ -64,10 +59,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
         <i className="ri-close-fill"></i>
       </IconButton>
       <div style={{ padding: 26 }}>
-        <Typography variant="h6" component="div" gutterBottom>
-          <i className="ri-menu-4-line" style={{ marginRight: '10px' }}></i>
-          Categorias
-        </Typography>
+        <h1 className="font-heading uppercase text-1xl ">Categorias</h1>
         <List>
           {categories
             .filter((c) => c.categoriaPai.id === 0)
@@ -127,7 +119,6 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
             ))}
         </List>
       </div>
-      {error && <Alert severity="error">{error}</Alert>}
     </Drawer>
   )
 }

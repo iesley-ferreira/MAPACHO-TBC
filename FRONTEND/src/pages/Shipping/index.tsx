@@ -1,7 +1,6 @@
 import React from 'react'
 // import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import ErrorBoundary from '../../components/ErrorBunary'
 import AddressForm from '../../components/UI/AddressForm'
 import CustomStepper from '../../components/UI/CustomStepper'
 import ShippingOptions from '../../components/UI/ShippingOptions'
@@ -30,14 +29,10 @@ const Shipping: React.FC<ShippingProps> = () => {
         <CustomStepper activeStep={0} />
       </div>
       <div className="addressForm my-6 w-full max-w-xl">
-        <ErrorBoundary>
-          <AddressForm setIsFormValid={setIsFormValid} />
-        </ErrorBoundary>
+        <AddressForm setIsFormValid={setIsFormValid} />
       </div>
       <div className="shippingOptions my-6 w-full max-w-xl">
-        <ErrorBoundary>
-          <ShippingOptions setShippingOption={setShippingOption} />
-        </ErrorBoundary>
+        <ShippingOptions setShippingOption={setShippingOption} />
       </div>
       <div className="button-pagamento py-10 w-full max-w-xl">
         <CustomButton

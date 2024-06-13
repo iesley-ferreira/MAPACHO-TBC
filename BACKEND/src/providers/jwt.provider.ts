@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { env } from '../env';
 
-const sing = (payload: object) => jwt.sign(payload, env.SECRET_KEY, {
+const sing = (payload: object) => jwt.sign(payload, env.SECRET_KEY_JWT, {
   expiresIn: '1d'
 });
 

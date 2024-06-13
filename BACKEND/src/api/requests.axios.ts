@@ -1,5 +1,4 @@
-import axios from 'axios'
-import qs from 'qs';
+import axios from 'axios';
 import { QueryType } from '../types/Query.type';
 
 
@@ -13,16 +12,17 @@ type AxiosRequestType = {
 }
 
 const axiosRequest = async ({ method, BASE_URL, url, data, headers, query }: AxiosRequestType) => {  
-  const response = await axios({
-    baseURL: BASE_URL,
-    method,
-    url,
-    data,
-    headers,
-    params: query
-  });  
+    
+    const response = await axios({
+      baseURL: BASE_URL,
+      method,
+      url,
+      data,
+      headers,
+      params: query
+    });  
+    return response.data as any;
 
-  return response
 } 
 
 export default axiosRequest;

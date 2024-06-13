@@ -1,5 +1,6 @@
 import { all } from 'redux-saga/effects'
 
+import cartSagas from './cart/sagas'
 import categoriesSagas from './categories/sagas'
 import productSagas from './products/sagas'
 import shippingSagas from './shipping/sagas'
@@ -12,6 +13,7 @@ export default function* rootSaga() {
     categoriesSagas(),
     userSagas(),
     shippingSagas(),
+    cartSagas(),
     // Incluir outras sagas aqui
   ])
 }

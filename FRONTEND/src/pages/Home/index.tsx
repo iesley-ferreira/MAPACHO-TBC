@@ -14,7 +14,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchProductsRequest())
-  }, [dispatch])
+  }, [])
 
   if (error) {
     return <div>Erro ao carregar os produtos</div>
@@ -25,7 +25,13 @@ const Home: React.FC = () => {
       <div className="mt-20">
         <BannerCarousel />
       </div>
-      <Container sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+      <Container
+        sx={{
+          mt: 4,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         {loading ? (
           <Box
             sx={{

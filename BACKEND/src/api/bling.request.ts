@@ -39,6 +39,8 @@ const refreshToken = async (credentials: string, refresh_token: string) => bling
 // ================== BLING_PRODUCTS =========================== //
 
 const getAllProducts = async (token: string, query?: QueryType) => blingRequestAxios({ url: "/Api/v3/produtos", method: 'get', token, query });
+
+// ================== BLING_PRODUCTS_VARIATIONS =========================== //
 const getProductsByVariation = async (token: string, fatherProduct: string) => {
   return blingRequestAxios({ url: `/Api/v3/produtos/${fatherProduct}`, method: "get", token });
 } 

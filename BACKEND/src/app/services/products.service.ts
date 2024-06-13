@@ -4,15 +4,21 @@ import { ReturnServiceType } from "../../types/ReturnService.type";
 
 
 const getAllProducts = async (bling_token: string, query: QueryType): Promise<ReturnServiceType> => {
-
-  const allProducts = await bling_request.getAllProducts(bling_token, query);
-
-  return {
-    data: allProducts.data,
-    status: allProducts.status,
+  
+  try {
+    const allProducts = await bling_request.getAllProducts(bling_token, query);
+    return {
+      data: allProducts.data,
+      status: 200,
+    }
+  } catch (error) {
+    return {
+      data: { error: 'An error occurred while fetching products' },
+      status: 500,
+    }
   }
 }
-
+  
 const getProductByVariation = async (bling_token: string, fatherProductId: string): Promise<ReturnServiceType> => {
   const productsByVariation = await bling_request.getProductsByVariation(bling_token, fatherProductId);
 
