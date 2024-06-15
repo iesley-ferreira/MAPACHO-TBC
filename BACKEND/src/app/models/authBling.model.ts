@@ -10,14 +10,7 @@ const createAuthBling = async (data: AuthBlingUpdateType) => prisma.authBling.cr
 const updateAuthBling = async (id: string, data: AuthBlingUpdateType) => prisma.authBling.update({
   where: {
     id,
-  },
-  data: {
-    access_token: data.access_token,
-    expires_in: data.expires_in,
-    refresh_token: data.refresh_token,
-    scope: data.scope,
-    token_type: data.token_type
-  }
+  }, data
 });
 
 const authBlingModel = {

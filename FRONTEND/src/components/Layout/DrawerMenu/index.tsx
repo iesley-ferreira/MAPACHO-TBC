@@ -7,9 +7,9 @@ import {
   ListItem,
   ListItemText,
 } from '@mui/material'
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-// import { fetchCategoriesRequest } from '../../../store/ducks/categories/actions'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchCategoriesRequest } from '../../../store/ducks/categories/actions'
 import { Category } from '../../../store/ducks/categories/types'
 import { RootState } from '../../../store/ducks/rootReducer'
 
@@ -18,7 +18,7 @@ interface DrawerMenuProps {
   onClose: () => void
 }
 const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const { categories, subCategories } = useSelector(
     (state: RootState) => state.categories
   )
@@ -27,9 +27,9 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
     number | null
   >(null)
 
-  // useEffect(() => {
-  //   dispatch(fetchCategoriesRequest())
-  // }, [dispatch])
+  useEffect(() => {
+    dispatch(fetchCategoriesRequest())
+  }, [])
 
   const renderSubcategory = (id: number) => {
     setExpandedItemId(expandedItemId === id ? null : id)

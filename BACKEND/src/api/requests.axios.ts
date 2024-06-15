@@ -12,7 +12,7 @@ type AxiosRequestType = {
 }
 
 const axiosRequest = async ({ method, BASE_URL, url, data, headers, query }: AxiosRequestType) => {  
-    
+      
     const response = await axios({
       baseURL: BASE_URL,
       method,
@@ -21,8 +21,7 @@ const axiosRequest = async ({ method, BASE_URL, url, data, headers, query }: Axi
       headers,
       params: query
     });  
-    return response.data as any;
-
+    return response;
 } 
 
 export default axiosRequest;
