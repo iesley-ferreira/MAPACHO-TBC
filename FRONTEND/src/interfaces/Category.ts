@@ -13,3 +13,7 @@ export interface ISubCategory {
 export interface CategoryResponse {
   data: ICategory[]
 }
+
+export interface ICategoryId {
+  id: number
+}

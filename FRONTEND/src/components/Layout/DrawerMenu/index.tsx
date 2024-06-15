@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchCategoriesRequest } from '../../../store/ducks/categories/actions'
 import { Category } from '../../../store/ducks/categories/types'
 import { RootState } from '../../../store/ducks/rootReducer'
+import { fetchProductsByIdRequest } from '../../../store/ducks/products/actions'
 
 interface DrawerMenuProps {
   isOpen: boolean
@@ -32,11 +33,23 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
   }, [])
 
   const renderSubcategory = (id: number) => {
+    const subCategoriesByCategory = subCategories.filter(
+      (s: Category) => s.categoriaPai.id === id
+    )
+
+    if (subCategoriesByCategory.length === 0) {
+      dispatch(fetchProductsByIdRequest(id.toString()))
+      onClose()
+      return
+    }
+
     setExpandedItemId(expandedItemId === id ? null : id)
   }
+
   const handleSubcategoryClick = (subcategoryId: number) => {
     setSelectedSubcategoryId(subcategoryId)
-    console.log('Subcategoria selecionada: ', subcategoryId)
+    dispatch(fetchProductsByIdRequest(subcategoryId.toString()))
+    onClose()
   }
 
   const getSubCategories = (parentId: number) => {
