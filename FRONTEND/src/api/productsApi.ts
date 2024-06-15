@@ -7,8 +7,6 @@ export const fetchProducts = async (): Promise<IProduct[]> => {
 }
 
 export const fetchProduct = async (id: string): Promise<IProduct> => {
-  const response = await axios.get<{ data: IProduct }>(
-    `produtos?idProduto=${id}`
-  )
+  const response = await axios.get<{ data: IProduct }>(`products/${id}`)
   return response.data.data
 }

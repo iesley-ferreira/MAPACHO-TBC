@@ -1,5 +1,5 @@
 import { QueryType } from "../types/Query.type";
-import axiosRequest from "./requests.axios";
+import axiosRequest from './requests.axios';
 
 const BASE_URL = 'https://www.bling.com.br'
 
@@ -31,6 +31,7 @@ const blingRequestAxios = async ({ url,  credentials, data, token, method, query
   query,
 });
 
+
 // ================== BLING_TOKEN =============================== //
 
 const getToken = async (credentials: string, AUTHORIZATION_CODE: string) => blingRequestAxios({ url: "/Api/v3/oauth/token", method: 'post', credentials, data: { code: AUTHORIZATION_CODE, grant_type: 'authorization_code' } })
@@ -45,11 +46,20 @@ const getProductsByVariation = async (token: string, fatherProduct: string) => {
   return blingRequestAxios({ url: `/Api/v3/produtos/${fatherProduct}`, method: "get", token });
 } 
 
+// ================== BLING_CATEGORIES =========================== //
+
+const getAllCategories = async (token: string, query?: QueryType) => blingRequestAxios({ url: "/Api/v3/categorias/produtos", method: 'get', token, query });
+
+
+// ================== BLING_REQUEST =========================== //
+
 const bling_request = {
   getToken,
   refreshToken,
   getAllProducts,
   getProductsByVariation,
+  getAllCategories,
 }
+
 
 export default bling_request;
