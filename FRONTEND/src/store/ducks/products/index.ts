@@ -5,6 +5,7 @@ import { ProductActions, ProductsState } from './types'
 
 const initialState: ProductsState = {
   products: [],
+  filteredProducts: [],
   product: {} as IProductId,
   loading: false,
   error: false,
@@ -24,6 +25,21 @@ const productReducer = createReducer<ProductsState, ProductActions>(
     products: action.payload,
   }))
   .handleAction(actions.fetchProductsFailure, (state) => ({
+    ...state,
+    loading: false,
+    error: true,
+  }))
+  .handleAction(actions.fetchProductsByIdRequest, (state) => ({
+    ...state,
+    loading: true,
+  }))
+  .handleAction(actions.fetchProductsByIdSuccess, (state, action) => ({
+    ...state,
+    loading: false,
+    error: false,
+    products: action.payload,
+  }))
+  .handleAction(actions.fetchProductsByIdFailure, (state) => ({
     ...state,
     loading: false,
     error: true,

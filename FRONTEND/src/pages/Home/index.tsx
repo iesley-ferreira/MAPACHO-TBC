@@ -8,7 +8,7 @@ import { RootState } from '../../store/ducks/rootReducer'
 
 const Home: React.FC = () => {
   const dispatch = useDispatch()
-  const { products, loading, error } = useSelector(
+  const { products, filteredProducts, loading, error } = useSelector(
     (state: RootState) => state.products
   )
 
@@ -44,7 +44,9 @@ const Home: React.FC = () => {
             <CircularProgress sx={{ color: 'darkgreen' }} />
           </Box>
         ) : (
-          <Products products={products} />
+          <Products
+            products={filteredProducts.length > 0 ? filteredProducts : products}
+          />
         )}
       </Container>
     </>

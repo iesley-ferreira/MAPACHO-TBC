@@ -1,6 +1,10 @@
 import { createAction } from 'typesafe-actions'
 import { IProduct, IProductId } from '../../../interfaces/Product'
-import { ProductActionTypes, ProductsActionTypes } from './types'
+import {
+  ProductsByIdActionTypes,
+  ProductActionTypes,
+  ProductsActionTypes,
+} from './types'
 
 // actions de products
 
@@ -14,6 +18,20 @@ export const fetchProductsSuccess = createAction(
 
 export const fetchProductsFailure = createAction(
   ProductsActionTypes.FETCH_PRODUCTS_FAILURE
+)<string>()
+
+// actions de filteredProducts
+
+export const fetchProductsByIdRequest = createAction(
+  ProductsByIdActionTypes.FETCH_PRODUCTS_BY_ID_REQUEST
+)<string>()
+
+export const fetchProductsByIdSuccess = createAction(
+  ProductsByIdActionTypes.FETCH_PRODUCTS_BY_ID_SUCCESS
+)<IProduct[]>()
+
+export const fetchProductsByIdFailure = createAction(
+  ProductsByIdActionTypes.FETCH_PRODUCTS_BY_ID_FAILURE
 )<string>()
 
 // actions de product
