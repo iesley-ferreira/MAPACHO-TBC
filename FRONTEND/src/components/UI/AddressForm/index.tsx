@@ -22,7 +22,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
   const [addressLoaded, setAddressLoaded] = React.useState(false)
 
   const [formData, setFormData] = React.useState({
-    userName: '',
+    // userName: '',
     postalCode: '',
     address: '',
     houseNumber: '',
@@ -33,7 +33,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
   })
 
   const [fieldTouched, setFieldTouched] = useState({
-    userName: false,
+    // userName: false,
     postalCode: false,
     address: false,
     houseNumber: false,
@@ -44,7 +44,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
   })
 
   const [errors, setErrors] = useState({
-    userName: '',
+    // userName: '',
     postalCode: '',
     address: '',
     houseNumber: '',
@@ -66,9 +66,9 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
     }
 
     if (formData.postalCode.length === 8) {
-      if (!formData.userName.trim()) {
-        newErrors.userName = 'Este campo é obrigatório'
-      }
+      // if (!formData.userName.trim()) {
+      //   newErrors.userName = 'Este campo é obrigatório'
+      // }
       if (!formData.houseNumber.trim()) {
         newErrors.houseNumber = 'Este campo é obrigatório'
       }
@@ -122,22 +122,22 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
               : 'Este campo é obrigatório',
         }))
       }
-    } else if (name === 'userName') {
-      const nameParts = value.trim().split(' ')
-      if (
-        nameParts.length >= 2 &&
-        nameParts.every((part) => part.length >= 2)
-      ) {
-        setErrors((prev) => ({ ...prev, userName: '' }))
-      } else {
-        setErrors((prev) => ({
-          ...prev,
-          userName:
-            value.trim() !== ''
-              ? 'Nome e sobrenome são obrigatórios'
-              : 'Este campo é obrigatório',
-        }))
-      }
+      // } else if (name === 'userName') {
+      //   const nameParts = value.trim().split(' ')
+      //   if (
+      //     nameParts.length >= 2 &&
+      //     nameParts.every((part) => part.length >= 2)
+      //   ) {
+      //     setErrors((prev) => ({ ...prev, userName: '' }))
+      //   } else {
+      //     setErrors((prev) => ({
+      //       ...prev,
+      //       userName:
+      //         value.trim() !== ''
+      //           ? 'Nome e sobrenome são obrigatórios'
+      //           : 'Este campo é obrigatório',
+      //     }))
+      //   }
     } else {
       if (
         addressLoaded &&
@@ -199,7 +199,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
         Formulário de Envio
       </Typography>
       <Stack spacing={3} className="w-full">
-        <TextField
+        {/* <TextField
           fullWidth
           required
           size="small"
@@ -225,7 +225,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
               color: isError('userName') ? 'red' : 'green',
             },
           }}
-        />
+        /> */}
 
         <TextField
           fullWidth

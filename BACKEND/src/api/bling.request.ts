@@ -51,7 +51,7 @@ const getProductsByVariation = async (token: string, fatherProduct: string) => {
 const getAllCategories = async (token: string, query?: QueryType) => blingRequestAxios({ url: "/Api/v3/categorias/produtos", method: 'get', token, query });
 
 
-// ================== BLING_REQUEST =========================== //
+
 
 const bling_request = {
   getToken,

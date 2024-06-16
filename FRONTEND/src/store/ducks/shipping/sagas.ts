@@ -1,7 +1,7 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects'
-import * as addressApi from '../../../api/addressApi'
 import * as deliveryApi from '../../../api/deliveryApi'
-import * as distanceApi from '../../../api/distanceApi'
+// import * as distanceApi from '../../../api/distanceApi'
+import * as shippingApi from '../../../api/shippingApi'
 import {
   fetchAddressFailure,
   fetchAddressSuccess,
@@ -26,7 +26,7 @@ function* fetchAddressSaga(action: {
 }) {
   try {
     const { zipCode } = action.payload
-    const address: IAddress = yield call(addressApi.fetchAddress, zipCode)
+    const address: IAddress = yield call(shippingApi.fetchAddress, zipCode)
 
     yield put(fetchAddressSuccess(address))
   } catch (error: Error | unknown) {
@@ -56,8 +56,9 @@ function* fetchDeliveryDistanceSaga(action: {
 }) {
   try {
     const { fullAddress } = action.payload
+    console.log('fetchDeliveryDistanceSaga', fullAddress)
     const response: { distance: number } = yield call(
-      distanceApi.fetchDistance,
+      shippingApi.fetchDistance,
       fullAddress
     )
     const distance = response.distance
