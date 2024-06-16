@@ -1,8 +1,8 @@
-import axios from "axios";
-import { QueryType } from "../types/Query.type";
+import axios from 'axios';
+import { QueryType } from '../types/Query.type';
 
 type AxiosRequestType = {
-  method: "get" | "post" | "put" | "delete";
+  method: 'get' | 'post' | 'put' | 'delete';
   BASE_URL?: string;
   url: string;
   query?: QueryType;

@@ -18,8 +18,10 @@ export const fetchDistance = async (
 export const fetchDeliveryOptions = async (
   zipCode: string,
 ): Promise<IDeliveryOptionPrice[]> => {
+  console.log('fetchDeliveryOptionsAPI', zipCode);
+
   const response = await axios.get<IDeliveryOptionPrice[]>(
-    `melhorEnvio?zipCode=${zipCode}`,
+    `shipping/melhorEnvio?zipCode=${zipCode}`,
   );
 
   return response.data;

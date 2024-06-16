@@ -12,6 +12,7 @@ const envSchema = z.object({
   REDIRECT_URI: z.string().url(),
   SECRET_KEY_JWT: z.string(),
   DIRECTIONS_API_KEY: z.string(),
+  MELHOR_ENVIO_API_KEY: z.string(),
 });
 
 export const env = envSchema.parse(process.env);

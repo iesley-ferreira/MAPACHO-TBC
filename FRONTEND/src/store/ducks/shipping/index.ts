@@ -1,6 +1,6 @@
-import { createReducer } from 'typesafe-actions'
-import * as actions from './actions'
-import { ShippingActions, ShippingState } from './types'
+import { createReducer } from 'typesafe-actions';
+import * as actions from './actions';
+import { ShippingActions, ShippingState } from './types';
 
 const initialState: ShippingState = {
   completeAddress: {
@@ -13,14 +13,14 @@ const initialState: ShippingState = {
     state: '',
   },
   deliveryOptions: [],
+  scheduledValue: 0,
+  motorcycleValue: 0,
   distance: 0,
   loading: false,
   error: false,
-}
+};
 
-const shippingReducer = createReducer<ShippingState, ShippingActions>(
-  initialState
-)
+const shippingReducer = createReducer<ShippingState, ShippingActions>(initialState)
   .handleAction(actions.fetchAddressRequest, (state) => ({
     ...state,
     loading: true,
@@ -78,5 +78,13 @@ const shippingReducer = createReducer<ShippingState, ShippingActions>(
     loading: false,
     error: true,
   }))
+  .handleAction(actions.setMotorcycleDeliveryValue, (state, action) => ({
+    ...state,
+    motorcycleValue: action.payload,
+  }))
+  .handleAction(actions.setScheduledDeliveryValue, (state, action) => ({
+    ...state,
+    scheduledValue: action.payload,
+  }));
 
-export default shippingReducer
+export default shippingReducer;
