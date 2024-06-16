@@ -102,7 +102,7 @@ const getAllCategories = async (token: string, query?: QueryType) =>
     query,
   });
 
-// ================== BLING_REQUEST =========================== //
+
 
 const bling_request = {
   getToken,

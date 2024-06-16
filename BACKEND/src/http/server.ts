@@ -7,5 +7,5 @@ const PORT = PORT_SERVER || '3333';
 
 app.listen(PORT, async () => {
   await refresh_token_init()
-  console.log(`Server Listner ${PORT}`);
+  console.log(`Server Listener on port: ${PORT}`);
 });
