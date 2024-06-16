@@ -8,7 +8,6 @@ productsRouter
   .route('/')
   .get(productsMiddlewares.validate_querys, productsController.getAllProducts);
 
-productsRouter.route('/:idProduct').get(productsController.getProductByVariation);
 productsRouter
   .route('/category/:categoryId')
   .get(productsController.getProductsByCategoryId);
