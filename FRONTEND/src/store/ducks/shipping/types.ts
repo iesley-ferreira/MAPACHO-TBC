@@ -1,5 +1,5 @@
-import { ActionType } from 'typesafe-actions'
-import * as actions from './actions'
+import { ActionType } from 'typesafe-actions';
+import * as actions from './actions';
 
 export enum AddressActionTypes {
   FETCH_ADDRESS_REQUEST = 'FETCH_ADDRESS_REQUEST',
@@ -21,40 +21,42 @@ export enum DistanceActionTypes {
 }
 
 export interface ShippingState {
-  completeAddress: IAddress
-  deliveryOptions: IDeliveryOptionPrice[]
-  distance: number
-  loading: boolean
-  error: boolean
+  completeAddress: IAddress;
+  deliveryOptions: IDeliveryOptionPrice[];
+  scheduledValue: number;
+  motorcycleValue: number;
+  distance: number;
+  loading: boolean;
+  error: boolean;
 }
 
 export interface IZipCode {
-  zipCode: string
+  zipCode: string;
 }
 
 export interface IAddress {
-  postalCode: string
-  address: string
-  houseNumber?: string
-  complement: string
-  neighborhood: string
-  city: string
-  state: string
+  postalCode: string;
+  address: string;
+  houseNumber?: string;
+  complement: string;
+  neighborhood: string;
+  city: string;
+  state: string;
 }
 
 export interface IDeliveryOptionPrice {
-  id: number
-  optionName: string
-  customPrice: number
-  deliveryTime: number
+  id: number;
+  optionName: string;
+  customPrice: number;
+  deliveryTime: number;
 }
 
 export interface IDeliveryDistance {
-  distance: number
+  distance: number;
 }
 
 export interface IFullAddress {
-  fullAddress: string
+  fullAddress: string;
 }
 
-export type ShippingActions = ActionType<typeof actions>
+export type ShippingActions = ActionType<typeof actions>;

@@ -1,10 +1,10 @@
-import { IProduct } from '../interfaces/Product'
-import axios from './axiosConfig'
+import { IProduct } from '../interfaces/Product';
+import axios from './axiosConfig';
 
 export const fetchProducts = async (): Promise<IProduct[]> => {
-  const response = await axios.get<IProduct[]>('products')
-  return response.data
-}
+  const response = await axios.get<IProduct[]>('products?criterio=1&tipo=P');
+  return response.data;
+};
 
 export const fetchProductsByCategoryId = async (
   categoryId: string
@@ -17,6 +17,6 @@ export const fetchProductsByCategoryId = async (
 }
 
 export const fetchProduct = async (id: string): Promise<IProduct> => {
-  const response = await axios.get<{ data: IProduct }>(`products/${id}`)
-  return response.data.data
-}
+  const response = await axios.get<{ data: IProduct }>(`products/${id}`);
+  return response.data.data;
+};

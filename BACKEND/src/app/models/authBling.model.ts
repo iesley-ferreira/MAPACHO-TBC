@@ -1,5 +1,5 @@
-import prisma from "../../providers/prisma.provider";
-import { AuthBlingUpdateType } from "../../types/AuthBling.type";
+import prisma from '../../providers/prisma.provider';
+import { AuthBlingUpdateType } from '../../types/AuthBling.type';
 
 const getAuthBling = async () => prisma.authBling.findFirst();
 
