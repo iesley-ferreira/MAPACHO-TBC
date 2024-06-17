@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../../store/ducks/rootReducer';
+import { priceFormatter } from '../../../utils/priceFormatter';
+import ApplyCupom from '../ApplyCupom';
 import InstallmentPlan from '../InstallmentPlan';
 
 interface CartSummaryProps {
@@ -8,46 +12,14 @@ interface CartSummaryProps {
 
 const CartSummary: React.FC<CartSummaryProps> = ({ totalPrice }) => {
   const navigate = useNavigate();
-  const [couponCode, setCouponCode] = useState('');
-  const [discount, setDiscount] = useState(0);
-  const [error, setError] = useState('');
-  const [open, setOpen] = useState(false);
-  const [address, setAddress] = useState({
-    street: '',
-    city: '',
-    state: '',
-    postalCode: '',
-  });
+
+  const { code, value } = useSelector((state: RootState) => state.discount);
 
   const getTotalWithDiscount = () => {
-    return (totalPrice - discount).toFixed(2).replace('.', ',');
-  };
-
-  const handleApplyCoupon = () => {
-    if (couponCode === 'DESCONTO10') {
-      setDiscount(totalPrice * 0.1); // Aplica 10% de desconto
-      setError('');
-    } else {
-      setDiscount(0);
-      setError('Cupom inválido');
+    if (value === null) {
+      return totalPrice;
     }
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress({ ...address, [e.target.name]: e.target.value });
-  };
-
-  const handleSaveAddress = () => {
-    console.log('Endereço salvo:', address);
-    handleClose();
+    return totalPrice - totalPrice * value;
   };
 
   const handleGoToCheckout = () => {
@@ -59,14 +31,21 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalPrice }) => {
       <h2 className="text-rhino-700 text-lg mb-4 font-semibold">Total do carrinho</h2>
       <div className="pb-4 border-b border-coolGray-200 flex flex-wrap gap-2 justify-between items-center mb-4">
         <p className="text-rhino-300">Subtotal</p>
-        <p className="text-rhino-800">R$ {totalPrice.toFixed(2).replace('.', ',')}</p>
+        <p className="text-rhino-800">{priceFormatter.format(totalPrice)}</p>
       </div>
-      {discount > 0 && (
-        <div className="pb-4 flex flex-wrap gap-2 justify-between items-center mb-4">
-          <p className="text-rhino-300">Desconto</p>
-          <p className="text-rhino-800">- R$ {discount.toFixed(2).replace('.', ',')}</p>
+      {value && code ? (
+        <div className="border-b border-coolGray-200 mb-4">
+          <p className="text-rhino-800 mb-4">Desconto</p>
+
+          <div className="flex flex-wrap gap-2 justify-between items-center mb-4">
+            <p className="text-lime-500 font-semibold">{code}</p>
+            <p className="text-lime-500">- {priceFormatter.format(totalPrice * value)}</p>
+          </div>
         </div>
+      ) : (
+        <ApplyCupom />
       )}
+
       <p className="text-rhino-800 mb-4">Frete</p>
       <div className="mb-4">
         <div className="flex items-center justify-between flex-wrap gap-2">
@@ -74,38 +53,21 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalPrice }) => {
           <p className="text-rhino-800">Grátis</p>
         </div>
       </div>
+
       <div className="pb-4 border-b border-coolGray-200 mb-4">
-        <p className="text-sm">
+        <p className="text-sm text-violet-900">
           *selecione outra forma de envio após clicar em fechar pedido
         </p>
       </div>
-      <div className="pb-4 border-b border-coolGray-200 mb-4">
-        <p className="text-rhino-800 mb-4">Aplicar cupom de desconto :</p>
-        <div className="flex items-center space-x-2">
-          <input
-            className="flex-grow md:mb-0 px-2 py-2 text-sm placeholder-gray-800 font-bold font-heading border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md"
-            type="text"
-            placeholder="CUPOM"
-            value={couponCode}
-            onChange={(e) => setCouponCode(e.target.value)}
-          />
-          <button
-            className="flex-shrink-0 w-auto px-4 py-2 text-sm text-white font-heading uppercase bg-gray-800 hover:bg-gray-700 rounded-md"
-            onClick={handleApplyCoupon}
-          >
-            Aplicar
-          </button>
-        </div>
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-      </div>
+      <></>
       <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
         <h2 className="text-rhino-700 font-semibold text-lg">Total da compra</h2>
         <h2 className="text-rhino-700 font-semibold text-lg">
-          R$ {getTotalWithDiscount()}
+          {priceFormatter.format(getTotalWithDiscount())}
         </h2>
       </div>
       <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
-        <InstallmentPlan totalPrice={totalPrice} />
+        <InstallmentPlan totalPrice={getTotalWithDiscount()} />
       </div>
       <button
         className="bg-green-500 py-3 px-4 rounded-md text-white text-center hover:bg-green-600 transition uppercase duration-200 w-full inline-block"

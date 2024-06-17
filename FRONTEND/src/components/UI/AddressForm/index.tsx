@@ -14,14 +14,10 @@ import { fetchAddressRequest } from '../../../store/ducks/shipping/actions';
 import ShippingOptions from '../ShippingOptions';
 
 interface AddressFormProps {
-  setShippingOption: (option: string) => void;
   setIsFormValid: (isFormValid: boolean) => void;
 }
 
-const AddressForm: React.FC<AddressFormProps> = ({
-  setShippingOption,
-  setIsFormValid,
-}) => {
+const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
   const { completeAddress, loading } = useSelector((state: RootState) => state.shipping);
   const dispatch = useDispatch();
   const [form, setForm] = useState({
@@ -175,7 +171,7 @@ const AddressForm: React.FC<AddressFormProps> = ({
             <Typography variant="body1" mb={1}>
               Opções de Frete
             </Typography>
-            <ShippingOptions setShippingOption={setShippingOption} />
+            <ShippingOptions />
           </Box>
           <Typography variant="body1" mb={2}>
             Endereço

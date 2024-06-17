@@ -1,23 +1,34 @@
 import { CircularProgress } from '@mui/material';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/ducks/rootReducer';
+import { setShippingOption } from '../../../store/ducks/shipping/actions';
+import { priceFormatter } from '../../../utils/priceFormatter';
 
-interface ShippingOptionsProps {
-  setShippingOption: (option: string) => void;
-}
-
-const ShippingOptions: React.FC<ShippingOptionsProps> = ({ setShippingOption }) => {
-  const { deliveryOptions, completeAddress, motorcycleValue, scheduledValue, loading } =
-    useSelector((state: RootState) => state.shipping);
+const ShippingOptions: React.FC = () => {
+  const dispatch = useDispatch();
+  const {
+    deliveryOptions,
+    shippingOption,
+    completeAddress,
+    motorcycleValue,
+    scheduledValue,
+    loading,
+  } = useSelector((state: RootState) => state.shipping);
 
   const [selectedOption, setSelectedOption] = useState('buscar-na-loja');
 
-  const handleDeliveryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = event.target.value;
-    setSelectedOption(selected);
-    setShippingOption(selected);
+  const handleDeliveryChange = (option: any) => {
+    setSelectedOption(option.optionName);
+    dispatch(
+      setShippingOption({
+        selected: option.optionName,
+        value: Number(option.customPrice) || 0,
+      }),
+    );
   };
+
+  console.log('shippingOption', shippingOption);
 
   return (
     <div className="max-w-4xl mx-auto rounded-lg  w-full">
@@ -30,14 +41,20 @@ const ShippingOptions: React.FC<ShippingOptionsProps> = ({ setShippingOption }) 
           } cursor-pointer hover:border-blue-500 transition-all w-full`}
           onClick={() =>
             handleDeliveryChange({
-              target: { value: 'buscar-na-loja' },
-            } as React.ChangeEvent<HTMLInputElement>)
+              optionName: 'buscar-na-loja',
+              customPrice: 0,
+            })
           }
         >
           <label className="flex items-center space-x-4 w-full cursor-pointer">
             <input
               type="radio"
-              onChange={handleDeliveryChange}
+              onChange={() =>
+                handleDeliveryChange({
+                  optionName: 'buscar-na-loja',
+                  customPrice: 0,
+                })
+              }
               name="shipping-option"
               checked={selectedOption === 'buscar-na-loja'}
               value="buscar-na-loja"
@@ -65,16 +82,12 @@ const ShippingOptions: React.FC<ShippingOptionsProps> = ({ setShippingOption }) 
                       ? 'border-blue-500 bg-blue-100'
                       : 'border-gray-300'
                   } cursor-pointer hover:border-blue-500 transition-all w-full`}
-                  onClick={() =>
-                    handleDeliveryChange({
-                      target: { value: option.optionName },
-                    } as React.ChangeEvent<HTMLInputElement>)
-                  }
+                  onClick={() => handleDeliveryChange(option)}
                 >
                   <label className="flex items-center space-x-4 w-full cursor-pointer">
                     <input
                       type="radio"
-                      onChange={handleDeliveryChange}
+                      onChange={() => handleDeliveryChange(option)}
                       name="shipping-option"
                       checked={selectedOption === option.optionName}
                       value={option.optionName}
@@ -101,14 +114,20 @@ const ShippingOptions: React.FC<ShippingOptionsProps> = ({ setShippingOption }) 
                   } cursor-pointer hover:border-blue-500 transition-all w-full`}
                   onClick={() =>
                     handleDeliveryChange({
-                      target: { value: 'motoboy' },
-                    } as React.ChangeEvent<HTMLInputElement>)
+                      optionName: 'motoboy',
+                      customPrice: motorcycleValue,
+                    })
                   }
                 >
                   <label className="flex items-center space-x-4 w-full cursor-pointer">
                     <input
                       type="radio"
-                      onChange={handleDeliveryChange}
+                      onChange={() =>
+                        handleDeliveryChange({
+                          optionName: 'motoboy',
+                          customPrice: motorcycleValue,
+                        })
+                      }
                       name="shipping-option"
                       checked={selectedOption === 'motoboy'}
                       value="motoboy"
@@ -116,7 +135,7 @@ const ShippingOptions: React.FC<ShippingOptionsProps> = ({ setShippingOption }) 
                     />
                     <div className="flex flex-row w-full text-sm">
                       <p className="py-1 px-3 whitespace-nowrap">
-                        R$ {motorcycleValue.toFixed(2)}
+                        R$ {priceFormatter.format(motorcycleValue)}
                       </p>
                       <p className="py-1 px-3 whitespace-nowrap">1 dia util</p>
                       <p className="py-1 px-3">Motoboy</p>
@@ -133,14 +152,20 @@ const ShippingOptions: React.FC<ShippingOptionsProps> = ({ setShippingOption }) 
                   } cursor-pointer hover:border-blue-500 transition-all w-full`}
                   onClick={() =>
                     handleDeliveryChange({
-                      target: { value: 'entrega-programada' },
-                    } as React.ChangeEvent<HTMLInputElement>)
+                      optionName: 'entrega-programada',
+                      customPrice: scheduledValue,
+                    })
                   }
                 >
                   <label className="flex items-center space-x-4 w-full cursor-pointer">
                     <input
                       type="radio"
-                      onChange={handleDeliveryChange}
+                      onChange={() =>
+                        handleDeliveryChange({
+                          optionName: 'entrega-programada',
+                          customPrice: scheduledValue,
+                        })
+                      }
                       name="shipping-option"
                       checked={selectedOption === 'entrega-programada'}
                       value="entrega-programada"

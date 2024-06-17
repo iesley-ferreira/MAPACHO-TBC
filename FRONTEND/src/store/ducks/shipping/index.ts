@@ -13,6 +13,7 @@ const initialState: ShippingState = {
     state: '',
   },
   deliveryOptions: [],
+  shippingOption: { selected: 'buscar-na-loja', value: 0 },
   scheduledValue: 0,
   motorcycleValue: 0,
   distance: 0,
@@ -85,6 +86,11 @@ const shippingReducer = createReducer<ShippingState, ShippingActions>(initialSta
   .handleAction(actions.setScheduledDeliveryValue, (state, action) => ({
     ...state,
     scheduledValue: action.payload,
+  }))
+  // Shipping actions
+  .handleAction(actions.setShippingOption, (state, action) => ({
+    ...state,
+    shippingOption: action.payload,
   }));
 
 export default shippingReducer;
