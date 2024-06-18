@@ -7,7 +7,11 @@ import {
   IDeliveryDistance,
   IDeliveryOptionPrice,
   IFullAddress,
+  IShippingOption,
   IZipCode,
+  MotorcycleDeliveryActionTypes,
+  ScheduledDeliveryActionTypes,
+  ShippingActionTypes,
 } from './types';
 
 // address actions
@@ -55,9 +59,15 @@ export const fetchDeliveryDistanceFailure = createAction(
 )<string>();
 
 export const setMotorcycleDeliveryValue = createAction(
-  'SET_MOTORCYCLE_DELIVERY_VALUE',
+  MotorcycleDeliveryActionTypes.SET_MOTORCYCLE_DELIVERY_VALUE,
 )<number>();
 
 export const setScheduledDeliveryValue = createAction(
-  'SET_SCHEDULED_DELIVERY_VALUE',
+  ScheduledDeliveryActionTypes.SET_SCHEDULED_DELIVERY_VALUE,
 )<number>();
+
+// shipping actions
+
+export const setShippingOption = createAction(
+  ShippingActionTypes.SET_SHIPPING_OPTION,
+)<IShippingOption>();

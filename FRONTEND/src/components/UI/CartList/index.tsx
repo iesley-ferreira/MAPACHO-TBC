@@ -1,45 +1,46 @@
-import AddIcon from '@mui/icons-material/Add'
-import DeleteIcon from '@mui/icons-material/Delete'
-import RemoveIcon from '@mui/icons-material/Remove'
-import { IconButton } from '@mui/material'
-import React from 'react'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import 'tailwindcss/tailwind.css'
-import { ICartItem } from '../../../interfaces/Cart'
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import RemoveIcon from '@mui/icons-material/Remove';
+import { IconButton } from '@mui/material';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import 'tailwindcss/tailwind.css';
+import { ICartItem } from '../../../interfaces/Cart';
 import {
   decrementProductQuantity,
   incrementProductQuantity,
   removeProductFromCart,
-} from '../../../store/ducks/cart/actions'
+} from '../../../store/ducks/cart/actions';
+import { priceFormatter } from '../../../utils/priceFormatter';
 
 interface CartListProps {
-  cartItems: ICartItem[]
-  onClose: () => void
+  cartItems: ICartItem[];
+  onClose: () => void;
 }
 
-const defaultImageURL = '/public/assets/noImageAvailable.png'
+const defaultImageURL = '/public/assets/noImageAvailable.png';
 
 const CartList: React.FC<CartListProps> = ({ cartItems, onClose }) => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleGoToCart = () => {
-    navigate('/carrinho')
-    onClose()
-  }
+    navigate('/carrinho');
+    onClose();
+  };
 
   const handleIncrement = (id: number) => {
-    dispatch(incrementProductQuantity(id))
-  }
+    dispatch(incrementProductQuantity(id));
+  };
 
   const handleDecrement = (id: number) => {
-    dispatch(decrementProductQuantity(id))
-  }
+    dispatch(decrementProductQuantity(id));
+  };
 
   const handleRemove = (id: number) => {
-    dispatch(removeProductFromCart(id))
-  }
+    dispatch(removeProductFromCart(id));
+  };
 
   return (
     <div className="relative p-4  h-full bg-white overflow-y-auto flex flex-col justify-between">
@@ -60,7 +61,7 @@ const CartList: React.FC<CartListProps> = ({ cartItems, onClose }) => {
               </div>
               <div className="flex items-center justify-between flex-wrap">
                 <p className="font-semibold text-green-900 whitespace-nowrap">
-                  R$ {item.preco.toFixed(2).replace('.', ',')}
+                  {priceFormatter.format(item.preco)}
                 </p>
                 <div className="flex items-center gap-2">
                   {item.quantidade > 1 ? (
@@ -79,9 +80,7 @@ const CartList: React.FC<CartListProps> = ({ cartItems, onClose }) => {
                       <DeleteIcon className="text-gray-400 group-hover:text-gray-500 transition duration-200" />
                     </IconButton>
                   )}
-                  <span className="text-sm font-semibold">
-                    {item.quantidade}
-                  </span>
+                  <span className="text-sm font-semibold">{item.quantidade}</span>
                   <IconButton
                     onClick={() => handleIncrement(item.id)}
                     className="bg-white border border-gray-200 rounded-full hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 w-6 h-6 flex items-center justify-center transition duration-200"
@@ -97,19 +96,17 @@ const CartList: React.FC<CartListProps> = ({ cartItems, onClose }) => {
           <div className="flex items-center justify-between flex-wrap px-2 mb-6">
             <p className="text-xl font-semibold">Total</p>
             <p className="text-xl font-semibold text-green-900">
-              R${' '}
-              {cartItems
-                .reduce(
+              {priceFormatter.format(
+                cartItems.reduce(
                   (total, item) => total + item.preco * item.quantidade,
-                  0
-                )
-                .toFixed(2)
-                .replace('.', ',')}
+                  0,
+                ),
+              )}
             </p>
           </div>
 
           <button
-            className="bg-green-500 py-3 px-4 rounded-sm text-white text-center hover:bg-green-600 transition uppercase duration-200 w-full inline-block"
+            className="bg-green-500 py-3 px-4 rounded-md text-white text-center hover:bg-green-600 transition uppercase duration-200 w-full inline-block"
             onClick={handleGoToCart}
           >
             Carrinho
@@ -117,7 +114,7 @@ const CartList: React.FC<CartListProps> = ({ cartItems, onClose }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CartList
+export default CartList;

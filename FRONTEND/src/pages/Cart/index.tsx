@@ -1,36 +1,37 @@
-import AddIcon from '@mui/icons-material/Add'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-import RemoveIcon from '@mui/icons-material/Remove'
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import CartSummary from '../../components/UI/CartSummary'
+import AddIcon from '@mui/icons-material/Add';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import RemoveIcon from '@mui/icons-material/Remove';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import CartSummary from '../../components/UI/CartSummary';
 import {
   decrementProductQuantity,
   incrementProductQuantity,
   removeProductFromCart,
-} from '../../store/ducks/cart/actions'
-import { RootState } from '../../store/ducks/rootReducer'
+} from '../../store/ducks/cart/actions';
+import { RootState } from '../../store/ducks/rootReducer';
+import { priceFormatter } from '../../utils/priceFormatter';
 
 const Cart: React.FC = () => {
-  const dispatch = useDispatch()
-  const { items: cartItems } = useSelector((state: RootState) => state.cart)
+  const dispatch = useDispatch();
+  const { items: cartItems } = useSelector((state: RootState) => state.cart);
 
   const handleIncrement = (id: number) => {
-    dispatch(incrementProductQuantity(id))
-  }
+    dispatch(incrementProductQuantity(id));
+  };
 
   const handleDecrement = (id: number) => {
-    dispatch(decrementProductQuantity(id))
-  }
+    dispatch(decrementProductQuantity(id));
+  };
 
   const handleRemove = (id: number) => {
-    dispatch(removeProductFromCart(id))
-  }
+    dispatch(removeProductFromCart(id));
+  };
 
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.preco * item.quantidade,
-    0
-  )
+    0,
+  );
 
   return (
     <section className="py-12 mt-10 bg-gray-50">
@@ -62,8 +63,7 @@ const Cart: React.FC = () => {
                           <div className="rounded-lg w-36 lg:w-24 h-24 flex items-center justify-center">
                             <img
                               src={
-                                item.imagemURL ||
-                                '/public/assets/noImageAvailable.png'
+                                item.imagemURL || '/public/assets/noImageAvailable.png'
                               }
                               alt={item.nome}
                             />
@@ -74,7 +74,7 @@ const Cart: React.FC = () => {
                             </div>
                             <div className="flex flex-row items-center justify-between mt-2 lg:mt-0 lg:ml-4">
                               <p className="text-rhino-800 whitespace-nowrap">
-                                R$ {item.preco.toFixed(2).replace('.', ',')}
+                                {priceFormatter.format(item.preco)}
                               </p>
                               <div className="mt-2 lg:mt-0 lg:ml-4 flex items-center">
                                 <div className="py-2 px-2  rounded-sm border border-coolGray-200 flex gap-4 items-center bg-white">
@@ -120,7 +120,7 @@ const Cart: React.FC = () => {
         )}
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Cart
+export default Cart;

@@ -20,9 +20,22 @@ export enum DistanceActionTypes {
   FETCH_DISTANCE_FAILURE = 'FETCH_DISTANCE_FAILURE',
 }
 
+export enum MotorcycleDeliveryActionTypes {
+  SET_MOTORCYCLE_DELIVERY_VALUE = 'SET_MOTORCYCLE_DELIVERY_VALUE',
+}
+
+export enum ScheduledDeliveryActionTypes {
+  SET_SCHEDULED_DELIVERY_VALUE = 'SET_SCHEDULED_DELIVERY_VALUE',
+}
+
+export enum ShippingActionTypes {
+  SET_SHIPPING_OPTION = 'SET_SHIPPING_OPTION',
+}
+
 export interface ShippingState {
   completeAddress: IAddress;
   deliveryOptions: IDeliveryOptionPrice[];
+  shippingOption: IShippingOption;
   scheduledValue: number;
   motorcycleValue: number;
   distance: number;
@@ -57,6 +70,11 @@ export interface IDeliveryDistance {
 
 export interface IFullAddress {
   fullAddress: string;
+}
+
+export interface IShippingOption {
+  selected: string;
+  value: number;
 }
 
 export type ShippingActions = ActionType<typeof actions>;
