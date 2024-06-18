@@ -1,23 +1,19 @@
-import { QueryType } from "../types/Query.type";
-import axiosRequest from "./requests.axios";
+import { QueryType } from '../types/Query.type';
+import axiosRequest from './requests.axios';
 
-const BASE_URL = "https://www.bling.com.br";
+const BASE_URL = 'https://www.bling.com.br';
 
 type BlingRequestTypes = {
-  url:
-    | "/Api/v3/oauth/token"
-    | "/Api/v3/produtos"
-    | "/Api/v3/produtos/variacoes"
-    | string;
+  url: '/Api/v3/oauth/token' | '/Api/v3/produtos' | '/Api/v3/produtos/variacoes' | string;
   credentials?: string;
-  method: "post" | "get" | "delete" | "put";
+  method: 'post' | 'get' | 'delete' | 'put';
   data?:
     | {
-        grant_type: "authorization_code";
+        grant_type: 'authorization_code';
         code: string;
       }
     | {
-        grant_type: "refresh_token";
+        grant_type: 'refresh_token';
         refresh_token: string;
       };
   token?: string;
@@ -37,9 +33,9 @@ const blingRequestAxios = async ({
     method,
     url,
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      'Content-Type': 'application/x-www-form-urlencoded',
       Authorization: token ? `Bearer ${token}` : `Basic ${credentials}`,
-      Accept: "application/json",
+      Accept: 'application/json',
     },
     data,
     query,
@@ -49,27 +45,27 @@ const blingRequestAxios = async ({
 
 const getToken = async (credentials: string, AUTHORIZATION_CODE: string) =>
   blingRequestAxios({
-    url: "/Api/v3/oauth/token",
-    method: "post",
+    url: '/Api/v3/oauth/token',
+    method: 'post',
     credentials,
-    data: { code: AUTHORIZATION_CODE, grant_type: "authorization_code" },
+    data: { code: AUTHORIZATION_CODE, grant_type: 'authorization_code' },
   });
 const refreshToken = async (credentials: string, refresh_token: string) =>
   blingRequestAxios({
-    url: "/Api/v3/oauth/token",
-    method: "post",
+    url: '/Api/v3/oauth/token',
+    method: 'post',
     credentials,
-    data: { refresh_token, grant_type: "refresh_token" },
+    data: { refresh_token, grant_type: 'refresh_token' },
   });
 
 // ================== BLING_PRODUCTS =========================== //
 
 const getAllProducts = async (token: string, query?: QueryType) =>
   blingRequestAxios({
-    url: "/Api/v3/produtos",
-    method: "get",
+    url: '/Api/v3/produtos',
+    method: 'get',
     token,
-    query: { criterio: "1", tipo: "P" },
+    query: { criterio: '1', tipo: 'P', limite: '28' },
   });
 
 // ================== BLING_PRODUCTS_CATEGORY_ID =========================== //
@@ -77,9 +73,9 @@ const getAllProducts = async (token: string, query?: QueryType) =>
 const getProductsByCategoryId = async (token: string, categoryId: string) => {
   return blingRequestAxios({
     url: `/Api/v3/produtos`,
-    method: "get",
+    method: 'get',
     token,
-    query: { criterio: "1", tipo: "P", idCategoria: categoryId },
+    query: { criterio: '1', tipo: 'P', limite: '28', idCategoria: categoryId },
   });
 };
 
@@ -87,7 +83,7 @@ const getProductsByCategoryId = async (token: string, categoryId: string) => {
 const getProductsByVariation = async (token: string, fatherProduct: string) => {
   return blingRequestAxios({
     url: `Api/v3/produtos/${fatherProduct}`,
-    method: "get",
+    method: 'get',
     token,
   });
 };
@@ -96,13 +92,11 @@ const getProductsByVariation = async (token: string, fatherProduct: string) => {
 
 const getAllCategories = async (token: string, query?: QueryType) =>
   blingRequestAxios({
-    url: "/Api/v3/categorias/produtos",
-    method: "get",
+    url: '/Api/v3/categorias/produtos',
+    method: 'get',
     token,
     query,
   });
-
-
 
 const bling_request = {
   getToken,

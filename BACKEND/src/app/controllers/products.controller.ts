@@ -7,10 +7,10 @@ const getAllProducts = async (req: Request, res: Response) => {
     const bling_token = cache.blingToken.get();
 
     const { data, status } = await productsService.getAllProducts(bling_token, req.query);
-    console.log('data', data.data);
 
     res.status(status).json(data.data);
   } catch (error) {
+    console.error('Error in getAllProducts controller:', error);
     res.status(500).json({ error: 'An error occurred while fetching products' });
   }
 };
@@ -27,6 +27,7 @@ const getProductsByCategoryId = async (req: Request, res: Response) => {
 
     res.status(status).json(data.data);
   } catch (error) {
+    console.error('Error in getProductsByCategoryId controller:', error);
     res.status(500).json({ error: 'An error occurred while fetching products' });
   }
 };
@@ -42,7 +43,8 @@ const getProductByVariation = async (req: Request, res: Response) => {
     );
 
     return res.status(status).json(data);
-  } catch {
+  } catch (error) {
+    console.error('Error in getProductByVariation controller:', error);
     return res.status(500).json({ error: 'An error occurred while fetching product' });
   }
 };

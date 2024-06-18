@@ -4,7 +4,6 @@ import { RootState } from '../../../store/ducks/rootReducer';
 import { priceFormatter } from '../../../utils/priceFormatter';
 import CartItemOverView from '../../common/CartItemOverView';
 import ApplyCupom from '../ApplyCupom';
-import InstallmentPlan from '../InstallmentPlan';
 
 const OrderView: React.FC = () => {
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
@@ -99,9 +98,6 @@ const OrderView: React.FC = () => {
               {priceFormatter.format(getTotalWithShippingAndDiscount())}
             </p>
           </div>
-        </div>
-        <div className="w-auto p-2">
-          <InstallmentPlan totalPrice={getTotalWithShippingAndDiscount()} />
         </div>
       </div>
     </div>

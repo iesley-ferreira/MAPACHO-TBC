@@ -141,7 +141,7 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({ totalPrice }) => {
                       </svg>
                     )}
                   </span>
-                  <span className="text-sm">Paypal</span>
+                  <p className="text-sm font-semibold whitespace-nowrap">Paypal</p>
                 </label>
               </div>
               <div className="w-auto p-2">
@@ -177,7 +177,7 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({ totalPrice }) => {
                       </svg>
                     )}
                   </span>
-                  <span className="text-sm">Pix</span>
+                  <p className="text-sm font-semibold whitespace-nowrap">Pix</p>
                 </label>
               </div>
               <div className="w-auto p-2">
