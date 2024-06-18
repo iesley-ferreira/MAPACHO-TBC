@@ -7,7 +7,6 @@ const getAllProducts = async (req: Request, res: Response) => {
     const bling_token = cache.blingToken.get();
 
     const { data, status } = await productsService.getAllProducts(bling_token, req.query);
-    console.log('data', data.data);
 
     res.status(status).json(data.data);
   } catch (error) {
