@@ -1,15 +1,16 @@
+import qs from 'qs';
 import { IProduct } from '../interfaces/Product';
 import axios from './axiosConfig';
 
-export const fetchProducts = async (): Promise<IProduct[]> => {
-  const response = await axios.get<IProduct[]>('products');
-  return response.data;
+type ProductQueryType = {
+  pagina: number;
+  limite: number;
+  idCategoria?: string;
+  nome?: string;
 };
 
-export const fetchProductsByCategoryId = async (
-  categoryId: string,
-): Promise<IProduct[]> => {
-  const response = await axios.get<IProduct[]>(`products/category/${categoryId}`);
+export const fetchProducts = async (query: ProductQueryType): Promise<IProduct[]> => {
+  const response = await axios.get<IProduct[]>(`products?${qs.stringify(query)}`);
   return response.data;
 };
 

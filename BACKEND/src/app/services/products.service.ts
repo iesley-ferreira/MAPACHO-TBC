@@ -19,6 +19,7 @@ const getAllProducts = async (
 
   try {
     const allProducts = await bling_request.getAllProducts(bling_token, query);
+
     productsCache.set(cacheKey, allProducts.data);
     return {
       data: allProducts.data,
@@ -28,39 +29,6 @@ const getAllProducts = async (
     console.error('Error Service fetching all products:', error);
     return {
       data: { error: 'An error occurred while fetching all products' },
-      status: 500,
-    };
-  }
-};
-
-const getProductsByCategoryId = async (
-  bling_token: string,
-  categoryId: string,
-): Promise<ReturnServiceType> => {
-  const cacheKey = `products:category:${categoryId}`;
-  const cachedProductsByCategoryId = productsCache.get(cacheKey);
-
-  if (cachedProductsByCategoryId) {
-    return {
-      data: cachedProductsByCategoryId,
-      status: 200,
-    };
-  }
-
-  try {
-    const productsByCategory = await bling_request.getProductsByCategoryId(
-      bling_token,
-      categoryId,
-    );
-    productsCache.set(cacheKey, productsByCategory.data);
-    return {
-      data: productsByCategory.data,
-      status: productsByCategory.status,
-    };
-  } catch (error) {
-    console.error('Error Service fetching products by categoryId:', error);
-    return {
-      data: { error: 'An error occurred while fetching products by categoryId' },
       status: 500,
     };
   }
@@ -102,7 +70,6 @@ const getProductByVariation = async (
 const productsService = {
   getAllProducts,
   getProductByVariation,
-  getProductsByCategoryId,
 };
 
 export default productsService;

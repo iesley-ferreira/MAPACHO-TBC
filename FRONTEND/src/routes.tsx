@@ -1,16 +1,16 @@
-import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import Layout from './components/Layout'
-import Cart from './pages/Cart'
-import Home from './pages/Home'
-import Login from './pages/Login'
-import Payment from './pages/Payment'
-import Product from './pages/Product/index'
-import Register from './pages/Register'
-import Shipping from './pages/Shipping'
-import Success from './pages/Success/Success'
-import User from './pages/User'
-import ScrollToTop from './utils/ScrollToTop'
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Layout from './components/Layout';
+import Cart from './pages/Cart';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Payment from './pages/Payment';
+import Product from './pages/Product/index';
+import Register from './pages/Register';
+import Shipping from './pages/Shipping';
+import Success from './pages/Success/Success';
+import User from './pages/User';
+import ScrollToTop from './utils/ScrollToTop';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -27,10 +27,12 @@ const AppRoutes: React.FC = () => {
           <Route path="envio" element={<Shipping />} />
           <Route path="pagamento" element={<Payment />} />
           <Route path="comprafinalizada" element={<Success />} />
+          <Route path="categoria/:categoryId" element={<Home />} />
+          <Route path="subcategoria/:subcategoryId" element={<Home />} />
         </Route>
       </Routes>
     </>
-  )
-}
+  );
+};
 
-export default AppRoutes
+export default AppRoutes;

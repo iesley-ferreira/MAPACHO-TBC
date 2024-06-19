@@ -1,4 +1,4 @@
-import { ExpandLess, ExpandMore } from '@mui/icons-material'
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import {
   Collapse,
   Drawer,
@@ -6,55 +6,88 @@ import {
   List,
   ListItem,
   ListItemText,
-} from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchCategoriesRequest } from '../../../store/ducks/categories/actions'
-import { Category } from '../../../store/ducks/categories/types'
-import { RootState } from '../../../store/ducks/rootReducer'
-import { fetchProductsByIdRequest } from '../../../store/ducks/products/actions'
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { fetchCategoriesRequest } from '../../../store/ducks/categories/actions';
+import { Category } from '../../../store/ducks/categories/types';
+import {
+  clearFilteredProducts,
+  setDisableButtonShowMore,
+  setNewCategoryNames,
+  setPage,
+  setSearchValue,
+  setSelectedCategory,
+} from '../../../store/ducks/products/actions';
+import { RootState } from '../../../store/ducks/rootReducer';
 
 interface DrawerMenuProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }
+
 const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { categories, subCategories } = useSelector(
-    (state: RootState) => state.categories
-  )
-  const [expandedItemId, setExpandedItemId] = useState<number | null>(null)
-  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<
-    number | null
-  >(null)
+    (state: RootState) => state.categories,
+  );
+  const [expandedItemId, setExpandedItemId] = useState<number | null>(null);
 
   useEffect(() => {
-    dispatch(fetchCategoriesRequest())
-  }, [])
+    dispatch(fetchCategoriesRequest());
+  }, [dispatch]);
 
-  const renderSubcategory = (id: number) => {
+  const renderSubcategory = (id: number, categoryName: string) => {
     const subCategoriesByCategory = subCategories.filter(
-      (s: Category) => s.categoriaPai.id === id
-    )
+      (s: Category) => s.categoriaPai.id === id,
+    );
 
     if (subCategoriesByCategory.length === 0) {
-      dispatch(fetchProductsByIdRequest(id.toString()))
-      onClose()
-      return
+      navigate(`/categoria/${id}`);
+      dispatch(setDisableButtonShowMore(false));
+      dispatch(setSearchValue(null));
+      dispatch(setSelectedCategory(id.toString()));
+      dispatch(
+        setNewCategoryNames({
+          newCategoryName: categoryName,
+          newSubCategoryName: null,
+        }),
+      );
+      dispatch(clearFilteredProducts());
+      dispatch(setPage(1));
+      onClose();
+      return;
     }
 
-    setExpandedItemId(expandedItemId === id ? null : id)
-  }
+    setExpandedItemId(expandedItemId === id ? null : id);
+  };
 
-  const handleSubcategoryClick = (subcategoryId: number) => {
-    setSelectedSubcategoryId(subcategoryId)
-    dispatch(fetchProductsByIdRequest(subcategoryId.toString()))
-    onClose()
-  }
+  const handleSubcategoryClick = (
+    subcategoryId: number,
+    categoryName: string,
+    subCategoryName: string,
+  ) => {
+    navigate(`/subcategoria/${subcategoryId}`);
+    dispatch(setDisableButtonShowMore(false));
+    dispatch(setSearchValue(null));
+    dispatch(setSelectedCategory(subcategoryId.toString()));
+    dispatch(
+      setNewCategoryNames({
+        newCategoryName: categoryName,
+        newSubCategoryName: subCategoryName,
+      }),
+    );
+    dispatch(clearFilteredProducts());
+
+    dispatch(setPage(1));
+    onClose();
+  };
 
   const getSubCategories = (parentId: number) => {
-    return subCategories.filter((s: Category) => s.categoriaPai.id === parentId)
-  }
+    return subCategories.filter((s: Category) => s.categoriaPai.id === parentId);
+  };
 
   return (
     <Drawer
@@ -65,10 +98,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
         '& .MuiDrawer-paper': { width: 310 },
       }}
     >
-      <IconButton
-        onClick={onClose}
-        sx={{ position: 'absolute', top: 6, right: 10 }}
-      >
+      <IconButton onClick={onClose} sx={{ position: 'absolute', top: 6, right: 10 }}>
         <i className="ri-close-fill"></i>
       </IconButton>
       <div style={{ padding: 26 }}>
@@ -80,7 +110,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
               <React.Fragment key={category.id}>
                 <ListItem
                   button
-                  onClick={() => renderSubcategory(category.id)}
+                  onClick={() => renderSubcategory(category.id, category.descricao)}
                   sx={{
                     pl: 2,
                     mb: 0,
@@ -90,11 +120,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
                   }}
                 >
                   <ListItemText primary={category.descricao} />
-                  {expandedItemId === category.id ? (
-                    <ExpandLess />
-                  ) : (
-                    <ExpandMore />
-                  )}
+                  {expandedItemId === category.id ? <ExpandLess /> : <ExpandMore />}
                 </ListItem>
                 <Collapse
                   in={expandedItemId === category.id}
@@ -110,22 +136,23 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
                     component="div"
                     disablePadding
                   >
-                    {getSubCategories(category.id).map(
-                      (subCategory: Category) => (
-                        <ListItem
-                          button
-                          key={subCategory.id}
-                          onClick={() => handleSubcategoryClick(subCategory.id)}
-                          sx={{ borderBottom: '1px solid #eee' }}
-                        >
-                          <i
-                            className="ri-fire-line"
-                            style={{ marginRight: '8px' }}
-                          ></i>
-                          <ListItemText primary={subCategory.descricao} />
-                        </ListItem>
-                      )
-                    )}
+                    {getSubCategories(category.id).map((subCategory: Category) => (
+                      <ListItem
+                        button
+                        key={subCategory.id}
+                        onClick={() =>
+                          handleSubcategoryClick(
+                            subCategory.id,
+                            category.descricao,
+                            subCategory.descricao,
+                          )
+                        }
+                        sx={{ borderBottom: '1px solid #eee' }}
+                      >
+                        <i className="ri-fire-line" style={{ marginRight: '8px' }}></i>
+                        <ListItemText primary={subCategory.descricao} />
+                      </ListItem>
+                    ))}
                   </List>
                 </Collapse>
               </React.Fragment>
@@ -133,7 +160,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
         </List>
       </div>
     </Drawer>
-  )
-}
+  );
+};
 
-export default DrawerMenu
+export default DrawerMenu;

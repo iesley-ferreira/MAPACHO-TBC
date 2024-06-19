@@ -1,21 +1,28 @@
-import { Badge, useMediaQuery } from '@mui/material'
-import { BadgeProps } from '@mui/material/Badge'
-import { styled } from '@mui/material/styles'
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import 'remixicon/fonts/remixicon.css'
-import { RootState } from '../../../store/ducks/rootReducer'
-import Logo01 from '../../common/Logo/Logo01'
+import { Badge } from '@mui/material';
+import { BadgeProps } from '@mui/material/Badge';
+import { styled } from '@mui/material/styles';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useMatch, useNavigate } from 'react-router-dom';
+import 'remixicon/fonts/remixicon.css';
+import {
+  setDisableButtonShowMore,
+  setNewCategoryNames,
+  setPage,
+  setSearchValue,
+  setSelectedCategory,
+} from '../../../store/ducks/products/actions';
+import { RootState } from '../../../store/ducks/rootReducer';
+import Logo01 from '../../common/Logo/Logo01';
 
 interface HeaderProps {
-  showMenu: boolean
-  drawerOpen: boolean
-  setShowMenu: (show: boolean) => void
-  setDrawerOpen: (drawerOpen: boolean) => void
+  showMenu: boolean;
+  drawerOpen: boolean;
+  setShowMenu: (show: boolean) => void;
+  setDrawerOpen: (drawerOpen: boolean) => void;
 }
 
-const brandSecondaryColor = 'var(--brand-secondary)'
+const brandSecondaryColor = 'var(--brand-secondary)';
 
 const StyledBadge = styled(Badge)<BadgeProps>(() => ({
   '& .MuiBadge-badge': {
@@ -32,7 +39,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(() => ({
     minWidth: '15px',
     height: '15px',
   },
-}))
+}));
 
 const Header: React.FC<HeaderProps> = ({
   showMenu,
@@ -40,49 +47,70 @@ const Header: React.FC<HeaderProps> = ({
   drawerOpen,
   setDrawerOpen,
 }) => {
-  const { items } = useSelector((state: RootState) => state.cart)
-  const [showSearch, setShowSearch] = useState(false)
-  const isMobile = useMediaQuery('(max-width: 640px)')
-  const [animateBadge, setAnimateBadge] = useState(false)
-  const [prevScrollPos, setPrevScrollPos] = useState(0)
-  const [visible, setVisible] = useState(true)
-
-  const totalItems = items.reduce((sum, item) => sum + item.quantidade, 0)
+  const { items } = useSelector((state: RootState) => state.cart);
+  const [showSearch, setShowSearch] = useState(false);
+  // const isMobile = useMediaQuery('(max-width: 768px)');
+  const navigate = useNavigate();
+  const matchHome = useMatch('/');
+  const matchCategory = useMatch('/categoria/:categoryId');
+  const matchSubcategory = useMatch('/subcategoria/:subcategoryId');
+  const [animateBadge, setAnimateBadge] = useState(false);
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(true);
+  const [search, setSearch] = useState('');
+  const dispatch = useDispatch();
+  const totalItems = items.reduce((sum, item) => sum + item.quantidade, 0);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollPos = window.pageYOffset
-      const windowHeight = window.innerHeight
-      const threshold = windowHeight * 0.4
-      const isVisible =
-        prevScrollPos > currentScrollPos || currentScrollPos < threshold
+      const currentScrollPos = window.pageYOffset;
+      const windowHeight = window.innerHeight;
+      const threshold = windowHeight * 0.4;
+      const isVisible = prevScrollPos > currentScrollPos || currentScrollPos < threshold;
 
-      setVisible(isVisible)
-      setPrevScrollPos(currentScrollPos)
-    }
+      setVisible(isVisible);
+      setPrevScrollPos(currentScrollPos);
+    };
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [prevScrollPos])
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [prevScrollPos]);
 
   useEffect(() => {
     if (items.length > 0) {
-      setAnimateBadge(true)
-      setTimeout(() => setAnimateBadge(false), 300)
+      setAnimateBadge(true);
+      setTimeout(() => setAnimateBadge(false), 300);
     }
-  }, [items])
+  }, [items]);
 
   const toggleMenu = () => {
-    setShowMenu(!showMenu)
-  }
+    setShowMenu(!showMenu);
+  };
 
   const toggleCartDrawer = () => {
-    setDrawerOpen(!drawerOpen)
-  }
+    setDrawerOpen(!drawerOpen);
+  };
 
   const toggleSearch = () => {
-    setShowSearch(!showSearch)
-  }
+    setShowSearch(!showSearch);
+  };
+
+  const handleSearch = () => {
+    console.log('SEARCH:', search);
+
+    setShowSearch(false);
+    navigate(`/?search=${search}`);
+    dispatch(setDisableButtonShowMore(false));
+    dispatch(setSelectedCategory(null));
+    dispatch(
+      setNewCategoryNames({
+        newCategoryName: null,
+        newSubCategoryName: null,
+      }),
+    );
+    dispatch(setSearchValue(search));
+    dispatch(setPage(1));
+  };
 
   return (
     <>
@@ -92,7 +120,7 @@ const Header: React.FC<HeaderProps> = ({
         }`}
         style={{ position: 'fixed', top: 0, width: '100%', zIndex: 10 }}
       >
-        {location.pathname === '/' && isMobile && (
+        {(matchHome || matchCategory || matchSubcategory) && (
           <button onClick={toggleMenu}>
             <i className="ri-menu-fill text-brand-secondary"></i>
           </button>
@@ -137,10 +165,12 @@ const Header: React.FC<HeaderProps> = ({
           <input
             type="text"
             placeholder="Pesquisar..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className="w-full p-2 pr-10 border border-gray-300 rounded-md shadow focus:outline-none focus:ring-1 focus:ring-brand-secondary focus:border-transparent"
           />
           <button
-            onClick={() => setShowSearch(false)}
+            onClick={handleSearch}
             className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-700"
           >
             <i className="ri-close-line px-4"></i>
@@ -148,7 +178,7 @@ const Header: React.FC<HeaderProps> = ({
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
