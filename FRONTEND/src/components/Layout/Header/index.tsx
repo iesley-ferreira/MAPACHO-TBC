@@ -191,11 +191,12 @@ const Header: React.FC<HeaderProps> = ({
           className="relative w-3/5 px-4 py-2"
           style={{
             width: isMobile ? '80%' : '40%',
-            left: isMobile ? '' : '50%',
             maxWidth: '420px',
             position: 'fixed',
             zIndex: 51,
-            top: isMobile ? '60px' : '',
+            top: isMobile ? '80px' : '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
           }}
         >
           <input
