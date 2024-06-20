@@ -45,7 +45,9 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
     );
 
     if (subCategoriesByCategory.length === 0) {
-      navigate(`/categoria/${id}`);
+      const currentUrlParams = new URLSearchParams();
+      currentUrlParams.set('idCategoria', id.toString());
+      navigate(`/home?${currentUrlParams.toString()}`);
       dispatch(setDisableButtonShowMore(false));
       dispatch(setSearchValue(null));
       dispatch(setSelectedCategory(id.toString()));
@@ -69,7 +71,9 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
     categoryName: string,
     subCategoryName: string,
   ) => {
-    navigate(`/subcategoria/${subcategoryId}`);
+    const currentUrlParams = new URLSearchParams();
+    currentUrlParams.set('idSubCategoria', subcategoryId.toString());
+    navigate(`/home?${currentUrlParams.toString()}`);
     dispatch(setDisableButtonShowMore(false));
     dispatch(setSearchValue(null));
     dispatch(setSelectedCategory(subcategoryId.toString()));

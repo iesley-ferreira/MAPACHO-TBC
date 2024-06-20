@@ -1,36 +1,39 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React, { Suspense, lazy } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
-import Cart from './pages/Cart';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Payment from './pages/Payment';
-import Product from './pages/Product/index';
-import Register from './pages/Register';
-import Shipping from './pages/Shipping';
-import Success from './pages/Success/Success';
-import User from './pages/User';
+import Loader from './components/common/Loader';
+import ProtectedRoute from './components/common/ProtectedRoute';
 import ScrollToTop from './utils/ScrollToTop';
+const Home = lazy(() => import('./pages/Home'));
+const Register = lazy(() => import('./pages/Register'));
+const User = lazy(() => import('./pages/User'));
+const Login = lazy(() => import('./pages/Login'));
+const Shipping = lazy(() => import('./pages/Shipping'));
+const Payment = lazy(() => import('./pages/Payment'));
+const Success = lazy(() => import('./pages/Success'));
+const Cart = lazy(() => import('./pages/Cart'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 const AppRoutes: React.FC = () => {
   return (
     <>
       <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="produto" element={<Product />} />
-          <Route path="cadastro" element={<Register />} />
-          <Route path="usuario" element={<User />} />
-          <Route path="login" element={<Login />} />
-          <Route path="carrinho" element={<Cart />} />
-          <Route path="envio" element={<Shipping />} />
-          <Route path="pagamento" element={<Payment />} />
-          <Route path="comprafinalizada" element={<Success />} />
-          <Route path="categoria/:categoryId" element={<Home />} />
-          <Route path="subcategoria/:subcategoryId" element={<Home />} />
-        </Route>
-      </Routes>
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Navigate to="/home" />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/cadastro" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/usuario" element={<ProtectedRoute component={User} />} />
+            <Route path="/envio" element={<Shipping />} />
+            <Route path="/pagamento" element={<Payment />} />
+            <Route path="/comprafinalizada" element={<Success />} />
+            <Route path="/carrinho" element={<Cart />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </>
   );
 };

@@ -26,8 +26,8 @@ const CartList: React.FC<CartListProps> = ({ cartItems, onClose }) => {
   const navigate = useNavigate();
 
   const handleGoToCart = () => {
-    navigate('/carrinho');
     onClose();
+    navigate('/carrinho');
   };
 
   const handleIncrement = (id: number) => {

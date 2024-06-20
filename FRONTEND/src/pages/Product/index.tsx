@@ -1,7 +1,7 @@
 import { Box, CircularProgress, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import CalculateFreight from '../../components/UI/CalculateFreight';
 import InstallmentPlan from '../../components/UI/InstallmentPlan';
@@ -13,15 +13,18 @@ import { RootState } from '../../store/ducks/rootReducer';
 import { priceFormatter } from '../../utils/priceFormatter';
 import { convertProductIdToProduct } from './helpers';
 
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
+// const useQuery = () => {
+//   return new URLSearchParams(useLocation().search);
+// };
+
+type ProductProps = {
+  productId: string;
 };
 
-const Product: React.FC = () => {
-  const query = useQuery();
+const Product: React.FC<ProductProps> = ({ productId }) => {
+  // const query = useQuery();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const productId = query.get('idProduto');
   const [productQuantity, setProductQuantity] = useState(1);
 
   const { product, loading, error } = useSelector((state: RootState) => state.products);
@@ -62,6 +65,7 @@ const Product: React.FC = () => {
   const handleAddToCart = () => {
     const productToAdd = convertProductIdToProduct(product);
     dispatch(addProductToCart({ product: productToAdd, quantidade: productQuantity }));
+    navigate('/carrinho');
   };
 
   if (error) {

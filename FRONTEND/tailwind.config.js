@@ -9,6 +9,10 @@ export default {
           primary: '#f3af16',
           secondary: '#0d5e53',
         },
+        yellowGreen: {
+          600: '#9acd32', // Defina o valor da cor para 600
+          700: '#6b8e23', // Defina o valor da cor para 700
+        },
         success: '#34d399',
         warning: '#fbbf24',
         error: '#f87171',
@@ -38,4 +42,4 @@ export default {
     extend: {},
   },
   plugins: [],
-}
+};

@@ -27,7 +27,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalPrice }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 md:mt-12 sticky top-20 lg:w-96">
+    <div className="bg-white rounded-xl shadow-md mb-10 p-6 md:mt-12 sticky top-20 lg:w-96">
       <h2 className="text-rhino-700 text-lg mb-4 font-semibold">Total do carrinho</h2>
       <div className="pb-4 border-b border-coolGray-200 flex flex-wrap gap-2 justify-between items-center mb-4">
         <p className="text-rhino-300">Subtotal</p>

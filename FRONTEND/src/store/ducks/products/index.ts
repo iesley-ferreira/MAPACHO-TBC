@@ -1,5 +1,5 @@
 import { createReducer } from 'typesafe-actions';
-import { IProductId } from '../../../interfaces/Product';
+import { IProduct, IProductId } from '../../../interfaces/Product';
 import * as actions from './actions';
 import { ProductActions, ProductsState } from './types';
 
@@ -38,13 +38,21 @@ const productReducer = createReducer<ProductsState, ProductActions>(initialState
   .handleAction(actions.fetchProductsSuccess, (state, action) => {
     const { products, isFiltered } = action.payload;
 
+    const removeDuplicates = (existingProducts: IProduct[], newProducts: IProduct[]) => {
+      const existingProductIds = new Set(existingProducts.map((product) => product.id));
+      return newProducts.filter((product) => !existingProductIds.has(product.id));
+    };
+
+    const newProducts = removeDuplicates(state.products, products);
+    const newFilteredProducts = removeDuplicates(state.filteredProducts, products);
+
     return {
       ...state,
       loading: false,
       error: false,
-      products: isFiltered ? state.products : [...state.products, ...products],
+      products: isFiltered ? state.products : [...state.products, ...newProducts],
       filteredProducts: isFiltered
-        ? [...state.filteredProducts, ...products]
+        ? [...state.filteredProducts, ...newFilteredProducts]
         : state.filteredProducts,
     };
   })

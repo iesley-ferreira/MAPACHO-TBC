@@ -22,7 +22,9 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   };
 
   const handleViewProduct = () => {
-    navigate(`/produto?idProduto=${product.id}`);
+    const currentUrlParams = new URLSearchParams(location.search);
+    currentUrlParams.set('idProduto', product.id.toString());
+    navigate(`/home?${currentUrlParams.toString()}`);
   };
 
   return (

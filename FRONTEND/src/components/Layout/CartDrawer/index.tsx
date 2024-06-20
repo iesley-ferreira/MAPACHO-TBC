@@ -1,23 +1,22 @@
-import CloseIcon from '@mui/icons-material/Close'
-import { Divider, Drawer, IconButton, Typography } from '@mui/material'
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../store/ducks/rootReducer'
-import CartList from '../../UI/CartList'
+import CloseIcon from '@mui/icons-material/Close';
+import { Divider, Drawer, IconButton, Typography } from '@mui/material';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/ducks/rootReducer';
+import CartList from '../../UI/CartList';
 
 interface CartDrawerProps {
-  open: boolean
-  onClose: () => void
+  open: boolean;
+  onClose: () => void;
 }
 
 const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
-  const { items: cartItems } = useSelector((state: RootState) => state.cart)
+  const { items: cartItems } = useSelector((state: RootState) => state.cart);
 
   return (
     <Drawer
       anchor="right"
       open={open}
-      onClose={onClose}
       sx={{ '.MuiDrawer-paper': { width: '320px', maxHeight: '100vh' } }}
     >
       <div className="flex justify-between items-center p-4">
@@ -35,7 +34,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ open, onClose }) => {
         <CartList cartItems={cartItems} onClose={onClose} />
       )}
     </Drawer>
-  )
-}
+  );
+};
 
-export default CartDrawer
+export default CartDrawer;

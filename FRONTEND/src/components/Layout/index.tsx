@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
-import { Outlet } from 'react-router-dom'
-import CartDrawer from './CartDrawer'
-import DrawerMenu from './DrawerMenu'
-import Footer from './Footer'
-import Header from './Header'
+import React, { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import CartDrawer from './CartDrawer';
+import DrawerMenu from './DrawerMenu';
+import Footer from './Footer';
+import Header from './Header';
 
 const Layout: React.FC = () => {
-  const [showMenu, setShowMenu] = useState(false)
-  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [showMenu, setShowMenu] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header
@@ -21,9 +22,9 @@ const Layout: React.FC = () => {
       <main className="flex-grow">
         <Outlet />
       </main>
-      {location.pathname === '/' && <Footer />}
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

@@ -1,6 +1,7 @@
 import { Badge, useMediaQuery } from '@mui/material';
 import { BadgeProps } from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
+import queryString from 'query-string';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useMatch, useNavigate } from 'react-router-dom';
@@ -20,13 +21,8 @@ interface HeaderProps {
   drawerOpen: boolean;
   setShowMenu: (show: boolean) => void;
   setDrawerOpen: (drawerOpen: boolean) => void;
-  showMenu: boolean;
-  drawerOpen: boolean;
-  setShowMenu: (show: boolean) => void;
-  setDrawerOpen: (drawerOpen: boolean) => void;
 }
 
-const brandSecondaryColor = 'var(--brand-secondary)';
 const brandSecondaryColor = 'var(--brand-secondary)';
 
 const StyledBadge = styled(Badge)<BadgeProps>(() => ({
@@ -45,7 +41,6 @@ const StyledBadge = styled(Badge)<BadgeProps>(() => ({
     height: '15px',
   },
 }));
-}));
 
 const Header: React.FC<HeaderProps> = ({
   showMenu,
@@ -55,9 +50,9 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const { items } = useSelector((state: RootState) => state.cart);
   const [showSearch, setShowSearch] = useState(false);
-  // const isMobile = useMediaQuery('(max-width: 768px)');
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const navigate = useNavigate();
-  const matchHome = useMatch('/');
+  const matchHome = useMatch('/home');
   const matchCategory = useMatch('/categoria/:categoryId');
   const matchSubcategory = useMatch('/subcategoria/:subcategoryId');
   const [animateBadge, setAnimateBadge] = useState(false);
@@ -65,17 +60,10 @@ const Header: React.FC<HeaderProps> = ({
   const [visible, setVisible] = useState(true);
   const [search, setSearch] = useState('');
   const dispatch = useDispatch();
-  const totalItems = items.reduce((sum, item) => sum + item.quantidade, 0);
-  const { items } = useSelector((state: RootState) => state.cart);
-  const [showSearch, setShowSearch] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
-  const [animateBadge, setAnimateBadge] = useState(false);
-  const [prevScrollPos, setPrevScrollPos] = useState(0);
-  const [visible, setVisible] = useState(true);
-
-  const isMobile = useMediaQuery('(max-width: 640px)');
-
+  const { idProduto } = queryString.parse(location.search);
+  const matchCart = useMatch('/carrinho');
   const totalItems = items.reduce((sum, item) => sum + item.quantidade, 0);
 
   useEffect(() => {
@@ -84,21 +72,11 @@ const Header: React.FC<HeaderProps> = ({
       const windowHeight = window.innerHeight;
       const threshold = windowHeight * 0.4;
       const isVisible = prevScrollPos > currentScrollPos || currentScrollPos < threshold;
-      const currentScrollPos = window.pageYOffset;
-      const windowHeight = window.innerHeight;
-      const threshold = windowHeight * 0.4;
-      const isVisible = prevScrollPos > currentScrollPos || currentScrollPos < threshold;
 
       setVisible(isVisible);
       setPrevScrollPos(currentScrollPos);
     };
-      setVisible(isVisible);
-      setPrevScrollPos(currentScrollPos);
-    };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [prevScrollPos]);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [prevScrollPos]);
@@ -107,33 +85,28 @@ const Header: React.FC<HeaderProps> = ({
     if (items.length > 0) {
       setAnimateBadge(true);
       setTimeout(() => setAnimateBadge(false), 300);
-      setAnimateBadge(true);
-      setTimeout(() => setAnimateBadge(false), 300);
     }
-  }, [items]);
   }, [items]);
 
   const toggleMenu = () => {
-    setShowMenu(!showMenu);
-  };
     setShowMenu(!showMenu);
   };
 
   const toggleCartDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
-    setDrawerOpen(!drawerOpen);
-  };
 
   const toggleSearch = () => {
     setShowSearch(!showSearch);
+    if (!showSearch && isMobile) {
+      setOverlayVisible(true);
+    } else {
+      setOverlayVisible(false);
+    }
   };
 
   const handleSearch = () => {
-    console.log('SEARCH:', search);
-
-    setShowSearch(false);
-    navigate(`/?search=${search}`);
+    navigate(`?search=${search}`);
     dispatch(setDisableButtonShowMore(false));
     dispatch(setSelectedCategory(null));
     dispatch(
@@ -144,13 +117,8 @@ const Header: React.FC<HeaderProps> = ({
     );
     dispatch(setSearchValue(search));
     dispatch(setPage(1));
-  };
-    setShowSearch(!showSearch);
-    if (!showSearch && isMobile) {
-      setOverlayVisible(true);
-    } else {
-      setOverlayVisible(false);
-    }
+    setShowSearch(false);
+    setOverlayVisible(false);
   };
 
   const closeSearch = () => {
@@ -186,23 +154,27 @@ const Header: React.FC<HeaderProps> = ({
           </Link>
         </div>
         <nav className="flex items-center gap-4">
-          <button onClick={toggleSearch}>
-            <i
-              className={`ri-search-line text-brand-secondary ${showSearch ? 'hidden' : ''}`}
-            ></i>
-          </button>
-          <button
-            className="text-brand-secondary hover:scale-105"
-            onClick={toggleCartDrawer}
-          >
-            <StyledBadge
-              badgeContent={totalItems}
-              color="secondary"
-              className={animateBadge ? 'animate-wiggle' : ''}
+          {!matchCart && (
+            <button onClick={toggleSearch}>
+              <i
+                className={`ri-search-line text-brand-secondary ${showSearch || idProduto ? 'hidden' : ''}`}
+              ></i>
+            </button>
+          )}
+          {!matchCart && (
+            <button
+              className="text-brand-secondary hover:scale-105"
+              onClick={toggleCartDrawer}
             >
-              <i className="ri-shopping-cart-line text-xl hover:scale-105"></i>
-            </StyledBadge>
-          </button>
+              <StyledBadge
+                badgeContent={totalItems}
+                color="secondary"
+                className={animateBadge ? 'animate-wiggle' : ''}
+              >
+                <i className="ri-shopping-cart-line text-xl hover:scale-105"></i>
+              </StyledBadge>
+            </button>
+          )}
           <Link to="/usuario" className="text-brand-secondary hover:scale-105">
             <i className="ri-user-3-line text-xl hover:scale-105"></i>
           </Link>
@@ -218,8 +190,9 @@ const Header: React.FC<HeaderProps> = ({
         <div
           className="relative w-3/5 px-4 py-2"
           style={{
-            width: isMobile ? '100%' : '50%',
-            left: isMobile ? '1%' : '30%',
+            width: isMobile ? '80%' : '40%',
+            left: isMobile ? '' : '50%',
+            maxWidth: '420px',
             position: 'fixed',
             zIndex: 51,
             top: isMobile ? '60px' : '',
@@ -230,15 +203,19 @@ const Header: React.FC<HeaderProps> = ({
             placeholder="Pesquisar..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full p-2 pr-10 border border-gray-300 rounded-md shadow focus:outline-none focus:ring-1 focus:ring-brand-secondary focus:border-transparent"
-            className={`w-full p-2 pr-10 border border-gray-300 rounded-md shadow focus:outline-none focus:ring-1 focus:ring-brand-secondary focus:border-transparent ${isSearchFocused ? 'ring-2 ring-brand-secondary' : ''}`}
+            className={`w-full p-2 pl-10 pr-10 border border-gray-300 rounded-md shadow focus:outline-none focus:ring-1 focus:ring-brand-secondary focus:border-transparent ${isSearchFocused ? 'ring-2 ring-brand-secondary' : ''}`}
             onFocus={handleSearchFocus}
             onBlur={handleSearchBlur}
           />
           <button
+            className="absolute inset-y-0 h-auto right-5 flex items-center px-3 text-gray-500 hover:text-gray-700"
             onClick={handleSearch}
+          >
+            <i className="ri-search-line"></i>
+          </button>
+          <button
+            className="absolute inset-y-0 left-0 flex items-center px-3 text-gray-500 hover:text-gray-700"
             onClick={closeSearch}
-            className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-700"
           >
             <i className="ri-close-line px-4"></i>
           </button>
@@ -247,8 +224,5 @@ const Header: React.FC<HeaderProps> = ({
     </>
   );
 };
-  );
-};
 
-export default Header;
 export default Header;
