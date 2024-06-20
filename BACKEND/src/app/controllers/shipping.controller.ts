@@ -25,6 +25,7 @@ const getAddressByZipCode = async (req: Request, res: Response) => {
 
     res.status(status).json(formattedAddress);
   } catch (error) {
+    console.error('Error in getAddressByZipCode controller:', error);
     res.status(500).json({ error: 'An error occurred while fetching address' });
   }
 };
@@ -41,6 +42,7 @@ const calculateDistance = async (req: Request, res: Response) => {
 
     res.status(status).json({ distance: data });
   } catch (error) {
+    console.error('Error in calculateDistance controller:', error);
     res.status(500).json({ error: 'An error occurred while fetching distance' });
   }
 };
@@ -57,6 +59,7 @@ const getDeliveryOptions = async (req: Request, res: Response) => {
 
     res.status(status).json(data);
   } catch (error) {
+    console.error('Error in getDeliveryOptions controller:', error);
     res.status(500).json({ error: 'An error occurred while fetching delivery options' });
   }
 };

@@ -28,8 +28,6 @@ const ShippingOptions: React.FC = () => {
     );
   };
 
-  console.log('shippingOption', shippingOption);
-
   return (
     <div className="max-w-4xl mx-auto rounded-lg  w-full">
       <div className="space-y-4 w-full">
@@ -95,7 +93,7 @@ const ShippingOptions: React.FC = () => {
                     />
                     <div className="flex flex-row w-full text-sm">
                       <p className="py-1 px-3 whitespace-nowrap">
-                        R$ {option.customPrice}
+                        {priceFormatter.format(option.customPrice)}
                       </p>
                       <p className="py-1 px-3 whitespace-nowrap">
                         {option.deliveryTime} dias úteis
@@ -135,7 +133,7 @@ const ShippingOptions: React.FC = () => {
                     />
                     <div className="flex flex-row w-full text-sm">
                       <p className="py-1 px-3 whitespace-nowrap">
-                        R$ {priceFormatter.format(motorcycleValue)}
+                        {priceFormatter.format(motorcycleValue)}
                       </p>
                       <p className="py-1 px-3 whitespace-nowrap">1 dia util</p>
                       <p className="py-1 px-3">Motoboy</p>
@@ -173,7 +171,7 @@ const ShippingOptions: React.FC = () => {
                     />
                     <div className="flex flex-row w-full text-sm">
                       <p className="py-1 px-3 whitespace-nowrap">
-                        R$ {scheduledValue.toFixed(2)}
+                        {priceFormatter.format(scheduledValue)}
                       </p>
                       <p className="py-1 px-3 whitespace-nowrap">1-3 dias úteis</p>
                       <p className="py-1 px-3">Entrega Programada</p>

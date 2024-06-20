@@ -35,7 +35,7 @@ const PixQRCode: React.FC = () => {
   return (
     <div className="mt-4 flex w-full justify-center">
       {showQRCode ? (
-        <QRCode value="Generated QR Code Value" size={256} />
+        <QRCode value="Generated QR Code Value" size={126} />
       ) : (
         <button
           onClick={generateQRCode}

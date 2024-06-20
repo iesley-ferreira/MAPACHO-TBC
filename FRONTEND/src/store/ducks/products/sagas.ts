@@ -1,64 +1,58 @@
-import { all, call, put, takeLatest } from 'redux-saga/effects'
-import * as productsApi from '../../../api/productsApi'
-import { IProduct, IProductId } from '../../../interfaces/Product'
+import { all, call, put, takeLatest } from 'redux-saga/effects';
+import * as productsApi from '../../../api/productsApi';
+import { IProduct, IProductId } from '../../../interfaces/Product';
 import {
   fetchProductSuccess,
-  fetchProductsByIdSuccess,
   fetchProductsFailure,
   fetchProductsSuccess,
-} from './actions'
-import {
-  ProductActionTypes,
-  ProductsActionTypes,
-  ProductsByIdActionTypes,
-} from './types'
+  setDisableButtonShowMore,
+} from './actions';
+import { ProductActionTypes, ProductsActionTypes } from './types';
 
-function* fetchProductsSaga() {
-  try {
-    const products: IProduct[] = yield call(productsApi.fetchProducts)
-    yield put(fetchProductsSuccess(products))
-  } catch (error: Error | unknown) {
-    yield put(fetchProductsFailure((error as Error).message))
-  }
-}
-
-function* fetchProductsByIdSaga(action: {
-  type: ProductsByIdActionTypes.FETCH_PRODUCTS_BY_ID_REQUEST
-  payload: string
+function* fetchProductsSaga(action: {
+  type: ProductsActionTypes.FETCH_PRODUCTS_REQUEST;
+  payload: { page: number; limit: number; categoryId?: string; searchValue?: string };
 }) {
   try {
-    const productsByCategory: IProduct[] = yield call(
-      productsApi.fetchProductsByCategoryId,
-      action.payload
-    )
-    yield put(fetchProductsByIdSuccess(productsByCategory))
+    const query = {
+      pagina: action.payload.page,
+      criterio: 1,
+      tipo: 'P',
+      idCategoria: action.payload.categoryId,
+      limite: action.payload.limit,
+      nome: action.payload.searchValue,
+    };
+    const products: IProduct[] = yield call(productsApi.fetchProducts, query);
+
+    if (products.length < action.payload.limit) {
+      yield put(setDisableButtonShowMore(true));
+    }
+
+    yield put(
+      fetchProductsSuccess({
+        products,
+        isFiltered: !!action.payload.categoryId || !!action.payload.searchValue,
+      }),
+    );
   } catch (error: Error | unknown) {
-    yield put(fetchProductsFailure((error as Error).message))
+    yield put(fetchProductsFailure((error as Error).message));
   }
 }
-
 function* fetchProductSaga(action: {
-  type: ProductActionTypes.FETCH_PRODUCT_ID_REQUEST
-  payload: string
+  type: ProductActionTypes.FETCH_PRODUCT_ID_REQUEST;
+  payload: string;
 }) {
   try {
-    const product: IProductId = yield call(
-      productsApi.fetchProduct,
-      action.payload
-    )
-    yield put(fetchProductSuccess(product))
+    const product: IProductId = yield call(productsApi.fetchProduct, action.payload);
+    yield put(fetchProductSuccess(product));
   } catch (error: Error | unknown) {
-    yield put(fetchProductsFailure((error as Error).message))
+    yield put(fetchProductsFailure((error as Error).message));
   }
 }
 
 export default function* productSagas() {
   yield all([
     takeLatest(ProductsActionTypes.FETCH_PRODUCTS_REQUEST, fetchProductsSaga),
-    takeLatest(
-      ProductsByIdActionTypes.FETCH_PRODUCTS_BY_ID_REQUEST,
-      fetchProductsByIdSaga
-    ),
     takeLatest(ProductActionTypes.FETCH_PRODUCT_ID_REQUEST, fetchProductSaga),
-  ])
+  ]);
 }

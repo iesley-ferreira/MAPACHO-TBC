@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import cache from '../cache';
@@ -5,7 +6,6 @@ import categoriesRouter from './routers/categories.router';
 import loginRouter from './routers/login.router';
 import productsRouter from './routers/products.router';
 import shippingRouter from './routers/shipping.router';
-const cors = require("cors");
 
 const app = express();
 app.use(cors());
@@ -22,13 +22,10 @@ app.get('/', (req: Request, res: Response) => {
   return res.json({ blingToken: cache.blingToken.get() });
 });
 
-
 // ========================= Rotas da API ================================== //
 app.use('/products', productsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/shipping', shippingRouter);
-app.use('login', loginRouter);
+app.use('/login', loginRouter);
 
-export {
-  app
-};
+export { app };
