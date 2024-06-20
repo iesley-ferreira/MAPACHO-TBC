@@ -10,8 +10,21 @@ export default {
           secondary: '#0d5e53',
         },
         yellowGreen: {
-          600: '#9acd32', // Defina o valor da cor para 600
-          700: '#6b8e23', // Defina o valor da cor para 700
+          600: '#9acd32',
+          700: '#6b8e23',
+        },
+        cyanGreen: {
+          800: '#98fc03',
+        },
+        cyan: {
+          800: '#0A74DA',
+        },
+        yellowGreen: {
+          500: '#9ACD32',
+          600: '#6B8E23',
+        },
+        green: {
+          300: '#90EE90',
         },
         success: '#34d399',
         warning: '#fbbf24',
