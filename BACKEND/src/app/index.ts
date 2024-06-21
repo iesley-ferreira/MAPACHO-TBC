@@ -2,6 +2,7 @@ import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import cache from '../cache';
+import authRouter from './routers/auth.router';
 import categoriesRouter from './routers/categories.router';
 import loginRouter from './routers/login.router';
 import productsRouter from './routers/products.router';
@@ -26,6 +27,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/products', productsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/shipping', shippingRouter);
+app.use('/auth', authRouter);
 app.use('/login', loginRouter);
 
 export { app };

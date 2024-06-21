@@ -1,8 +1,7 @@
 import { Router } from 'express';
-import loginController from '../controllers/login.controller';
 
 const loginRouter = Router();
 
-loginRouter.route('/singUp').post(loginController.singUp);
+// loginRouter.route('/login').post(loginController.signIn);
 
 export default loginRouter;

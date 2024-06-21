@@ -13,6 +13,11 @@ const envSchema = z.object({
   SECRET_KEY_JWT: z.string(),
   DIRECTIONS_API_KEY: z.string(),
   MELHOR_ENVIO_API_KEY: z.string(),
+  MAIL_HOST: z.string(),
+  MAIL_PORT: z.string(),
+  MAIL_USER: z.string(),
+  MAIL_PASS: z.string(),
+  MAIL_FROM: z.string(),
 });
 
 export const env = envSchema.parse(process.env);
