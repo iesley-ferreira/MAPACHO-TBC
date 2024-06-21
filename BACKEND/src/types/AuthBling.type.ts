@@ -7,6 +7,6 @@ export type AuthBlingType = {
   scope: string;
   updated_at: Date;
   created_at: Date;
-}
+};
 
-export type AuthBlingUpdateType = Omit<AuthBlingType, 'id' | 'created_at' | 'updated_at'>
+export type AuthBlingUpdateType = Omit<AuthBlingType, 'id' | 'created_at' | 'updated_at'>;

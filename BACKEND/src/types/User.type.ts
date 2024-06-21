@@ -1,13 +1,27 @@
 export type UserType = {
   id: string;
-  fullName: string;
+  name: string;
   email: string;
   cep?: string;
   address?: string;
   city?: string;
   country?: string;
-  password: string;
-  codeAccount?: string;
-}
+  password?: string | undefined;
+  img_profile?: string;
+  google_id?: string | undefined;
+  created_at: Date;
+  updated_at: Date;
+  isPending?: boolean;
+};
 
-export type UserInputType = Omit<UserType, 'id' | 'cep' | 'address' | 'city' | 'country' >
+export type UserInputType = Omit<
+  UserType,
+  | 'id'
+  | 'cep'
+  | 'address'
+  | 'city'
+  | 'country'
+  | 'isPending'
+  | 'created_at'
+  | 'updated_at'
+>;

@@ -24,14 +24,30 @@ model AuthBling {
   created_at    DateTime @default(now())
 }
 
-model Users {
-  id          String  @id @default(uuid())
-  fullName    String
-  email       String  @unique
-  cep         String?
-  address     String?
-  city        String?
-  country     String?
-  password    String
-  codeAccount String?
+model User {
+  id           String  @id @default(uuid())
+  name         String
+  email        String  @unique
+  cep          String?
+  address      String?
+  city         String?
+  country      String?
+  password     String?
+  img_profile  String?
+  google_id    String?  @unique
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+  isPending    Boolean @default(true)
+
+  AuthCode AuthCode[]
+}
+
+model AuthCode {
+  id          String   @id @default(cuid())
+  user_id     String   @unique
+  code        String   @unique
+  created_at  DateTime @default(now())
+
+
+  USER User @relation(fields: [user_id], references: [id])
 }

@@ -1,26 +1,31 @@
 import prisma from '../../providers/prisma.provider';
 import { UserInputType } from '../../types/User.type';
 
-const singUp = async ({ email, fullName, password, codeAccount }: UserInputType) =>
-  prisma.users.create({
+const existingUser = async (email: string) =>
+  prisma.user.findUnique({ where: { email } });
+
+const signUp = async ({ email, name, password, google_id }: UserInputType) => {
+  return prisma.user.create({
     data: {
       email,
-      fullName,
+      name,
       password,
-      codeAccount,
+      google_id,
     },
   });
+};
 
-const singIn = {
-  credentialsGoogleAccount: (email: string, codeAccount: string) =>
-    prisma.users.findFirst({
+const signIn = {
+  credentialsGoogleAccount: (email: string, google_id: string) =>
+    prisma.user.findFirst({
       where: {
         email,
-        codeAccount,
+        google_id,
       },
     }),
+
   emailAndPassword: (email: string, password: string) =>
-    prisma.users.findFirst({
+    prisma.user.findFirst({
       where: {
         email,
         password,
@@ -29,8 +34,9 @@ const singIn = {
 };
 
 const loginModel = {
-  singIn,
-  singUp,
+  signIn,
+  signUp,
+  existingUser,
 };
 
 export default loginModel;

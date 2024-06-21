@@ -1,3 +1,13 @@
 {
-  "cSpell.words": ["Bunary", "criterio", "Km", "PRIMEIRACOMPRA", "variacoes"]
+  "cSpell.words": [
+    "autoincrement",
+    "Bunary",
+    "criterio",
+    "Km",
+    "mailgun",
+    "PRIMEIRACOMPRA",
+    "variacoes"
+  ],
+  "prisma-smart-formatter.typescript.defaultFormatter": "esbenp.prettier-vscode",
+  "prisma-smart-formatter.typescriptreact.defaultFormatter": "esbenp.prettier-vscode"
 }
