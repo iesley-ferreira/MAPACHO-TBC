@@ -61,22 +61,22 @@ const UserOrders: React.FC<UserOrdersProps> = ({ orders }) => {
           <div className="overflow-x-auto">
             <div className="flex items-center justify-between rounded-lg bg-lime-400 py-5 px-7 md:px-12">
               <div className="flex items-center w-full justify-between">
-                <div className="w-3/12 font-heading text-center font-semibold uppercase md:hidden">
+                <div className="w-3/12 pr-5 font-heading text-center font-semibold uppercase md:hidden">
                   ID
                 </div>
-                <div className="font-heading font-semibold uppercase hidden md:block">
+                <div className="w-3/12 md:w-2/12 font-heading font-semibold uppercase hidden md:block">
                   <p>ID Compra</p>
                 </div>
-                <div className="w-5/12 pr-2 md:pr-0 font-heading text-center font-semibold uppercase">
+                <div className="w-3/12 pr-5 md:w-3/12 md:pr-6 font-heading text-center font-semibold uppercase">
                   <p>Data</p>
                 </div>
-                <div className="w-4/12 pr-5 md:pr-0 font-heading text-center font-semibold uppercase">
+                <div className="w-3/12 pr-8 md:w-2/12 md:pr-10 font-heading text-center font-semibold uppercase">
                   <p>Status</p>
                 </div>
-                <div className="font-heading font-semibold uppercase hidden md:block">
+                <div className="w-2/12 md:w-1/12 md:pl-10 font-heading font-semibold uppercase hidden md:block">
                   <p>Total</p>
                 </div>
-                <div className="font-heading font-semibold uppercase hidden md:block">
+                <div className="max-w-24 pl-10 font-heading font-semibold uppercase hidden md:block">
                   <p>Detalhes</p>
                 </div>
               </div>
@@ -85,24 +85,24 @@ const UserOrders: React.FC<UserOrdersProps> = ({ orders }) => {
               orders.map((order) => (
                 <div key={order.id} className="bg-gray-50 border-b border-gray-100">
                   <div className="flex w-full items-center justify-between px-1 py-3 md:p-5">
-                    <div className="flex w-full items-center">
-                      <div className="w-4/12 md:w-2/12 font-heading text-center uppercase">
+                    <div className="flex w-full justify-between items-center">
+                      <div className="w-1/4 md:w-4/12 font-heading text-center uppercase">
                         #{order.id}
                       </div>
-                      <div className="md:w-4/12 font-heading text-center uppercase">
+                      <div className="w-1/3 md:w-6/12 font-heading text-center uppercase">
                         {order.data}
                       </div>
-                      <div className="flex w-4/12 md:w-2/12 content-center justify-center">
+                      <div className="w-1/4 pl-4 flex justify-center">
                         <div
                           className={`flex w-fit py-1 px-3 text-sm font-heading font-medium rounded-full ${getStatusBgColor(order.status)}`}
                         >
                           {order.status}
                         </div>
                       </div>
-                      <div className="md:w-3/12 font-heading text-center uppercase hidden md:block">
+                      <div className="md:w-7/12 font-heading text-center uppercase hidden md:block">
                         {priceFormatter.format(order.total)}
                       </div>
-                      <div className="w-1/12 text-center">
+                      <div className="max-w-5 text-center md:w-1/4">
                         <button onClick={() => toggleOrderExpansion(order.id)}>
                           {expandedOrders[order.id] ? (
                             <i className="ri-arrow-up-s-fill text-2xl"></i>
@@ -123,23 +123,23 @@ const UserOrders: React.FC<UserOrdersProps> = ({ orders }) => {
                         orderProducts[order.id].map((product, index) => (
                           <div
                             key={`product-${product.id}`}
-                            className="flex flex-row md:flex-col md:items-center mb-4 gap-3"
+                            className="flex flex-row md:items-center md:justify-between mb-4 gap-3 border-b-2 border-dotted"
                           >
-                            <div className="flex items-center md:col-span-2 w-3/12 text-right md:text-center">
+                            <div className="flex items-center text-right sm:w-2/12 md:w-3/12 md:pl-4 md:col-span-2 md:text-center">
                               <img
                                 src={
                                   product.imagemURL ||
                                   '/public/assets/noImageAvailable.png'
                                 }
-                                className="md:h-20 md:w-20 rounded-lg"
+                                className="w-20 h-20 md:w-32 md:h-32 pb-2 rounded-lg"
                                 alt={product.nome}
                               />
                             </div>
                             <div className="flex flex-col gap-2 w-9/12 md:flex-row items-center">
-                              <div className="flex-grow md:col-span-6 text-left md:text-center">
+                              <div className="flex-grow md:col-span-6 text-left md:text-center md:w-50">
                                 {product.nome}
                               </div>
-                              <div className="flex flex-row w-full justify-between md:flex-col">
+                              <div className="flex flex-row w-full justify-between md:w-1/4">
                                 <div className="flex-grow-0 md:col-span-2 text-left md:text-center">
                                   {order.products[index].quantidade}x
                                 </div>

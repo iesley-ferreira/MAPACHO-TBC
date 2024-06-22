@@ -8,7 +8,7 @@ type UserProfileProps = {
 
 const UserProfile: React.FC<UserProfileProps> = ({ name, email, img }) => {
   return (
-    <div className="flex flex-col md:flex-row sm:flex-row items-center justify-center w-full py-8">
+    <div className="flex flex-col  items-center justify-center w-full py-8">
       {img ? (
         <img
           className="text-4xl w-24  h-24 sm:text-4xl rounded-full mb-4 sm:mb-0"
