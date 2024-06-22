@@ -1,0 +1,26 @@
+{
+  "pedidos": [
+    {
+      "id": 8764542,
+      "data": "2020-01-01",
+      "total": 84.96,
+      "status": "entregue",
+      "products": [
+        { "id": 16278539034, "quantidade": 3 },
+        { "id": 16277010069, "quantidade": 1 },
+        { "id": 16277008943, "quantidade": 1 }
+      ]
+    },
+    {
+      "id": 32542523,
+      "data": "2020-01-01",
+      "total": 84.96,
+      "status": "enviado",
+      "products": [
+        { "id": 16278539034, "quantidade": 3 },
+        { "id": 16277010069, "quantidade": 1 },
+        { "id": 16277008943, "quantidade": 1 }
+      ]
+    }
+  ]
+}

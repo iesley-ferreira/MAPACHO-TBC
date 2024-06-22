@@ -194,7 +194,7 @@ const Header: React.FC<HeaderProps> = ({
             maxWidth: '420px',
             position: 'fixed',
             zIndex: 51,
-            top: isMobile ? '80px' : '50%',
+            top: isMobile ? '80px' : '30px',
             left: '50%',
             transform: 'translate(-50%, -50%)',
           }}

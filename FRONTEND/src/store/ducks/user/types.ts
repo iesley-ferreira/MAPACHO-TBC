@@ -1,6 +1,6 @@
-import { ActionType } from 'typesafe-actions'
-import { IUser } from '../../../interfaces/User'
-import * as actions from './actions'
+import { ActionType } from 'typesafe-actions';
+import { IUser } from '../../../interfaces/User';
+import * as actions from './actions';
 
 export enum UserActionTypes {
   FETCH_USER_REQUEST = 'FETCH_USER_REQUEST',
@@ -19,9 +19,9 @@ export enum UserActionTypes {
 }
 
 export interface UserState {
-  readonly user: IUser
-  readonly loading: boolean
-  readonly error: boolean
+  readonly user: IUser;
+  readonly loading: boolean;
+  readonly error: boolean;
 }
 
-export type UserActions = ActionType<typeof actions>
+export type UserActions = ActionType<typeof actions>;
