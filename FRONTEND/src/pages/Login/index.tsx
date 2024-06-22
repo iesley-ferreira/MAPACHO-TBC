@@ -108,7 +108,9 @@ const Login: React.FC = () => {
                 </span>
                 <div className="h-px w-full bg-gray-200"></div>
               </div>
-              <GoogleLogin />
+              <div className="flex w-full justify-center">
+                <GoogleLogin />
+              </div>
               <p className="pt-5 text-sm text-center">
                 <span className="mr-1 text-gray-500">Não tem uma conta?</span>
                 <Link

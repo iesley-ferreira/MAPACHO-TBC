@@ -179,7 +179,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         <span className="inline-block mx-4 text-xs font-medium text-gray-500">OU</span>
         <div className="h-px w-full bg-gray-200"></div>
       </div>
-      <GoogleLogin />
+      <div className="flex w-full justify-center">
+        <GoogleLogin />
+      </div>
     </form>
   );
 };
