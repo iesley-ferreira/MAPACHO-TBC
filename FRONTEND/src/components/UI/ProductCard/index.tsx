@@ -51,7 +51,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
           <InstallmentPlan totalPrice={product.preco} />
         </div>
         <button
-          className="flex justify-center items-center gap-3 mt-auto px-10 py-3 text-center text-white text-sm font-bold bg-green-500 hover:bg-green-600 rounded-md uppercase transition duration-200"
+          className="flex justify-center items-center gap-3 mt-auto px-10 py-3 text-center text-white text-sm font-bold bg-fluorescenGreen-600 hover:bg-fluorescenGreen-700 rounded-md uppercase transition duration-200"
           onClick={handleAddToCart}
         >
           Add

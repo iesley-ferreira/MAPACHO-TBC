@@ -1,23 +1,32 @@
+import { IProduct } from './Product';
+
 export interface IOrder {
   id: number;
   data: string;
   total: number;
   status: string;
-  products: { id: number; quantidade: number }[] | [];
+  products: IProduct[] | [];
 }
 
 export interface IUser {
-  id: string;
+  id: number;
   token: string;
   nome: string;
   email: string;
-  img: string;
-  telefone: string;
+  img?: string;
+  telefone?: string;
+  endereco?: IUserAddress;
+  pedidos?: IOrder[];
+  dataCadastro?: string;
+}
+
+export interface IUserAddress {
   cep: string;
-  endereco: string;
+  rua: string;
   cidade: string;
   estado: string;
-  pedidos?: IOrder[];
+  numero: string;
+  complemento: string;
 }
 
 export interface IUserUpdate {
