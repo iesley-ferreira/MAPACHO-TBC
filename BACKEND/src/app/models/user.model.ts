@@ -13,7 +13,9 @@ const createUser = async ({ email, name, password, google_id }: UserInputType) =
 };
 
 const findUserByEmail = async (email: string) => {
-  return await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findUnique({ where: { email } });
+  console.log('user findUserByEmailSERVICE', user);
+  return user;
 };
 
 const updateUserStatus = async (userId: string, isPending: boolean) => {

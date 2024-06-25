@@ -26,6 +26,17 @@ export default {
         green: {
           300: '#90EE90',
         },
+        fluorescenGreen: {
+          100: '#f5fecd',
+          200: '#ebfe9c',
+          300: '#e0fd6a',
+          400: '#d6fd39',
+          500: '#ccfc07',
+          600: '#a3ca06',
+          700: '#7a9704',
+          800: '#526503',
+          900: '#293201',
+        },
         success: '#34d399',
         warning: '#fbbf24',
         error: '#f87171',

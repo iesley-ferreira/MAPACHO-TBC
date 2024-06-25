@@ -4,9 +4,10 @@ import 'express-async-errors';
 import cache from '../cache';
 import authRouter from './routers/auth.router';
 import categoriesRouter from './routers/categories.router';
-import loginRouter from './routers/login.router';
+import orderRouter from './routers/order.router';
 import productsRouter from './routers/products.router';
 import shippingRouter from './routers/shipping.router';
+import userRouter from './routers/user.router';
 
 const app = express();
 app.use(cors());
@@ -28,6 +29,12 @@ app.use('/products', productsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/shipping', shippingRouter);
 app.use('/auth', authRouter);
-app.use('/login', loginRouter);
+app.use('/user', userRouter);
+app.use('/orders', orderRouter);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal server error' });
+});
 
 export { app };

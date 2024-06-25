@@ -1,15 +1,43 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Snackbar } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import GoogleLogin from '../../components/UI/GoogleLogin';
 import CustomInput from '../../components/common/CustomInput';
-
-const preventDefault = (event: React.SyntheticEvent) => event.preventDefault();
+import { RootState } from '../../store/ducks/rootReducer';
+import { loginUserRequest } from '../../store/ducks/user/actions';
 
 const Login: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const { user, error } = useSelector((state: RootState) => state.user);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/usuario');
+      return;
+    }
+    if (user.isPending) {
+      navigate('/autenticacao');
+      return;
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (error) {
+      setSnackbarOpen(true);
+    }
+  }, [error]);
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   const handleClickShowPassword = () => {
     setShowPassword((prev) => !prev);
@@ -25,11 +53,8 @@ const Login: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Lógica de envio do formulário
-    console.log({ email, password });
+    dispatch(loginUserRequest({ email, password }));
   };
-
-  console.log({ email, password });
 
   return (
     <section className="relative pt-28 pb-32 bg-gray-50 overflow-hidden">
@@ -124,6 +149,12 @@ const Login: React.FC = () => {
           </div>
         </div>
       </div>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={8000}
+        onClose={handleSnackbarClose}
+        message="Email ou senha inválidos..."
+      />
     </section>
   );
 };
