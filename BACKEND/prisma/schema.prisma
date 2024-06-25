@@ -35,21 +35,54 @@ model User {
   updated_at   DateTime @updatedAt
   isPending    Boolean @default(true)
 
-  AuthCode AuthCode[]
+  AuthCode     AuthCode[]
   Address      Address?
+  orders       Order[]
 }
 
 model Address {
-  id          String   @id @default(uuid())
-  user_id     String   @unique
-  cep         String
-  address     String
-  city        String
-  country     String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt()
+  id            String   @id @default(uuid())
+  user_id       String   @unique
+  cep           String
+  address       String
+  city          String
+  state         String
+  neighborhood  String
+  complement    String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt()
 
   USER User @relation(fields: [user_id], references: [id])
+}
+
+model Order {
+  id          String    @id @default(uuid())
+  user_id     String
+  date        DateTime
+  total       Float
+  status      String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt()
+
+  User        User      @relation(fields: [user_id], references: [id])
+  products    Product[]
+}
+
+model Product {
+  id             String   @id @default(uuid())
+  order_id       String
+  nome           String
+  codigo         String
+  preco          Float
+  tipo           String
+  situacao       String
+  formato        String
+  descricaoCurta String
+  imagemURL      String
+  variacao       String
+  quantidade     Int
+
+  Order         Order    @relation(fields: [order_id], references: [id])
 }
 
 model AuthCode {
@@ -57,7 +90,6 @@ model AuthCode {
   user_id     String   @unique
   code        String   @unique
   created_at  DateTime @default(now())
-
 
   USER User @relation(fields: [user_id], references: [id])
 }
