@@ -18,7 +18,7 @@ export const fetchUser = async (): Promise<IUser> => {
 
 export const loginUser = async (user: IUserLogin): Promise<IUserLoginResponse> => {
   const response = await axios.post<IUserLoginResponse>('user/login', user);
-  console.log(response.data);
+
   return response.data;
 };
 
@@ -26,7 +26,6 @@ export const createUser = async (
   user: IUserCreateParams,
 ): Promise<AxiosResponse<IUserCreateResponse>> => {
   const response = await axios.post<IUserCreateResponse>('user/signUp', user);
-  console.log('CREATE USER', response);
 
   return response;
 };

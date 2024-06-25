@@ -7,12 +7,12 @@ const signIn = async (req: Request, res: Response) => {
   const { email, password }: UserLoginType = req.body;
 
   const result = await loginService.signIn(email, password);
-  console.log('result', result);
 
   if (result.status !== 200) {
-    return res.status(401).json({
+    return res.status(200).json({
       data: {
         message: 'Usuário ou senha inválidos',
+        user: result.data.user,
       },
     });
   }
@@ -20,7 +20,7 @@ const signIn = async (req: Request, res: Response) => {
   const token = jwtProvider.sign(result.data);
   return res.status(200).json({
     data: {
-      message: 'Usuário logado com sucesso',
+      message: result.data.message,
       token,
       user: result.data,
     },

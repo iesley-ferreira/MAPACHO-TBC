@@ -3,9 +3,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../../components/UI/RegisterForm';
-import AuthCodeInput from '../../components/common/AuthCodeInput';
 import { RootState } from '../../store/ducks/rootReducer';
-import { createUserRequest, verifyAuthCodeRequest } from '../../store/ducks/user/actions';
+import { createUserRequest } from '../../store/ducks/user/actions';
 
 const Register: React.FC = () => {
   const dispatch = useDispatch();
@@ -19,7 +18,6 @@ const Register: React.FC = () => {
     confirmarSenha: '',
   });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [code, setCode] = useState('');
   const { isCodeSent, error, error_message, user } = useSelector(
     (state: RootState) => state.user,
   );
@@ -33,29 +31,17 @@ const Register: React.FC = () => {
     dispatch(createUserRequest(user));
   };
 
-  // useEffect(() => {
-  //   if (error) {
-  //     setSnackbarOpen(true);
-  //   }
-  // }, [error, error_message]);
-
-  const handleCodeSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    const email = formData.email;
-    const data = { email, code };
-    try {
-      dispatch(verifyAuthCodeRequest(data));
-    } catch (error: any) {
-      console.error('Erro ao verificar o código de autenticação:', error);
+  useEffect(() => {
+    if (error) {
+      setSnackbarOpen(true);
     }
-  };
+  }, [error]);
 
   useEffect(() => {
-    if (user.token) {
-      localStorage.setItem('token', user.token);
-      navigate('/usuario');
+    if (isCodeSent) {
+      navigate('/autenticacao');
     }
-  }, [user.token]);
+  }, [isCodeSent]);
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -83,19 +69,11 @@ const Register: React.FC = () => {
                 Cadastro
               </h3>
             </div>
-            {!isCodeSent ? (
-              <RegisterForm
-                formData={formData}
-                setFormData={setFormData}
-                handleFormSubmit={handleFormSubmit}
-              />
-            ) : (
-              <AuthCodeInput
-                code={code}
-                setCode={setCode}
-                handleCodeSubmit={handleCodeSubmit}
-              />
-            )}
+            <RegisterForm
+              formData={formData}
+              setFormData={setFormData}
+              handleFormSubmit={handleFormSubmit}
+            />
             <Snackbar
               open={snackbarOpen}
               autoHideDuration={6000}

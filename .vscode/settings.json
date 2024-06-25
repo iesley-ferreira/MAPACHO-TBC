@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "autenticacao",
     "autoincrement",
     "Bunary",
     "criterio",
@@ -10,5 +11,6 @@
     "variacoes"
   ],
   "prisma-smart-formatter.typescript.defaultFormatter": "esbenp.prettier-vscode",
-  "prisma-smart-formatter.typescriptreact.defaultFormatter": "esbenp.prettier-vscode"
+  "prisma-smart-formatter.typescriptreact.defaultFormatter": "esbenp.prettier-vscode",
+  "prisma-smart-formatter.prisma.defaultFormatter": "Prisma.prisma"
 }

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { QueryType } from '../types/Query.type';
 
 type AxiosRequestType = {
@@ -39,6 +39,12 @@ const axiosRequest = async ({
     });
     return response as any;
   } catch (error) {
+    if (error instanceof AxiosError) {
+      console.error('AxiosError:', error.response?.data);
+      throw new Error(
+        `AxiosError: ${error.response?.status} - ${error.response?.statusText}`,
+      );
+    }
     throw error;
   }
 };

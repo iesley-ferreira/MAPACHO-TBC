@@ -5,7 +5,6 @@ import { UserActions, UserState } from './types';
 const initialState: UserState = {
   user: {
     id: 0,
-    token: '',
     name: '',
     email: '',
     cell_phone: '',
@@ -19,6 +18,7 @@ const initialState: UserState = {
       complement: '',
     },
     orders: [],
+    isPending: null,
     created_at: '',
   },
   isCodeSent: false,
@@ -32,6 +32,7 @@ const userReducer = createReducer<UserState, UserActions>(initialState)
   .handleAction(actions.fetchUserRequest, (state) => ({
     ...state,
     loading: true,
+    error: false,
   }))
   .handleAction(actions.fetchUserSuccess, (state, action) => ({
     ...state,
@@ -47,6 +48,7 @@ const userReducer = createReducer<UserState, UserActions>(initialState)
   .handleAction(actions.loginUserRequest, (state) => ({
     ...state,
     loading: true,
+    error: false,
   }))
   .handleAction(actions.loginUserSuccess, (state, action) => ({
     ...state,
@@ -57,6 +59,8 @@ const userReducer = createReducer<UserState, UserActions>(initialState)
       id: action.payload.id,
       name: action.payload.name,
       email: action.payload.email,
+      isPending: action.payload.isPending,
+      created_at: action.payload.created_at,
     },
   }))
   .handleAction(actions.loginUserFailure, (state) => ({
@@ -67,6 +71,7 @@ const userReducer = createReducer<UserState, UserActions>(initialState)
   .handleAction(actions.createUserRequest, (state) => ({
     ...state,
     loading: true,
+    error: false,
   }))
   .handleAction(actions.createUserSuccess, (state, action) => ({
     ...state,
@@ -77,7 +82,7 @@ const userReducer = createReducer<UserState, UserActions>(initialState)
       id: action.payload.id,
       name: action.payload.name,
       email: action.payload.email,
-      created_at: action.payload.created_at,
+      // created_at: action.payload.created_at,
     },
   }))
   .handleAction(actions.createUserFailure, (state) => ({
@@ -92,6 +97,7 @@ const userReducer = createReducer<UserState, UserActions>(initialState)
   .handleAction(actions.verifyAuthCodeRequest, (state) => ({
     ...state,
     loading: true,
+    error: false,
   }))
   .handleAction(actions.verifyAuthCodeSuccess, (state, action) => ({
     ...state,
@@ -100,6 +106,7 @@ const userReducer = createReducer<UserState, UserActions>(initialState)
     user: {
       ...state.user,
       token: action.payload,
+      isPending: false,
     },
   }))
   .handleAction(actions.verifyAuthCodeFailure, (state) => ({

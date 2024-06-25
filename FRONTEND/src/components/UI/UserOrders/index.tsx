@@ -65,7 +65,7 @@ const UserOrders: React.FC<UserOrdersProps> = ({ orders }) => {
                       #{order.id}
                     </div>
                     <div className="w-4/12 md:w-2/12 md:py-1 md:px-3 text-sm md:text-md font-heading text-center uppercase">
-                      {order.date}
+                      {order.created_at}
                     </div>
                     <div className="flex w-4/12 md:w-2/12 content-center justify-center">
                       <div

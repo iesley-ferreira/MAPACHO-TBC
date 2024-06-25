@@ -11,6 +11,7 @@ const Layout: React.FC = () => {
   const isLoginPage = useMatch('/login');
   const isSignUpPage = useMatch('/cadastro');
   const isUserPage = useMatch('/usuario');
+  const isAuthPage = useMatch('/autenticacao');
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -25,7 +26,7 @@ const Layout: React.FC = () => {
       <main className="flex-grow">
         <Outlet />
       </main>
-      {!isLoginPage && !isSignUpPage && !isUserPage && <Footer />}
+      {!isLoginPage && !isSignUpPage && !isUserPage && !isAuthPage && <Footer />}
     </div>
   );
 };

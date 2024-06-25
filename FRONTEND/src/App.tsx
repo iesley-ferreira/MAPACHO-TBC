@@ -1,9 +1,9 @@
-import React from 'react'
-import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
-import ErrorBoundary from './components/ErrorBunary'
-import AppRoutes from './routes'
-import store from './store'
+import React from 'react';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import ErrorBoundary from './components/ErrorBunary';
+import AppRoutes from './routes';
+import store from './store';
 
 const App: React.FC = () => {
   return (
@@ -14,7 +14,7 @@ const App: React.FC = () => {
         </ErrorBoundary>
       </BrowserRouter>
     </Provider>
-  )
-}
+  );
+};
 
-export default App
+export default App;
