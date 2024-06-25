@@ -28,10 +28,6 @@ model User {
   id           String  @id @default(uuid())
   name         String
   email        String  @unique
-  cep          String?
-  address      String?
-  city         String?
-  country      String?
   password     String?
   img_profile  String?
   google_id    String?  @unique
@@ -40,6 +36,20 @@ model User {
   isPending    Boolean @default(true)
 
   AuthCode AuthCode[]
+  Address      Address?
+}
+
+model Address {
+  id          String   @id @default(uuid())
+  user_id     String   @unique
+  cep         String
+  address     String
+  city        String
+  country     String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt()
+
+  USER User @relation(fields: [user_id], references: [id])
 }
 
 model AuthCode {

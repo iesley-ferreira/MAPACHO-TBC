@@ -2,20 +2,21 @@
   "user": {
     "id": 1,
     "token": "token",
-    "nome": "John Doe",
+    "name": "John Doe",
     "email": "John.Doe@example.com",
-    "img": "/public/assets/avatar1.png",
-    "telefone": "(53) 98409-3333",
-    "dataCadastro": "01-01-2024",
-    "endereco": {
-      "cep": "12345678",
-      "rua": "Rua dos Bobos",
-      "cidade": "São Paulo",
-      "estado": "SP",
-      "numero": "123",
-      "complemento": "Apto 123"
+    "img_profile": "/public/assets/avatar1.png",
+    "cell_phone": "(53) 98409-3333",
+    "created_at": "01-01-2024",
+    "address": {
+      "zip_code": "12345678",
+      "street": "Rua dos Bobos",
+      "city": "São Paulo",
+      "number": "123",
+      "state": "SP",
+      "neighborhood": "Bairro dos Bobos",
+      "complement": "Apto 123"
     },
-    "pedidos": [
+    "orders": [
       {
         "id": 8764542,
         "data": "02-04-2024",

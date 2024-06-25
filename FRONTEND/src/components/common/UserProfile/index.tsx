@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { IUser } from '../../../interfaces/User';
+import { dateFormatter } from '../../../utils/dateFormatter';
 import UserConfig from '../../UI/UserConfig';
 
 type UserProfileProps = {
@@ -23,12 +24,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
         <div className="relative px-4 max-w-sm mx-auto pt-16 pb-12 text-center border border-gray-900 border-opacity-30 rounded-lg">
           <img
             className="absolute -top-12 left-1/2 transform -translate-x-1/2"
-            src={user.img}
+            src={user.img_profile}
             alt="imagem de usuário"
           />
           <div className="flex flex-row relative">
             <h2 className="mb-4 text-4xl tracking-4xl md:max-w-sm mx-auto">
-              {user.nome}
+              {user.name}
             </h2>
             <div className="group absolute right-0">
               <button
@@ -42,12 +43,16 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
               </span>
             </div>
           </div>
-          <p className="mb-6 text-gray-600 md:max-w-xs mx-auto">{user.dataCadastro}</p>
+          <p className="mb-6 text-gray-600 md:max-w-xs mx-auto">
+            {dateFormatter(user.created_at || '')}
+          </p>
           <ul className="relative">
-            <li className="flex flex-wrap items-center justify-center mb-4">
-              <i className="ri-phone-line mr-2 md:text-2xl"></i>
-              <p>{user.telefone}</p>
-            </li>
+            {user.cell_phone && (
+              <li className="flex flex-wrap items-center justify-center mb-4">
+                <i className="ri-phone-line mr-2 md:text-2xl"></i>
+                <p>{user.cell_phone}</p>
+              </li>
+            )}
             <li className="flex flex-wrap items-center justify-center">
               <i className="ri-mail-line mr-2 md:text-2xl"></i>
               <p className="text-center align-text-bottom">{user.email}</p>

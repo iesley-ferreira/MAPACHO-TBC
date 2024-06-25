@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import prisma from '../../providers/prisma.provider';
 import { UserInputType } from '../../types/User.type';
 
@@ -24,13 +25,22 @@ const signIn = {
       },
     }),
 
-  emailAndPassword: (email: string, password: string) =>
-    prisma.user.findFirst({
+  emailAndPassword: async (email: string, password: string) => {
+    if (!email || !password) return null;
+
+    const user = await prisma.user.findFirst({
       where: {
         email,
-        password,
       },
-    }),
+    });
+
+    if (user && user.password) {
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (isPasswordValid) {
+        return user;
+      }
+    }
+  },
 };
 
 const loginModel = {

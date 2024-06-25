@@ -1,11 +1,14 @@
 import { Snackbar } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../api/axiosConfig';
 import RegisterForm from '../../components/UI/RegisterForm';
 import AuthCodeInput from '../../components/common/AuthCodeInput';
+import { RootState } from '../../store/ducks/rootReducer';
+import { createUserRequest, verifyAuthCodeRequest } from '../../store/ducks/user/actions';
 
 const Register: React.FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nome: '',
@@ -17,44 +20,42 @@ const Register: React.FC = () => {
   });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [code, setCode] = useState('');
-  const [isCodeSent, setIsCodeSent] = useState(false);
+  const { isCodeSent, error, error_message, user } = useSelector(
+    (state: RootState) => state.user,
+  );
 
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const name = `${formData.nome} ${formData.sobrenome}`;
     const email = formData.email;
     const password = formData.senha;
-    const name = `${formData.nome} ${formData.sobrenome}`;
-    try {
-      const response = await axios.post(`auth/signUp`, { email, password, name });
-
-      console.log('response', response);
-
-      if (response.data.message) {
-        setIsCodeSent(true);
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        setSnackbarOpen(true);
-      } else {
-        console.error('Erro ao registrar usuário:', error);
-      }
-    }
+    const user = { name, email, password };
+    dispatch(createUserRequest(user));
   };
+
+  // useEffect(() => {
+  //   if (error) {
+  //     setSnackbarOpen(true);
+  //   }
+  // }, [error, error_message]);
 
   const handleCodeSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const email = formData.email;
+    const data = { email, code };
     try {
-      const response = await axios.post(`auth/verifyAuthCode`, { email, code });
-
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        navigate('/usuario');
-      }
+      dispatch(verifyAuthCodeRequest(data));
     } catch (error: any) {
       console.error('Erro ao verificar o código de autenticação:', error);
     }
   };
+
+  useEffect(() => {
+    if (user.token) {
+      localStorage.setItem('token', user.token);
+      navigate('/usuario');
+    }
+  }, [user.token]);
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);

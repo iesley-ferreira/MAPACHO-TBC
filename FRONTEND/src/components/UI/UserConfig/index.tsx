@@ -17,19 +17,21 @@ const UserConfig: React.FC<UserConfigProps> = ({ user, onClose }) => {
     img: false,
   });
 
-  const { cep, rua, numero, cidade, estado, complemento } = user.endereco ?? {};
+  const { zip_code, street, number, city, state, neighborhood, complement } =
+    user.address || {};
 
   const [formData, setFormData] = useState({
-    name: user.nome,
+    name: user.name,
     email: user.email,
-    img: user.img,
+    img: user.img_profile,
     address: {
-      zipCode: cep,
-      street: rua,
-      number: numero,
-      city: cidade,
-      state: estado,
-      complement: complemento,
+      zip_code,
+      street,
+      number,
+      city,
+      state,
+      neighborhood,
+      complement,
     },
     oldPassword: '',
     newPassword: '',
@@ -223,7 +225,7 @@ const UserConfig: React.FC<UserConfigProps> = ({ user, onClose }) => {
             </div>
           )}
         </div>
-        <div className="mb-4 relative border-b pb-4 border-b-slate-400 border-b border-b-slate-400">
+        <div className="mb-4 relative border-b pb-4 border-b-slate-400">
           <label className="block mb-2 font-semibold">Endereço</label>
           {isEditing.address ? (
             <>
@@ -233,7 +235,7 @@ const UserConfig: React.FC<UserConfigProps> = ({ user, onClose }) => {
                     name="zipCode"
                     label="Cep"
                     fullWidth
-                    value={formData.address.zipCode}
+                    value={formData.address.zip_code}
                     onChange={handleInputChange}
                     required
                     size="small"
@@ -330,11 +332,11 @@ const UserConfig: React.FC<UserConfigProps> = ({ user, onClose }) => {
             </>
           ) : (
             <div className="flex items-center justify-between">
-              {formData.address?.zipCode ? (
+              {formData.address?.zip_code ? (
                 <div className="flex flex-col">
                   <p>
-                    {formData.address.zipCode?.slice(0, 5)}-
-                    {formData.address.zipCode?.slice(5)}
+                    {formData.address.zip_code?.slice(0, 5)}-
+                    {formData.address.zip_code?.slice(5)}
                   </p>
                   <p>
                     {formData.address.street}, {formData.address.number}

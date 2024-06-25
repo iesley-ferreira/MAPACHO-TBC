@@ -3,7 +3,7 @@ import { IOrder } from '../../../interfaces/User';
 import { priceFormatter } from '../../../utils/priceFormatter';
 
 type UserOrdersProps = {
-  orders: IOrder[];
+  orders: IOrder[] | [];
 };
 
 const UserOrders: React.FC<UserOrdersProps> = ({ orders }) => {
@@ -65,7 +65,7 @@ const UserOrders: React.FC<UserOrdersProps> = ({ orders }) => {
                       #{order.id}
                     </div>
                     <div className="w-4/12 md:w-2/12 md:py-1 md:px-3 text-sm md:text-md font-heading text-center uppercase">
-                      {order.data}
+                      {order.date}
                     </div>
                     <div className="flex w-4/12 md:w-2/12 content-center justify-center">
                       <div

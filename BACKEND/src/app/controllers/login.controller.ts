@@ -1,22 +1,32 @@
-// const signIn = () => {
-//   const { email, password } = req.body;
-//   const user = await loginModel.emailAndPassword(email, password);
-//   if (!user) {
-//     return res.status(401).json({
-//       data: {
-//         message: 'Usuário ou senha inválidos',
-//       },
-//     });
-//   }
-//   const token = jwtProvider.sign({ id: user.id });
-//   return res.status(200).json({
-//     data: {
-//       message: 'Usuário logado com sucesso',
-//       token,
-//     },
-//   });
-// };
+import { Request, Response } from 'express';
+import jwtProvider from '../../providers/jwt.provider';
+import { UserLoginType } from '../../types/User.type';
+import loginService from '../services/login.service';
 
-// const loginController = { signIn };
+const signIn = async (req: Request, res: Response) => {
+  const { email, password }: UserLoginType = req.body;
 
-// export default loginController;
+  const result = await loginService.signIn(email, password);
+  console.log('result', result);
+
+  if (result.status !== 200) {
+    return res.status(401).json({
+      data: {
+        message: 'Usuário ou senha inválidos',
+      },
+    });
+  }
+
+  const token = jwtProvider.sign(result.data);
+  return res.status(200).json({
+    data: {
+      message: 'Usuário logado com sucesso',
+      token,
+      user: result.data,
+    },
+  });
+};
+
+const loginController = { signIn };
+
+export default loginController;
