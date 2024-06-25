@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import nodemailerProvider from '../../providers/nodemailer.provider';
 import { UserInputType } from '../../types/User.type';
 import { generateAuthCode } from '../../utils/generateAuthCode';
@@ -15,10 +16,11 @@ const signUp = async ({ email, name, password, google_id }: UserInputType) => {
     };
   }
 
+  const hashedPassword = bcrypt.hashSync(password, 10);
   const newUser = await userModel.createUser({
     email,
     name,
-    password,
+    password: hashedPassword,
     google_id,
   });
 

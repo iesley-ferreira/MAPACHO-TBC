@@ -6,6 +6,7 @@ export interface IOrder {
   total: number;
   status: string;
   products: IProduct[] | [];
+  created_at: string;
 }
 
 export interface IUserLogin {
@@ -16,20 +17,22 @@ export interface IUserLogin {
 export interface IUserLoginResponse {
   data: {
     message: string;
-    token: string;
-    user: IUser;
+    token?: string;
+    user?: IUser;
+    isPending?: boolean;
   };
+  status: number;
 }
 
 export interface IUser {
   id: number;
-  token?: string;
-  name: string;
+  name?: string;
   email: string;
   img_profile?: string;
   cell_phone?: string;
   address?: IUserAddress;
   orders?: IOrder[] | [];
+  isPending?: boolean | null;
   created_at?: string;
 }
 

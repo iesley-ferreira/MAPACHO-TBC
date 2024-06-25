@@ -2,6 +2,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useState } from 'react';
 import CustomInput from '../../common/CustomInput';
 import GoogleLogin from '../GoogleLogin';
+import { formatPhoneNumber, validatePassword } from './helpers';
 
 interface RegisterFormProps {
   formData: {
@@ -38,7 +39,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
     if (!formData.sobrenome) newErrors.sobrenome = 'Sobrenome é obrigatório';
     if (!formData.telefone) {
       newErrors.telefone = 'Telefone é obrigatório';
-    } else if (!/^\d{11}$/.test(formData.telefone)) {
+    } else if (formData.telefone.replace(/\D/g, '').length !== 11) {
       newErrors.telefone = 'Telefone deve conter 11 números';
     }
     if (!formData.email) {
@@ -46,7 +47,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email inválido';
     }
-    if (!formData.senha) newErrors.senha = 'Senha é obrigatória';
+    if (!formData.senha) {
+      newErrors.senha = 'Senha é obrigatória';
+    } else if (!validatePassword(formData.senha)) {
+      newErrors.senha =
+        'A senha deve ter pelo menos 6 caracteres, incluindo um número e um caractere especial.';
+    }
     if (!formData.confirmarSenha) {
       newErrors.confirmarSenha = 'Confirmação de senha é obrigatória';
     } else if (formData.senha !== formData.confirmarSenha) {
@@ -60,7 +66,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    const newValue = name === 'telefone' ? formatPhoneNumber(value) : value;
+    setFormData({ ...formData, [name]: newValue });
 
     if (errors[name]) {
       validateForm();
@@ -73,6 +80,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
       handleFormSubmit(event);
     }
   };
+
+  console.log('formData', formData);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -107,10 +116,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           Telefone
         </label>
         <CustomInput
-          type="text"
+          type="tel"
           name="telefone"
-          placeholder="Telefone"
-          maxLength={11}
+          placeholder="(XX) XXXXX-XXXX"
+          maxLength={15}
           value={formData.telefone}
           onChange={handleChange}
         />

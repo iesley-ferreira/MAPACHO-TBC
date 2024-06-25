@@ -1,8 +1,10 @@
 import React, { Suspense, lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import AuthInitializer from './AuthInitializer';
 import Layout from './components/Layout';
 import Loader from './components/common/Loader';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import Auth from './pages/Auth';
 import ScrollToTop from './utils/ScrollToTop';
 const Home = lazy(() => import('./pages/Home'));
 const Register = lazy(() => import('./pages/Register'));
@@ -18,6 +20,7 @@ const AppRoutes: React.FC = () => {
   return (
     <>
       <ScrollToTop />
+      <AuthInitializer />
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -30,6 +33,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/pagamento" element={<Payment />} />
             <Route path="/comprafinalizada" element={<Success />} />
             <Route path="/carrinho" element={<Cart />} />
+            <Route path="/autenticacao" element={<Auth />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

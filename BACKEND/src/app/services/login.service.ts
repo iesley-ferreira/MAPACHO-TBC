@@ -12,6 +12,7 @@ const signIn = async (email: string, password: string): Promise<ReturnServiceTyp
   }
 
   const user = await loginModel.signIn.emailAndPassword(email, password);
+  console.log('USER', user);
 
   if (!user) {
     return {
@@ -19,6 +20,16 @@ const signIn = async (email: string, password: string): Promise<ReturnServiceTyp
         message: 'Usuário ou senha inválidos',
       },
       status: 400,
+    };
+  }
+
+  if (user.isPending) {
+    return {
+      data: {
+        message: 'Usuário não autenticado. Verifique seu email para completar o cadastro',
+        user,
+      },
+      status: 401,
     };
   }
 

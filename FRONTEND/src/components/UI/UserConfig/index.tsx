@@ -17,6 +17,8 @@ const UserConfig: React.FC<UserConfigProps> = ({ user, onClose }) => {
     img: false,
   });
 
+  const profileImage = user.img_profile || '/public/assets/userImage.jpg';
+
   const { zip_code, street, number, city, state, neighborhood, complement } =
     user.address || {};
 
@@ -96,12 +98,12 @@ const UserConfig: React.FC<UserConfigProps> = ({ user, onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
       <div className="bg-white rounded-lg p-6 relative max-w-md w-full">
-        <h2 className="text-center text-2xl mb-4">Editar Perfil</h2>
         <img
-          src={selectedImage || '/public/assets/avatar1.png'}
+          src={profileImage}
           alt="User Avatar"
           className="w-24 h-24 object-cover rounded-full mx-auto"
         />
+        <h2 className="text-center pt-2 text-2xl mb-4">Editar Perfil</h2>
         <div className="mb-4 relative border-b border-b-slate-400 pb-4">
           <label className="block mb-2">Carregar imagem</label>
           <input

@@ -63,6 +63,10 @@ export const updateUserFailure = createAction(
   UserActionTypes.UPDATE_USER_FAILURE,
 )<string>();
 
+export const setUserFromToken = createAction(
+  UserActionTypes.SET_USER_FROM_TOKEN,
+)<string>();
+
 export const setIsCodeSent = createAction(UserActionTypes.SET_IS_CODE_SENT)<boolean>();
 
 export type UserAction = (request: IUser) => void;
