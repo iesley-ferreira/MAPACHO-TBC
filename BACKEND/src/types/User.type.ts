@@ -6,12 +6,17 @@ export type UserType = {
   address?: string;
   city?: string;
   country?: string;
-  password?: string | undefined;
+  password: string;
   img_profile?: string;
   google_id?: string | undefined;
   created_at: Date;
   updated_at: Date;
   isPending?: boolean;
+};
+
+export type UserLoginType = {
+  email: string;
+  password: string;
 };
 
 export type UserInputType = Omit<

@@ -1,0 +1,122 @@
+{
+  "user": {
+    "id": 1,
+    "token": "token",
+    "name": "John Doe",
+    "email": "John.Doe@example.com",
+    "img_profile": "/public/assets/avatar1.png",
+    "cell_phone": "(53) 98409-3333",
+    "created_at": "01-01-2024",
+    "address": {
+      "zip_code": "12345678",
+      "street": "Rua dos Bobos",
+      "city": "São Paulo",
+      "number": "123",
+      "state": "SP",
+      "neighborhood": "Bairro dos Bobos",
+      "complement": "Apto 123"
+    },
+    "orders": [
+      {
+        "id": 8764542,
+        "data": "02-04-2024",
+        "total": 9.5,
+        "status": "entregue",
+        "products": [
+          {
+            "id": 16253395574,
+            "idProdutoPai": 16277010069,
+            "nome": "Seda Zomo Perfect Hemp King Size",
+            "codigo": "16278539034",
+            "preco": 3.5,
+            "tipo": "Seda",
+            "situacao": "Novo",
+            "formato": "Seda",
+            "descricaoCurta": "Seda",
+            "imagemURL": "https://imgur.com/CiVL2EK.png",
+            "variacao": "Manga",
+            "quantidade": 4
+          },
+          {
+            "id": 16222091420,
+            "idProdutoPai": 16277010069,
+            "nome": "Seda Bem bolado Porta dos Fundos King Size",
+            "codigo": "16278539034",
+            "preco": 3.5,
+            "tipo": "Seda",
+            "situacao": "Novo",
+            "formato": "Seda",
+            "descricaoCurta": "Seda",
+            "imagemURL": "https://imgur.com/a0TCJsl.png",
+            "variacao": "Manga",
+            "quantidade": 1
+          },
+          {
+            "id": 16182322291,
+            "idProdutoPai": 16277010069,
+            "nome": "Seda Bem Bolado Sabotage King Size Large",
+            "codigo": "16278539034",
+            "preco": 2.5,
+            "tipo": "Seda",
+            "situacao": "Novo",
+            "formato": "Seda",
+            "descricaoCurta": "Seda",
+            "imagemURL": "https://imgur.com/SfeKsmG.png",
+            "variacao": "Manga",
+            "quantidade": 1
+          }
+        ]
+      },
+      {
+        "id": 32542523,
+        "data": "13-06-2024",
+        "total": 58,
+        "status": "enviado",
+        "products": [
+          {
+            "id": 16278539034,
+            "idProdutoPai": 16277010069,
+            "nome": "Essencia para Narguile Boombastic 50g",
+            "codigo": "16278539034",
+            "preco": 25,
+            "tipo": "Seda",
+            "situacao": "Novo",
+            "formato": "Seda",
+            "descricaoCurta": "Seda",
+            "imagemURL": "https://imgur.com/QBsY14a.png",
+            "variacao": "Sabor: Pessego",
+            "quantidade": 2
+          },
+          {
+            "id": 15992554003,
+            "idProdutoPai": 16277010069,
+            "nome": "Essência Zomo Strong Mint",
+            "codigo": "16278539034",
+            "preco": 15,
+            "tipo": "Seda",
+            "situacao": "Novo",
+            "formato": "Seda",
+            "descricaoCurta": "Seda",
+            "imagemURL": "https://imgur.com/EpwKlP7.png",
+            "variacao": "Sabor: Menta",
+            "quantidade": 1
+          },
+          {
+            "id": 11833420370,
+            "idProdutoPai": 16277010069,
+            "nome": "Blunt Lion Rolling Circus Hemp Wrap Terpenes",
+            "codigo": "16278539034",
+            "preco": 18,
+            "tipo": "Seda",
+            "situacao": "Novo",
+            "formato": "Seda",
+            "descricaoCurta": "Seda",
+            "imagemURL": "https://imgur.com/iU1hM3H.png",
+            "variacao": "Sabor: Manga",
+            "quantidade": 3
+          }
+        ]
+      }
+    ]
+  }
+}

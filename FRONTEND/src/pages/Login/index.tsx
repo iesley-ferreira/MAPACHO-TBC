@@ -1,12 +1,13 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import GoogleLogin from '../../components/UI/GoogleLogin';
 import CustomInput from '../../components/common/CustomInput';
-
-const preventDefault = (event: React.SyntheticEvent) => event.preventDefault();
+import { loginUserRequest } from '../../store/ducks/user/actions';
 
 const Login: React.FC = () => {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,11 +26,9 @@ const Login: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Lógica de envio do formulário
+    dispatch(loginUserRequest({ email, password }));
     console.log({ email, password });
   };
-
-  console.log({ email, password });
 
   return (
     <section className="relative pt-28 pb-32 bg-gray-50 overflow-hidden">
