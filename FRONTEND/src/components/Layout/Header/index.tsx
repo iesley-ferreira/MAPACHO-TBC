@@ -55,6 +55,10 @@ const Header: React.FC<HeaderProps> = ({
   const matchHome = useMatch('/home');
   const matchCategory = useMatch('/categoria/:categoryId');
   const matchSubcategory = useMatch('/subcategoria/:subcategoryId');
+  const isLoginRoute = useMatch('/login');
+  const isSignUpRoute = useMatch('/cadastro');
+  const isUserRoute = useMatch('/usuario');
+  const isAuthRoute = useMatch('/autenticacao');
   const [animateBadge, setAnimateBadge] = useState(false);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -155,14 +159,18 @@ const Header: React.FC<HeaderProps> = ({
           </Link>
         </div>
         <nav className="flex items-center gap-4">
-          {!matchCart && !matchUser && (
-            <button onClick={toggleSearch}>
-              <i
-                className={`ri-search-line text-brand-secondary ${showSearch || idProduto ? 'hidden' : ''}`}
-              ></i>
-            </button>
-          )}
-          {!matchCart && !matchUser && (
+          {!matchCart &&
+            !isLoginRoute &&
+            !isSignUpRoute &&
+            !isAuthRoute &&
+            !isUserRoute && (
+              <button onClick={toggleSearch}>
+                <i
+                  className={`ri-search-line text-brand-secondary ${showSearch || idProduto ? 'hidden' : ''}`}
+                ></i>
+              </button>
+            )}
+          {!matchCart && (
             <button
               className="text-brand-secondary hover:scale-105"
               onClick={toggleCartDrawer}

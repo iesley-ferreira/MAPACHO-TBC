@@ -106,7 +106,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
         <i className="ri-close-fill"></i>
       </IconButton>
       <div style={{ padding: 26 }}>
-        <h1 className="font-heading uppercase text-1xl ">Categorias</h1>
+        <h1 className="font-heading uppercase text-1xl">Categorias</h1>
         <List>
           {categories
             .filter((c) => c.categoriaPai.id === 0)
@@ -120,7 +120,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
                     mb: 0,
                     borderBottom: '1px solid #ccc',
                     backgroundColor:
-                      expandedItemId === category.id ? '#f5f5f5' : 'inherit',
+                      expandedItemId === category.id ? '#a1cebd' : 'inherit',
                   }}
                 >
                   <ListItemText primary={category.descricao} />
@@ -134,7 +134,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
                   <List
                     sx={{
                       pl: 2,
-                      backgroundColor: '#f9f9f9',
+                      // backgroundColor: '#f9f9f9',
                       borderRadius: '8px',
                     }}
                     component="div"

@@ -4,17 +4,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 160px;
-  overflow: hidden;
+  /* height: 160px; */
+  /* overflow: hidden; */
 }
 
-.carousel-image {
+/* .carousel-image {
   @apply w-full h-auto;
   height: 100%;
   object-fit: cover;
-}
+} */
 
-@screen sm {
+/* @screen sm {
   .carousel-image {
     @apply h-48 object-cover;
   }
@@ -30,4 +30,4 @@
   .carousel-image {
     @apply h-80 object-cover;
   }
-}
+} */
