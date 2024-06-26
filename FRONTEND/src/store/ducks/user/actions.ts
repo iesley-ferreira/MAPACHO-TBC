@@ -55,6 +55,18 @@ export const verifyAuthCodeFailure = createAction(
   UserActionTypes.VERIFY_AUTH_CODE_FAILURE,
 )<string>();
 
+export const resendAuthCodeRequest = createAction(
+  UserActionTypes.RESEND_AUTH_CODE_REQUEST,
+)<string>();
+
+export const resendAuthCodeSuccess = createAction(
+  UserActionTypes.RESEND_AUTH_CODE_SUCCESS,
+)<string>();
+
+export const resendAuthCodeFailure = createAction(
+  UserActionTypes.RESEND_AUTH_CODE_FAILURE,
+)<string>();
+
 export const updateUserRequest = createAction(
   UserActionTypes.UPDATE_USER_REQUEST,
 )<IUser>();

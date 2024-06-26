@@ -14,7 +14,7 @@ const Layout: React.FC = () => {
   const isAuthPage = useMatch('/autenticacao');
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <Header
         showMenu={showMenu}
         setDrawerOpen={setDrawerOpen}

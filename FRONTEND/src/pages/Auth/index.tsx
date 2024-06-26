@@ -35,6 +35,7 @@ const Auth: React.FC = () => {
   const navigate = useNavigate();
   const [code, setCode] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [counter, setCounter] = useState(60);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const { user, error } = useSelector((state: RootState) => state.user);
@@ -51,6 +52,13 @@ const Auth: React.FC = () => {
       setSnackbarOpen(true);
     }
   }, [error]);
+
+  useEffect(() => {
+    if (counter > 0) {
+      const timer = setTimeout(() => setCounter(counter - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [counter]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -102,6 +110,12 @@ const Auth: React.FC = () => {
     } catch (error: any) {
       console.error('Erro ao verificar o código de autenticação:', error);
     }
+  };
+
+  const handleResendCode = () => {
+    // const email = user.email;
+    // dispatch(resendAuthCodeRequest({ email }));
+    setCounter(60);
   };
 
   const handleSnackbarClose = () => {
@@ -169,7 +183,21 @@ const Auth: React.FC = () => {
                 <span>Verificar</span>
               </button>
             </form>
-
+            {counter > 0 ? (
+              <p className="text-center mt-4 text-slate-600">
+                Reenviar código em {counter} segundos
+              </p>
+            ) : (
+              <p className="text-center mt-4 text-slate-600">
+                Não recebeu o código?{' '}
+                <button
+                  onClick={handleResendCode}
+                  className="text-cyanGreen-800 underline"
+                >
+                  Reenviar código
+                </button>
+              </p>
+            )}
             <Snackbar
               open={snackbarOpen}
               autoHideDuration={6000}

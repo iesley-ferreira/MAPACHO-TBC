@@ -33,7 +33,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
       className="w-full md:w-1/2 xl:w-1/4 xl:min-w-[288px] px-2 mb-6"
       onClick={handleViewProduct}
     >
-      <div className="flex flex-col h-full rounded-md pt-4 pb-4 px-4 border border-blueGray-800">
+      <div className="flex flex-col h-full rounded-md pt-4 pb-4 px-4 ">
         <img
           className="block mb-4 w-full  md:h-48 object-contain"
           src={product.imagemURL || defaultImageURL}
