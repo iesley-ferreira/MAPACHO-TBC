@@ -15,7 +15,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const { user, error } = useSelector((state: RootState) => state.user);
+  const { user, error, errorMessage } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -23,7 +23,7 @@ const Login: React.FC = () => {
       navigate('/usuario');
       return;
     }
-    if (user.isPending) {
+    if (user && user.isPending) {
       navigate('/autenticacao');
       return;
     }
@@ -153,7 +153,7 @@ const Login: React.FC = () => {
         open={snackbarOpen}
         autoHideDuration={8000}
         onClose={handleSnackbarClose}
-        message="Email ou senha inválidos..."
+        message={error ? errorMessage : 'Email ou senha inválidos...'}
       />
     </section>
   );

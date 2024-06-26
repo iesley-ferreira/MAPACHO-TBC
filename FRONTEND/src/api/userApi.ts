@@ -17,9 +17,29 @@ export const fetchUser = async (): Promise<IUser> => {
 };
 
 export const loginUser = async (user: IUserLogin): Promise<IUserLoginResponse> => {
-  const response = await axios.post<IUserLoginResponse>('user/login', user);
+  try {
+    console.log('loginAPI');
 
-  return response.data;
+    const response = await axios.post<IUserLoginResponse>('user/login', user);
+    console.log('loginAPIRESPONSE', response.data);
+
+    return response.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.log('error.response', error.response);
+      return {
+        status: error.response.status,
+        message: error.response.data.result.data.message,
+        user: error.response.data.result.data.user,
+      };
+    } else {
+      return {
+        status: 500,
+        message: 'Erro no servidor. Tente novamente mais tarde.',
+        user: null,
+      };
+    }
+  }
 };
 
 export const createUser = async (

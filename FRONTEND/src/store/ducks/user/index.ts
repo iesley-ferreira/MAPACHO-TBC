@@ -2,30 +2,32 @@ import { createReducer } from 'typesafe-actions';
 import * as actions from './actions';
 import { UserActions, UserState } from './types';
 
-const initialState: UserState = {
-  user: {
-    id: 0,
-    name: '',
-    email: '',
-    cell_phone: '',
-    address: {
-      zip_code: '',
-      street: '',
-      city: '',
-      number: '',
-      state: '',
-      neighborhood: '',
-      complement: '',
-    },
-    orders: [],
-    isPending: null,
-    created_at: '',
+const initialUser = {
+  id: 0,
+  name: '',
+  email: '',
+  cell_phone: '',
+  address: {
+    zip_code: '',
+    street: '',
+    city: '',
+    number: '',
+    state: '',
+    neighborhood: '',
+    complement: '',
   },
+  orders: [],
+  isPending: null,
+  created_at: '',
+};
+
+const initialState: UserState = {
+  user: initialUser,
   isCodeSent: false,
   loading: false,
   error: false,
   message: '',
-  error_message: '',
+  errorMessage: '',
 };
 
 const userReducer = createReducer<UserState, UserActions>(initialState)
@@ -49,24 +51,26 @@ const userReducer = createReducer<UserState, UserActions>(initialState)
     ...state,
     loading: true,
     error: false,
+    errorMessage: '',
+    user: initialUser,
   }))
   .handleAction(actions.loginUserSuccess, (state, action) => ({
     ...state,
     loading: false,
     error: false,
-    user: {
-      ...state.user,
-      id: action.payload.id,
-      name: action.payload.name,
-      email: action.payload.email,
-      isPending: action.payload.isPending,
-      created_at: action.payload.created_at,
-    },
+    user: action.payload,
   }))
-  .handleAction(actions.loginUserFailure, (state) => ({
+  .handleAction(actions.loginUserUnauthorized, (state, action) => ({
+    ...state,
+    loading: false,
+    error: false,
+    user: action.payload,
+  }))
+  .handleAction(actions.loginUserFailure, (state, action) => ({
     ...state,
     loading: false,
     error: true,
+    errorMessage: action.payload.message,
   }))
   .handleAction(actions.createUserRequest, (state) => ({
     ...state,

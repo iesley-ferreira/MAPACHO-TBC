@@ -17,8 +17,6 @@ const verifyAuthCode = async (email: string, code: string) => {
 
   const authCode = await authCodeModel.findAuthCodeByUserId(user.id);
 
-  console.log('authCodeSERVICE', authCode);
-
   if (authCode?.code !== code) {
     return {
       data: {

@@ -9,21 +9,21 @@ const signIn = async (req: Request, res: Response) => {
   const result = await loginService.signIn(email, password);
 
   if (result.status !== 200) {
-    return res.status(200).json({
-      data: {
-        message: 'Usuário ou senha inválidos',
-        user: result.data.user,
-      },
+    console.log('RESULT !==200', result);
+
+    return res.status(result.status).json({
+      result,
     });
   }
 
   const token = jwtProvider.sign(result.data);
   return res.status(200).json({
     data: {
-      message: result.data.message,
       token,
-      user: result.data,
+      user: result.data.user,
+      message: result.data.message,
     },
+    status: 200,
   });
 };
 

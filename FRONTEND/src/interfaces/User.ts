@@ -15,13 +15,10 @@ export interface IUserLogin {
 }
 
 export interface IUserLoginResponse {
-  data: {
-    message: string;
-    token?: string;
-    user?: IUser;
-    isPending?: boolean;
-  };
   status: number;
+  message: string;
+  user: IUser | null;
+  token?: string | null;
 }
 
 export interface IUser {

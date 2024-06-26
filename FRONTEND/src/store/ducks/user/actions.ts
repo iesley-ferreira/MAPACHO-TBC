@@ -21,9 +21,13 @@ export const loginUserRequest = createAction(
 
 export const loginUserSuccess = createAction(UserActionTypes.LOGIN_USER_SUCCESS)<IUser>();
 
-export const loginUserFailure = createAction(
-  UserActionTypes.LOGIN_USER_FAILURE,
-)<string>();
+export const loginUserFailure = createAction(UserActionTypes.LOGIN_USER_FAILURE)<{
+  message: string;
+}>();
+
+export const loginUserUnauthorized = createAction(
+  UserActionTypes.LOGIN_USER_UNAUTHORIZED,
+)<IUser>();
 
 export const logoutUser = createAction(UserActionTypes.LOGOUT_USER)<void>();
 

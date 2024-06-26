@@ -6,6 +6,7 @@ import {
   IUserCreateParams,
   IUserCreateResponse,
   IUserLogin,
+  IUserLoginResponse,
   IVerifyAuthCodeResponse,
 } from '../../../interfaces/User';
 import {
@@ -15,6 +16,7 @@ import {
   fetchUserSuccess,
   loginUserFailure,
   loginUserSuccess,
+  loginUserUnauthorized,
   setIsCodeSent,
   verifyAuthCodeFailure,
   verifyAuthCodeSuccess,
@@ -32,21 +34,42 @@ function* fetchUserSaga() {
 
 function* loginUserSaga(action: { type: string; payload: IUserLogin }) {
   try {
-    const response: {
-      data: { user: IUser; token: string; message: string };
-    } = yield call(userApi.loginUser, action.payload);
-    console.log('LOGINSAGA RESPONSE', response);
+    const response: IUserLoginResponse = yield call(userApi.loginUser, action.payload);
 
-    if (response.data.user.isPending) {
-      console.log('ENTROU LOGINSAGA DESAUTORIZADO');
-      yield put(loginUserSuccess(response.data.user));
+    if (response.user?.isPending) {
+      yield put(loginUserUnauthorized(response.user));
       return;
     }
-    localStorage.setItem('token', response.data.token);
 
-    yield put(loginUserSuccess(response.data.user));
-  } catch (error: Error | unknown) {
-    yield put(loginUserFailure((error as Error).message));
+    if (response.status !== 200) {
+      console.log('responseSAGA !200', response.message);
+      console.log('responseSAGA !200', response.status);
+      console.log('responseSAGA !200', response.user);
+      yield put(
+        loginUserFailure({
+          message: response.message,
+        }),
+      );
+      return;
+    }
+
+    if (response.token && response.user) {
+      localStorage.setItem('token', response.token);
+      yield put(loginUserSuccess(response.user));
+    }
+    // if (response.data.user.isPending) {
+    //   yield put(loginUserSuccess(response.data.user));
+    //   return;
+    // }
+    // localStorage.setItem('token', response.data.token);
+
+    // yield put(loginUserSuccess(response.data.user));
+  } catch (error: any) {
+    yield put(
+      loginUserFailure({
+        message: error.message,
+      }),
+    );
   }
 }
 
@@ -93,9 +116,10 @@ function* setUserFromTokenSaga(action: { type: string; payload: string }) {
       name: decodedToken.name,
       email: decodedToken.email,
     };
+
     yield put(loginUserSuccess(user));
-  } catch (error: Error | unknown) {
-    yield put(loginUserFailure((error as Error).message));
+  } catch (error: any) {
+    yield put(loginUserFailure({ message: error.message }));
   }
 }
 
