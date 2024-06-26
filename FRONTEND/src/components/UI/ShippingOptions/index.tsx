@@ -76,7 +76,7 @@ const ShippingOptions: React.FC = () => {
                 <div
                   key={index}
                   className={`p-2 border rounded-lg ${
-                    selectedOption === option.id.toString()
+                    selectedOption === option.optionName
                       ? 'border-blue-500 bg-blue-100'
                       : 'border-gray-300'
                   } cursor-pointer hover:border-blue-500 transition-all w-full`}
@@ -86,7 +86,7 @@ const ShippingOptions: React.FC = () => {
                     <input
                       type="radio"
                       onChange={() => handleDeliveryChange(option)}
-                      name="shipping-option"
+                      name={option.optionName}
                       checked={selectedOption === option.optionName}
                       value={option.optionName}
                       className="form-radio h-5 w-5 text-blue-600"
