@@ -97,7 +97,7 @@ const UserOrders: React.FC<UserOrdersProps> = ({ orders }) => {
                         order.products.map((product) => (
                           <div
                             key={`product-${product.id}`}
-                            className="flex flex-row md:flex-col md:items-center mb-4 gap-3"
+                            className="flex flex-row md:items-center md:justify-between mb-4 gap-3 border-b-2 border-dotted"
                           >
                             <div className="flex items-center gap-4 w-full ">
                               <p className="text-rhino-800 text-xs md:text-base">

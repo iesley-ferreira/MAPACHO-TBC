@@ -64,6 +64,7 @@ const Header: React.FC<HeaderProps> = ({
   const [overlayVisible, setOverlayVisible] = useState(false);
   const { idProduto } = queryString.parse(location.search);
   const matchCart = useMatch('/carrinho');
+  const matchUser = useMatch('/usuario');
   const totalItems = items.reduce((sum, item) => sum + item.quantidade, 0);
 
   useEffect(() => {
@@ -154,14 +155,14 @@ const Header: React.FC<HeaderProps> = ({
           </Link>
         </div>
         <nav className="flex items-center gap-4">
-          {!matchCart && (
+          {!matchCart && !matchUser && (
             <button onClick={toggleSearch}>
               <i
                 className={`ri-search-line text-brand-secondary ${showSearch || idProduto ? 'hidden' : ''}`}
               ></i>
             </button>
           )}
-          {!matchCart && (
+          {!matchCart && !matchUser && (
             <button
               className="text-brand-secondary hover:scale-105"
               onClick={toggleCartDrawer}

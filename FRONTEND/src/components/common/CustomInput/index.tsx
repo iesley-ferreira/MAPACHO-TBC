@@ -11,6 +11,7 @@ interface CustomInputProps {
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   maxLength?: number;
+  disabled?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -24,6 +25,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   onFocus,
   maxLength,
   onBlur,
+  disabled,
 }) => {
   return (
     <input
@@ -38,6 +40,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       onFocus={onFocus}
       onBlur={onBlur}
       maxLength={maxLength}
+      disabled={disabled}
     />
   );
 };

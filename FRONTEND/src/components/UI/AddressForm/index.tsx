@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/ducks/rootReducer';
 import { fetchAddressRequest } from '../../../store/ducks/shipping/actions';
 import ShippingOptions from '../ShippingOptions';
+import CustomInput from '../../common/CustomInput';
 
 interface AddressFormProps {
   setIsFormValid: (isFormValid: boolean) => void;
@@ -131,35 +132,40 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
       </div>
       <Grid container spacing={2} mb={6} alignItems="center">
         <Grid item xs={8}>
-          <TextField
+          <CustomInput
             name="postalCode"
-            label="CEP"
-            fullWidth
+            type="text"
+            placeholder="CEP"
             value={form.postalCode}
             onChange={handleCepChange}
-            required
             disabled={form.postalCode.length === 9}
-            size="small"
           />
         </Grid>
         <Grid item xs={4}>
           {form.postalCode.length === 9 ? (
-            <Button
-              variant="contained"
-              color="secondary"
-              fullWidth
+            <button
+              className="group relative flex items-center justify-center px-5 h-11 w-full font-bold text-white bg-gradient-to-br from-violet-800 to-violet-400 rounded-lg transition-all duration-300 focus:outline-none"
+              type="submit"
               onClick={handleCepReset}
             >
-              Alterar
-            </Button>
+              <div className="absolute top-0 left-0 w-full h-full rounded-lg  animate-pulse group-hover:ring-2 ring-indigo-300 transition duration-300"></div>
+              <span>Alterar</span>
+            </button>
           ) : (
             <>
               {loading ? (
                 <CircularProgress size={20} color="info" />
               ) : (
-                <Button variant="contained" color="primary" fullWidth>
-                  Buscar
-                </Button>
+                <button
+                  className="group relative flex items-center justify-center px-5 h-11 w-full font-bold text-white bg-gradient-to-br from-cyanGreen-800 to-cyan-800 rounded-lg transition-all duration-300 focus:outline-none"
+                  type="submit"
+                >
+                  <div
+                    className="absolute top-0 left-0 w-full h-full rounded-lg  animate-pulse transition duration-300 group-hover:ring-2
+                  ring-green-300 "
+                  ></div>
+                  <span>Buscar</span>
+                </button>
               )}
             </>
           )}
@@ -178,94 +184,71 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
+              <CustomInput
                 name="address"
-                label="Endereço"
-                fullWidth
+                type="text"
+                placeholder="Endereço"
                 value={form.address}
                 onChange={handleChange}
-                required
-                size="small"
-                error={errors.address}
-                helperText={errors.address ? 'Este campo é obrigatório' : ''}
-                sx={{
-                  '& .MuiOutlinedInput-root': { '&.Mui-error': { borderColor: 'red' } },
-                }}
               />
+              {errors.address && (
+                <p className="text-red-500 text-xs">*Endereço obrigatório</p>
+              )}
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomInput
                 name="number"
-                label="Número"
-                fullWidth
+                type="text"
+                placeholder="Número"
                 value={form.number}
                 onChange={handleChange}
-                required
-                size="small"
-                error={errors.number}
-                helperText={errors.number ? 'Este campo é obrigatório' : ''}
-                sx={{
-                  '& .MuiOutlinedInput-root': { '&.Mui-error': { borderColor: 'red' } },
-                }}
               />
+              {errors.number && (
+                <p className="text-red-500 text-xs">*Número obrigatório</p>
+              )}
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomInput
                 name="complement"
-                label="Complemento"
-                fullWidth
+                type="text"
+                placeholder="Complemento"
                 value={form.complement}
                 onChange={handleChange}
-                size="small"
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
+              <CustomInput
                 name="neighborhood"
-                label="Bairro"
-                fullWidth
+                type="text"
+                placeholder="Complemento"
                 value={form.neighborhood}
                 onChange={handleChange}
-                required
-                size="small"
-                error={errors.neighborhood}
-                helperText={errors.neighborhood ? 'Este campo é obrigatório' : ''}
-                sx={{
-                  '& .MuiOutlinedInput-root': { '&.Mui-error': { borderColor: 'red' } },
-                }}
               />
+              {errors.neighborhood && (
+                <p className="text-red-500 text-xs">*Bairro obrigatório</p>
+              )}
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomInput
                 name="city"
-                label="Cidade"
-                fullWidth
+                type="text"
+                placeholder="Cidade"
                 value={form.city}
                 onChange={handleChange}
-                required
-                size="small"
-                error={errors.city}
-                helperText={errors.city ? 'Este campo é obrigatório' : ''}
-                sx={{
-                  '& .MuiOutlinedInput-root': { '&.Mui-error': { borderColor: 'red' } },
-                }}
               />
+              {errors.city && <p className="text-red-500 text-xs">*Cidade obrigatório</p>}
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <CustomInput
                 name="state"
-                label="Estado"
-                fullWidth
+                type="text"
+                placeholder="Cidade"
                 value={form.state}
                 onChange={handleChange}
-                required
-                size="small"
-                error={errors.state}
-                helperText={errors.state ? 'Este campo é obrigatório' : ''}
-                sx={{
-                  '& .MuiOutlinedInput-root': { '&.Mui-error': { borderColor: 'red' } },
-                }}
               />
+              {errors.state && (
+                <p className="text-red-500 text-xs">*Estado obrigatório</p>
+              )}
             </Grid>
           </Grid>
         </>
