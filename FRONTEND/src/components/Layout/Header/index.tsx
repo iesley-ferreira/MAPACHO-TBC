@@ -68,7 +68,6 @@ const Header: React.FC<HeaderProps> = ({
   const [overlayVisible, setOverlayVisible] = useState(false);
   const { idProduto } = queryString.parse(location.search);
   const matchCart = useMatch('/carrinho');
-  const matchUser = useMatch('/usuario');
   const totalItems = items.reduce((sum, item) => sum + item.quantidade, 0);
 
   useEffect(() => {

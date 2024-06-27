@@ -123,7 +123,7 @@ const Auth: React.FC = () => {
   };
 
   return (
-    <section className="relative pt-28 bg-gray-50 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center bg-gray-50 overflow-hidden">
       <img
         className="absolute top-0 left-0 md:ml-20"
         src="/public/assets/shadow-light-top.png"
@@ -190,10 +190,7 @@ const Auth: React.FC = () => {
             ) : (
               <p className="text-center mt-4 text-slate-600">
                 Não recebeu o código?{' '}
-                <button
-                  onClick={handleResendCode}
-                  className="text-cyanGreen-800 underline"
-                >
+                <button onClick={handleResendCode} className="text-purple-700 underline">
                   Reenviar código
                 </button>
               </p>

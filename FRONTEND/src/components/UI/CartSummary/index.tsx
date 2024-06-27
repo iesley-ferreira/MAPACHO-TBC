@@ -70,7 +70,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalPrice }) => {
         <InstallmentPlan totalPrice={getTotalWithDiscount()} />
       </div>
       <button
-        className="bg-green-500 py-3 px-4 rounded-md text-white text-center hover:bg-green-600 transition uppercase duration-200 w-full inline-block"
+        className="bg-gradient-to-br from-cyanGreen-800 to-cyan-800 py-3 px-4 rounded-md text-white text-center hover:bg-green-600 transition uppercase duration-200 w-full inline-block"
         onClick={() => handleGoToCheckout()}
       >
         Fechar pedido

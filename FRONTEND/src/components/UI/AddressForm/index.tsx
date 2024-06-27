@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/ducks/rootReducer';
 import { fetchAddressRequest } from '../../../store/ducks/shipping/actions';
-import ShippingOptions from '../ShippingOptions';
 import CustomInput from '../../common/CustomInput';
+import ShippingOptions from '../ShippingOptions';
 
 interface AddressFormProps {
   setIsFormValid: (isFormValid: boolean) => void;
@@ -106,8 +106,8 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
   };
 
   return (
-    <Box component="form" sx={{ mt: 3 }}>
-      <div className="border-b border-coolGray-200 mb-6">
+    <form className="max-w-xl">
+      <div className="border-b border-coolGray-200 mb-6 max-w-xl">
         <Typography component="h6" variant="h5" sx={{ mt: 2, mb: 2, color: '#22c55e' }}>
           <LocationOnIcon
             sx={{
@@ -138,7 +138,6 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
           {form.postalCode.length === 9 ? (
             <button
               className="group relative flex items-center justify-center px-5 h-11 w-full font-bold text-white bg-gradient-to-br from-violet-800 to-violet-400 rounded-lg transition-all duration-300 focus:outline-none"
-              type="submit"
               onClick={handleCepReset}
             >
               <div className="absolute top-0 left-0 w-full h-full rounded-lg  animate-pulse group-hover:ring-2 ring-indigo-300 transition duration-300"></div>
@@ -149,10 +148,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
               {loading ? (
                 <CircularProgress size={20} color="info" />
               ) : (
-                <button
-                  className="group relative flex items-center justify-center px-5 h-11 w-full font-bold text-white bg-gradient-to-br from-cyanGreen-800 to-cyan-800 rounded-lg transition-all duration-300 focus:outline-none"
-                  type="submit"
-                >
+                <button className="group relative flex items-center justify-center px-5 h-11 w-full font-bold text-white bg-gradient-to-br from-emerald-400 to-emerald-200 rounded-lg transition-all duration-300 focus:outline-none">
                   <div
                     className="absolute top-0 left-0 w-full h-full rounded-lg  animate-pulse transition duration-300 group-hover:ring-2
                   ring-green-300 "
@@ -246,7 +242,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
           </Grid>
         </>
       )}
-    </Box>
+    </form>
   );
 };
 

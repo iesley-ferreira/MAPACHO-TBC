@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import CustomizedSteppers from '../../components/UI/CustomizedSteppers';
 import OrderView from '../../components/UI/OrderView';
 import PaymentMethods from '../../components/UI/PaymentMethods';
 import { RootState } from '../../store/ducks/rootReducer';
@@ -22,8 +23,11 @@ const Payment: React.FC = () => {
   };
 
   return (
-    <section className="pt-28 pb-16">
-      <div className="container mx-auto px-3">
+    <section className=" min-h-screen flex items-center justify-center pb-16">
+      <div className="container mx-auto px-3 py-10">
+        <div className="customStepper flex align-center justify-center w-full py-16">
+          <CustomizedSteppers activeStep={1} />
+        </div>
         <div className="flex flex-wrap justify-center -m-8">
           <div className="w-full md:w-7/12 p-8 lg:max-w-xl">
             <PaymentMethods totalPrice={getTotalWithShippingAndDiscount()} />

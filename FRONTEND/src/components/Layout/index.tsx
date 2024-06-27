@@ -7,7 +7,7 @@ import Header from './Header';
 
 const Layout: React.FC = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const isLoginPage = useMatch('/login');
   const isSignUpPage = useMatch('/cadastro');
   const isUserPage = useMatch('/usuario');
@@ -17,12 +17,15 @@ const Layout: React.FC = () => {
     <div className="flex flex-col">
       <Header
         showMenu={showMenu}
-        setDrawerOpen={setDrawerOpen}
-        drawerOpen={drawerOpen}
         setShowMenu={setShowMenu}
+        drawerOpen={cartDrawerOpen}
+        setDrawerOpen={setCartDrawerOpen}
       />
       <DrawerMenu isOpen={showMenu} onClose={() => setShowMenu(false)} />
-      <CartDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      <CartDrawer
+        open={cartDrawerOpen}
+        setCartDrawerOpen={() => setCartDrawerOpen(false)}
+      />
       <main className="flex-grow">
         <Outlet />
       </main>

@@ -40,7 +40,7 @@ const Home: React.FC = () => {
     dispatch(
       fetchProductsRequest({
         page,
-        limit: 4,
+        limit: 20,
         categoryId: category?.toString(),
         searchValue,
       }),

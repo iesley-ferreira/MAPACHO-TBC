@@ -29,6 +29,8 @@ const UserOrders: React.FC<UserOrdersProps> = ({ orders }) => {
     }
   };
 
+  console.log('ORDERS', orders);
+
   return (
     <section className="flex items-center w-full py-8">
       <div className="container md:max-w-4xl px-4 mx-auto rounded-sm overflow-hidden">

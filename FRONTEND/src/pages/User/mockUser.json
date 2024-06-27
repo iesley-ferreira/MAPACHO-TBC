@@ -1,12 +1,13 @@
 {
   "user": {
     "id": 1,
-    "token": "token",
+    "date": "01-01-2024",
     "name": "John Doe",
     "email": "John.Doe@example.com",
     "img_profile": "/public/assets/avatar1.png",
     "cell_phone": "(53) 98409-3333",
     "created_at": "01-01-2024",
+    "isPending": false,
     "address": {
       "zip_code": "12345678",
       "street": "Rua dos Bobos",
@@ -20,6 +21,7 @@
       {
         "id": 8764542,
         "total": 9.5,
+        "date": "01-01-2024",
         "status": "entregue",
         "created_at": "02-04-2024",
         "products": [
@@ -70,6 +72,7 @@
       {
         "id": 32542523,
         "total": 58,
+        "date": "01-01-2024",
         "status": "enviado",
         "created_at": "13-06-2024",
         "products": [

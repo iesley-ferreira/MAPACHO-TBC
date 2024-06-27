@@ -1,6 +1,7 @@
 import { Grid, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { IUser } from '../../../interfaces/User';
+import CustomButton from './CustomConfigButton';
 
 type UserConfigProps = {
   user: IUser;
@@ -120,18 +121,22 @@ const UserConfig: React.FC<UserConfigProps> = ({ user, onClose }) => {
           ></i>
           {isEditing.img && (
             <div className="flex justify-end mt-2">
-              <button
-                className="mr-2 px-4 py-2 bg-green-500 text-white rounded"
-                onClick={() => handleSave('img')}
-              >
-                Salvar
-              </button>
-              <button
-                className="px-4 py-2 bg-red-500 text-white rounded"
-                onClick={() => handleCancel('img')}
+              <CustomButton
+                onClick={handleCancel}
+                inputType="password"
+                backgroundColor="bg-[#D6E4D4]"
+                textColor="text-green-700"
               >
                 Cancelar
-              </button>
+              </CustomButton>
+              <CustomButton
+                onClick={handleSave}
+                inputType="password"
+                backgroundColor="bg-green-500"
+                textColor="text-gray-100"
+              >
+                Salvar
+              </CustomButton>
             </div>
           )}
         </div>
@@ -157,18 +162,22 @@ const UserConfig: React.FC<UserConfigProps> = ({ user, onClose }) => {
                 />
               </Grid>
               <div className="flex justify-end mt-2">
-                <button
-                  className="mr-2 px-4 py-2 bg-green-500 text-white rounded"
-                  onClick={() => handleSave('name')}
-                >
-                  Salvar
-                </button>
-                <button
-                  className="px-4 py-2 bg-red-500 text-white rounded"
-                  onClick={() => handleCancel('name')}
+                <CustomButton
+                  onClick={handleCancel}
+                  inputType="password"
+                  backgroundColor="bg-[#D6E4D4]"
+                  textColor="text-green-700"
                 >
                   Cancelar
-                </button>
+                </CustomButton>
+                <CustomButton
+                  onClick={handleSave}
+                  inputType="password"
+                  backgroundColor="bg-green-500"
+                  textColor="text-gray-100"
+                >
+                  Salvar
+                </CustomButton>
               </div>
             </>
           ) : (
@@ -203,18 +212,22 @@ const UserConfig: React.FC<UserConfigProps> = ({ user, onClose }) => {
                 />
               </Grid>
               <div className="flex justify-end mt-2">
-                <button
-                  className="mr-2 px-4 py-2 bg-green-500 text-white rounded"
-                  onClick={() => handleSave('email')}
-                >
-                  Salvar
-                </button>
-                <button
-                  className="px-4 py-2 bg-red-500 text-white rounded"
-                  onClick={() => handleCancel('email')}
+                <CustomButton
+                  onClick={handleCancel}
+                  inputType="password"
+                  backgroundColor="bg-[#D6E4D4]"
+                  textColor="text-green-700"
                 >
                   Cancelar
-                </button>
+                </CustomButton>
+                <CustomButton
+                  onClick={handleSave}
+                  inputType="password"
+                  backgroundColor="bg-green-500"
+                  textColor="text-gray-100"
+                >
+                  Salvar
+                </CustomButton>
               </div>
             </>
           ) : (
@@ -318,18 +331,22 @@ const UserConfig: React.FC<UserConfigProps> = ({ user, onClose }) => {
                 </Grid>
               </Grid>
               <div className="flex justify-end mt-2">
-                <button
-                  className="mr-2 px-4 py-2 bg-green-500 text-white rounded"
-                  onClick={() => handleSave('address')}
-                >
-                  Salvar
-                </button>
-                <button
-                  className="px-4 py-2 bg-red-500 text-white rounded"
-                  onClick={() => handleCancel('address')}
+                <CustomButton
+                  onClick={handleCancel}
+                  inputType="password"
+                  backgroundColor="bg-[#D6E4D4]"
+                  textColor="text-green-700"
                 >
                   Cancelar
-                </button>
+                </CustomButton>
+                <CustomButton
+                  onClick={handleSave}
+                  inputType="password"
+                  backgroundColor="bg-green-500"
+                  textColor="text-gray-100"
+                >
+                  Salvar
+                </CustomButton>
               </div>
             </>
           ) : (
@@ -416,18 +433,22 @@ const UserConfig: React.FC<UserConfigProps> = ({ user, onClose }) => {
                 </Grid>
               </Grid>
               <div className="flex justify-end mt-2">
-                <button
-                  className="mr-2 px-4 py-2 bg-green-500 text-white rounded"
-                  onClick={() => handleSave('password')}
-                >
-                  Salvar
-                </button>
-                <button
-                  className="px-4 py-2 bg-red-500 text-white rounded"
-                  onClick={() => handleCancel('password')}
+                <CustomButton
+                  onClick={handleCancel}
+                  inputType="password"
+                  backgroundColor="bg-[#D6E4D4]"
+                  textColor="text-green-700"
                 >
                   Cancelar
-                </button>
+                </CustomButton>
+                <CustomButton
+                  onClick={handleSave}
+                  inputType="password"
+                  backgroundColor="bg-green-500"
+                  textColor="text-gray-100"
+                >
+                  Salvar
+                </CustomButton>
               </div>
             </>
           ) : (

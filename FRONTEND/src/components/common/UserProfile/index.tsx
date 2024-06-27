@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { IUser } from '../../../interfaces/User';
-import { dateFormatter } from '../../../utils/dateFormatter';
 import UserConfig from '../../UI/UserConfig';
 import UserProfileImage from './UserProfileImage';
 
@@ -37,18 +36,20 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
               {user.name}
             </h2>
           </div>
-          {user.created_at && (
-            <p className="mb-6 text-gray-600 md:max-w-xs mx-auto">
-              {dateFormatter(user.created_at)}
-            </p>
-          )}
+          {/* {user.created_at && ( */}
+          <p className="mb-6 text-gray-600 md:max-w-xs mx-auto">
+            {/* {dateFormatter(user.created_at)} */}
+            20/10/2021
+          </p>
+          {/* )} */}
           <ul className="relative">
-            {user.cell_phone && (
-              <li className="flex flex-wrap items-center justify-center mb-4">
-                <i className="ri-phone-line mr-2 md:text-2xl"></i>
-                <p>{user.cell_phone}</p>
-              </li>
-            )}
+            {/* {user.cell_phone && ( */}
+            <li className="flex flex-wrap items-center justify-center mb-4">
+              <i className="ri-phone-line mr-2 md:text-2xl"></i>
+              <p>{user.cell_phone}</p>
+              <p>(53)984097585</p>
+            </li>
+            {/* )} */}
             <li className="flex flex-wrap items-center justify-center">
               <i className="ri-mail-line mr-2 md:text-2xl"></i>
               <p className="text-center align-text-bottom">{user.email}</p>

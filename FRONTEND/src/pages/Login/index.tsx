@@ -57,15 +57,15 @@ const Login: React.FC = () => {
   };
 
   return (
-    <section className="relative pt-28 pb-32 bg-gray-50 overflow-hidden">
+    <section className="relative bg-gray-50 overflow-hidden">
       <img
         className="absolute top-0 left-0 md:ml-20"
         src="/public/assets/shadow-light-top.png"
         alt="shadow-light-top"
       />
-      <div className="relative container px-4 mx-auto">
-        <div>
-          <div className="max-w-sm mx-auto">
+      <div className="relative container mx-auto">
+        <div className="min-h-screen flex items-center justify-center px-4">
+          <div className="w-full max-w-sm mx-auto">
             <div className="text-center mb-20">
               <h3
                 className="font-heading tracking-tight text-4xl font-bold mb-4"

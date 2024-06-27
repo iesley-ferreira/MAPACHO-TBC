@@ -120,7 +120,7 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
                     mb: 0,
                     borderBottom: '1px solid #ccc',
                     backgroundColor:
-                      expandedItemId === category.id ? '#a1cebd' : 'inherit',
+                      expandedItemId === category.id ? '#f5f5f5' : 'inherit',
                   }}
                 >
                   <ListItemText primary={category.descricao} />
