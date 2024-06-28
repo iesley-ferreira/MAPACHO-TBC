@@ -34,7 +34,7 @@ const Cart: React.FC = () => {
   );
 
   return (
-    <section className=" bg-gray-50 flex items-center justify-center min-h-screen">
+    <section className=" bg-gray-50 pt-20 pb-20 flex items-center justify-center min-h-screen">
       <div className="container px-4 mx-auto md:max-w-7xl">
         <h1 className="font-heading text-coolGray-800 text-3xl font-semibold mb-6">
           Carrinho

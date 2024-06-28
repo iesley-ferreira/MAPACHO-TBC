@@ -109,7 +109,16 @@ const Home: React.FC = () => {
                 <Button
                   onClick={loadMoreProducts}
                   disabled={disableButtonShowMore}
-                  sx={{ mb: 10 }}
+                  sx={{
+                    mb: 10,
+                    color: 'rgb(5 150 105)',
+                    '&:disabled': { backgroundColor: 'rgb(134 239 172)', color: 'white' },
+                    '&:hover': {
+                      backgroundColor: 'rgb(5 150 105)',
+                      color: 'white',
+                      transform: 'scale(1.02)',
+                    },
+                  }}
                 >
                   Mostrar Mais Produtos
                 </Button>

@@ -1,6 +1,8 @@
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Collapse,
+  Divider,
   Drawer,
   IconButton,
   List,
@@ -102,11 +104,14 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
         '& .MuiDrawer-paper': { width: 310 },
       }}
     >
-      <IconButton onClick={onClose} sx={{ position: 'absolute', top: 6, right: 10 }}>
-        <i className="ri-close-fill"></i>
-      </IconButton>
-      <div style={{ padding: 26 }}>
+      <div className="flex justify-between items-center p-4">
         <h1 className="font-heading uppercase text-1xl">Categorias</h1>
+        <IconButton onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      </div>
+      <Divider />
+      <div>
         <List>
           {categories
             .filter((c) => c.categoriaPai.id === 0)
@@ -116,9 +121,10 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
                   button
                   onClick={() => renderSubcategory(category.id, category.descricao)}
                   sx={{
-                    pl: 2,
+                    px: 4,
+                    py: 1.2,
                     mb: 0,
-                    borderBottom: '1px solid #ccc',
+                    borderBottom: '1px solid #cccc',
                     backgroundColor:
                       expandedItemId === category.id ? '#f5f5f5' : 'inherit',
                   }}
@@ -134,7 +140,6 @@ const DrawerMenu: React.FC<DrawerMenuProps> = ({ isOpen, onClose }) => {
                   <List
                     sx={{
                       pl: 2,
-                      // backgroundColor: '#f9f9f9',
                       borderRadius: '8px',
                     }}
                     component="div"
