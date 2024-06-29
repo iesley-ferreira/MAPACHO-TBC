@@ -147,7 +147,7 @@ const Header: React.FC<HeaderProps> = ({
         style={{ position: 'fixed', top: 0, width: '100%', zIndex: 10 }}
       >
         {(matchHome || matchCategory || matchSubcategory) && (
-          <button onClick={toggleMenu}>
+          <button onClick={toggleMenu} className="lg:hidden">
             <i className="ri-menu-fill text-brand-secondary"></i>
           </button>
         )}

@@ -84,8 +84,8 @@ const CartList: React.FC<CartListProps> = ({ cartItems }) => {
             </div>
           </div>
         ))}
-        <div className="pt-5 border-t border-gray-50">
-          <div className="flex items-center justify-between flex-wrap px-2 mb-6">
+        <div className="pt-4 border-t border-gray-50">
+          <div className="flex items-center justify-between flex-wrap px-2">
             <p className="text-xl font-semibold">Total</p>
             <p className="text-xl font-semibold text-green-900">
               {priceFormatter.format(
