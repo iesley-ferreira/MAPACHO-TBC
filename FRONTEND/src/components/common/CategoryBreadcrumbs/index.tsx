@@ -17,7 +17,7 @@ const CategoryBreadcrumbs: React.FC<CategoryBreadcrumbsProps> = ({
   searchValue,
 }) => {
   return (
-    <div style={{ width: '100%', textAlign: 'left', padding: '20px' }}>
+    <div style={{ textAlign: 'left', paddingLeft: '20px', paddingBottom: '12px' }}>
       <Breadcrumbs
         aria-label="breadcrumb"
         separator={<NavigateNextIcon fontSize="small" />}
@@ -31,7 +31,7 @@ const CategoryBreadcrumbs: React.FC<CategoryBreadcrumbsProps> = ({
 
         {selectedCategoryName && (
           <Typography color="inherit">
-            {selectedCategoryName} {selectedSubCategoryName}
+            {selectedCategoryName} / {selectedSubCategoryName}
           </Typography>
         )}
       </Breadcrumbs>
