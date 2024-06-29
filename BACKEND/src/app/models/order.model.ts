@@ -3,7 +3,7 @@
 import prisma from '../../providers/prisma.provider';
 import { OrderInputType } from '../../types/Order.type';
 
-export const createOrder = async ({ userId, products, total }: OrderInputType) => {
+const createOrder = async ({ userId, products, total }: OrderInputType) => {
   return await prisma.order.create({
     data: {
       user_id: userId,
@@ -26,3 +26,10 @@ export const createOrder = async ({ userId, products, total }: OrderInputType) =
     },
   });
 };
+
+const orderModel = {
+  createOrder,
+}
+
+export default orderModel;
+

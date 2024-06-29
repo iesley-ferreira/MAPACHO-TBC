@@ -5,8 +5,6 @@ import { AuthBlingUpdateType } from "../types/AuthBling.type";
 import { env } from "../env";
 import cache from "../cache";
 
-const now = new Date();
-
 const credentials = Buffer.from(
   `${env.CLIENT_ID}:${env.CLIENT_SECRET}`,
 ).toString("base64");

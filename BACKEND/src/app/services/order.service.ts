@@ -1,8 +1,8 @@
 import { OrderInputType } from '../../types/Order.type';
-import { createOrder } from '../models/order.model';
+import orderModel from '../models/order.model';
 
 const addOrder = async (orderData: OrderInputType) => {
-  const newOrder = await createOrder(orderData);
+  const newOrder = await orderModel.createOrder(orderData);
 
   return {
     data: {

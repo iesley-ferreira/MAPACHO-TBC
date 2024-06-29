@@ -18,6 +18,9 @@ const envSchema = z.object({
   MAIL_USER: z.string(),
   MAIL_PASS: z.string(),
   MAIL_FROM: z.string(),
+  PORT_SERVER: z.string().optional(),
+  MERCADO_PAGO_PUBLIC_KEY: z.string(),
+  MERCADO_PAGO_ACCESS_TOKEN: z.string()
 });
 
 export const env = envSchema.parse(process.env);

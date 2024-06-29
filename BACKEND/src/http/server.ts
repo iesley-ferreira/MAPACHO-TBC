@@ -1,7 +1,8 @@
 import { app } from '../app';
 import { refresh_token_init } from '../common/refresh_token_init';
+import { env } from '../env';
 
-const { PORT_SERVER } = process.env;
+const { PORT_SERVER } = env;
 
 const PORT = PORT_SERVER || '3333';
 
