@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Outlet, useMatch } from 'react-router-dom';
 import CartDrawer from './CartDrawer';
-import DrawerMenu from './DrawerMenu';
 import Footer from './Footer';
 import Header from './Header';
+import MenuDrawer from './MenuDrawer';
 
 const Layout: React.FC = () => {
-  const [showMenu, setShowMenu] = useState(false);
+  const [menuDrawerOpen, setMenuDrawerOpen] = useState(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const isLoginPage = useMatch('/login');
   const isSignUpPage = useMatch('/cadastro');
@@ -16,16 +16,13 @@ const Layout: React.FC = () => {
   return (
     <div className="flex flex-col">
       <Header
-        showMenu={showMenu}
-        setShowMenu={setShowMenu}
-        drawerOpen={cartDrawerOpen}
-        setDrawerOpen={setCartDrawerOpen}
+        menuDrawerOpen={menuDrawerOpen}
+        setMenuDrawerOpen={setMenuDrawerOpen}
+        cartDrawerOpen={cartDrawerOpen}
+        setCartDrawerOpen={setCartDrawerOpen}
       />
-      <DrawerMenu isOpen={showMenu} onClose={() => setShowMenu(false)} />
-      <CartDrawer
-        open={cartDrawerOpen}
-        setCartDrawerOpen={() => setCartDrawerOpen(false)}
-      />
+      <MenuDrawer menuDrawerOpen={menuDrawerOpen} setMenuDrawerOpen={setMenuDrawerOpen} />
+      <CartDrawer cartDrawerOpen={cartDrawerOpen} setCartDrawerOpen={setCartDrawerOpen} />
       <main className="flex-grow">
         <Outlet />
       </main>

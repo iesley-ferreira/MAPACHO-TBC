@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useMatch, useNavigate } from 'react-router-dom';
 import 'remixicon/fonts/remixicon.css';
+import { fetchCategoriesRequest } from '../../../store/ducks/categories/actions';
 import {
   setDisableButtonShowMore,
   setNewCategoryNames,
@@ -17,10 +18,10 @@ import { RootState } from '../../../store/ducks/rootReducer';
 import Logo01 from '../../common/Logo/Logo01';
 
 interface HeaderProps {
-  showMenu: boolean;
-  drawerOpen: boolean;
-  setShowMenu: (show: boolean) => void;
-  setDrawerOpen: (drawerOpen: boolean) => void;
+  menuDrawerOpen: boolean;
+  cartDrawerOpen: boolean;
+  setMenuDrawerOpen: (menuDrawerOpen: boolean) => void;
+  setCartDrawerOpen: (cartDrawerOpen: boolean) => void;
 }
 
 const brandSecondaryColor = 'var(--brand-secondary)';
@@ -43,10 +44,10 @@ const StyledBadge = styled(Badge)<BadgeProps>(() => ({
 }));
 
 const Header: React.FC<HeaderProps> = ({
-  showMenu,
-  setShowMenu,
-  drawerOpen,
-  setDrawerOpen,
+  menuDrawerOpen,
+  cartDrawerOpen,
+  setMenuDrawerOpen,
+  setCartDrawerOpen,
 }) => {
   const { items } = useSelector((state: RootState) => state.cart);
   const [showSearch, setShowSearch] = useState(false);
@@ -71,6 +72,10 @@ const Header: React.FC<HeaderProps> = ({
   const totalItems = items.reduce((sum, item) => sum + item.quantidade, 0);
 
   useEffect(() => {
+    dispatch(fetchCategoriesRequest());
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.pageYOffset;
       const windowHeight = window.innerHeight;
@@ -93,11 +98,11 @@ const Header: React.FC<HeaderProps> = ({
   }, [items]);
 
   const toggleMenu = () => {
-    setShowMenu(!showMenu);
+    setMenuDrawerOpen(!menuDrawerOpen);
   };
 
   const toggleCartDrawer = () => {
-    setDrawerOpen(!drawerOpen);
+    setCartDrawerOpen(!cartDrawerOpen);
   };
 
   const toggleSearch = () => {
