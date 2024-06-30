@@ -9,11 +9,13 @@ interface ProductsProps {
 const Products: React.FC<ProductsProps> = ({ products }) => {
   return (
     <section className="">
-      <div className=" px-6 ">
-        <div className="flex justify-center lg:justify-between flex-wrap -mb-6 -mx-4">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+      <div className="flex justify-center w-full px-4 ">
+        <div className="w-fit">
+          <div className="flex justify-center lg:justify-start flex-wrap -mb-6 -mx-4">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -12,6 +12,13 @@ const ApplyCupom: React.FC = () => {
     dispatch(applyDiscountCode(couponCode));
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleApplyCoupon();
+    }
+  };
+
   return (
     <form className="pb-4 border-b border-coolGray-200 mb-4">
       <p className="text-rhino-800 mb-4">Aplicar cupom de desconto:</p>
@@ -21,6 +28,7 @@ const ApplyCupom: React.FC = () => {
           type="text"
           placeholder="CUPOM"
           value={couponCode}
+          onKeyDown={handleKeyDown}
           onChange={(e) => setCouponCode(e.target.value)}
         />
         <button

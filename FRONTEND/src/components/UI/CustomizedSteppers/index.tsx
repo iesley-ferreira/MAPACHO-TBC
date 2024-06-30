@@ -81,7 +81,7 @@ const steps = ['Entrega', 'Pagamento', 'Compra Finalizada'];
 
 const CustomizedSteppers: React.FC<CustomizedSteppersProps> = ({ activeStep }) => {
   return (
-    <Stack sx={{ width: '100%', maxWidth: '600px' }} spacing={4}>
+    <Stack sx={{ width: '100%', maxWidth: '700px' }} spacing={4}>
       <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
         {steps.map((label, index) => (
           <Step key={label} completed={activeStep > index}>

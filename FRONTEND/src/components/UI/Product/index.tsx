@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import CalculateFreight from '../../components/UI/CalculateFreight';
-import InstallmentPlan from '../../components/UI/InstallmentPlan';
-import AddIcon from '../../components/common/AddIcon';
-import RemoveIcon from '../../components/common/RemoveIcon';
-import { addProductToCart } from '../../store/ducks/cart/actions';
-import { fetchProductRequest } from '../../store/ducks/products/actions';
-import { RootState } from '../../store/ducks/rootReducer';
-import { priceFormatter } from '../../utils/priceFormatter';
+import { addProductToCart } from '../../../store/ducks/cart/actions';
+import { fetchProductRequest } from '../../../store/ducks/products/actions';
+import { RootState } from '../../../store/ducks/rootReducer';
+import { priceFormatter } from '../../../utils/priceFormatter';
+import AddIcon from '../../common/AddIcon';
+import RemoveIcon from '../../common/RemoveIcon';
+import CalculateFreight from '../CalculateFreight';
+import InstallmentPlan from '../InstallmentPlan';
 import { convertProductIdToProduct } from './helpers';
 
 // const useQuery = () => {
@@ -76,8 +76,14 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
     );
   }
 
+  const handleKeepBuying = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('idProduto');
+    window.location.href = url.toString();
+  };
+
   return (
-    <section className="py-6 md:py-20 mt-14">
+    <section className="py-6 px-2 md:py-20 mt-14">
       {loading ? (
         <Box
           sx={{
@@ -175,15 +181,15 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
                     </div>
                     <div className="mb-4 flex flex-wrap gap-4">
                       <button
-                        className="uppercase inline-block flex-1 w-full px-3 py-4 rounded-md text-center text-green-500 border border-green-500 text-sm font-medium bg-white hover:bg-green-100 transition duration-200"
-                        onClick={() => navigate(-1)}
+                        className="uppercase inline-block flex-1 w-full px-3 py-4 rounded-md text-center text-emerald-500 border border-emerald-500 text-sm font-medium bg-white hover:bg-emerald-100 active:scale-105 transition duration-200"
+                        onClick={handleKeepBuying}
                       >
                         Continuar comprando
                       </button>
                     </div>
                     <div className="mb-8 flex flex-wrap gap-4">
                       <button
-                        className="uppercase inline-block flex-1 w-full px-3 py-4 rounded-md text-center text-white text-sm font-medium bg-green-500 hover:bg-green-600 transition duration-200"
+                        className="uppercase inline-block flex-1 w-full px-3 py-4 rounded-md text-center text-white text-sm font-medium bg-emerald-500 hover:bg-emerald-600 active:scale-105 transition duration-200"
                         onClick={handleAddToCart}
                       >
                         Adicionar ao carrinho

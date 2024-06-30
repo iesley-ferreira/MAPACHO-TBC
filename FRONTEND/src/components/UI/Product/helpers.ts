@@ -1,4 +1,4 @@
-import { IProduct, IProductId } from '../../interfaces/Product'
+import { IProduct, IProductId } from '../../../interfaces/Product';
 
 export const convertProductIdToProduct = (productId: IProductId): IProduct => {
   return {
@@ -12,5 +12,5 @@ export const convertProductIdToProduct = (productId: IProductId): IProduct => {
     formato: productId.formato,
     descricaoCurta: productId.descricaoCurta,
     imagemURL: productId.midia?.imagens?.externas[0]?.link || '',
-  }
-}
+  };
+};

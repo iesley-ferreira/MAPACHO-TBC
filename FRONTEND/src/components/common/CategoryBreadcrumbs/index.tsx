@@ -17,7 +17,7 @@ const CategoryBreadcrumbs: React.FC<CategoryBreadcrumbsProps> = ({
   searchValue,
 }) => {
   return (
-    <div style={{ textAlign: 'left', paddingLeft: '20px', paddingBottom: '12px' }}>
+    <div className="text-left pl-5 pb-8 md:pb-4">
       <Breadcrumbs
         aria-label="breadcrumb"
         separator={<NavigateNextIcon fontSize="small" />}

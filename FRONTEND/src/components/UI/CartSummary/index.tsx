@@ -38,8 +38,10 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalPrice }) => {
           <p className="text-rhino-800 mb-4">Desconto</p>
 
           <div className="flex flex-wrap gap-2 justify-between items-center mb-4">
-            <p className="text-lime-500 font-semibold">{code}</p>
-            <p className="text-lime-500">- {priceFormatter.format(totalPrice * value)}</p>
+            <p className="text-emerald-500 font-semibold">{code}</p>
+            <p className="text-emerald-500">
+              - {priceFormatter.format(totalPrice * value)}
+            </p>
           </div>
         </div>
       ) : (
@@ -70,7 +72,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalPrice }) => {
         <InstallmentPlan totalPrice={getTotalWithDiscount()} />
       </div>
       <button
-        className="bg-gradient-to-br from-cyanGreen-800 to-cyan-800 py-3 px-4 rounded-md text-white text-center hover:bg-green-600 transition uppercase duration-200 w-full inline-block"
+        className="bg-emerald-500 hover:bg-emerald-600 py-3 px-4 rounded-md text-white text-center  transition active:scale-105 uppercase duration-200 w-full inline-block"
         onClick={() => handleGoToCheckout()}
       >
         Fechar pedido

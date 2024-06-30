@@ -23,13 +23,13 @@ const Payment: React.FC = () => {
   };
 
   return (
-    <section className=" min-h-screen flex items-center justify-center pb-16">
-      <div className="container mx-auto px-3 py-10">
+    <section className="min-h-screen w-full flex-col flex items-center justify-center p-4 pb-16">
+      <div className="container mx-auto py-10">
         <div className="customStepper flex align-center justify-center w-full py-16">
           <CustomizedSteppers activeStep={1} />
         </div>
         <div className="flex flex-wrap justify-center -m-8">
-          <div className="w-full md:w-7/12 p-8 lg:max-w-xl">
+          <div className="w-full md:w-7/12 p-4 lg:max-w-xl">
             <PaymentMethods totalPrice={getTotalWithShippingAndDiscount()} />
           </div>
           <div className="w-full md:w-5/12 p-8">
