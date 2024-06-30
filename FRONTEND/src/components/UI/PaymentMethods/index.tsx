@@ -1,7 +1,14 @@
+import { initMercadoPago } from '@mercadopago/sdk-react';
 import React, { useState } from 'react';
 import CustomInput from '../../common/CustomInput';
 import InstallmentPlan from '../InstallmentPlan';
 import { PixQRCode } from './PaymentComponents';
+import IconCreditCard from './svgs/IconCreditCard';
+import IconMercadoPago from './svgs/IconMercadoPago';
+import IconPaypal from './svgs/IconPaypal';
+import IconPix from './svgs/IconPix';
+
+initMercadoPago('YOUR_PUBLIC_KEY');
 
 interface PaymentMethodsProps {
   totalPrice: number;
@@ -48,11 +55,22 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({ totalPrice }) => {
     return cvv.replace(/\D/g, '').slice(0, 3);
   };
 
+  const handlePaymentSuccess = (paymentId: string) => {
+    // Lógica para lidar com o pagamento aprovado (enviar para o backend, atualizar UI, etc.)
+  };
+
+  const handlePaymentError = (error: any) => {
+    // Lógica para lidar com erros no pagamento
+  };
+
+  const items = [
+    { title: 'Produto A', quantity: 2, unit_price: 15.5 },
+    { title: 'Produto B', quantity: 1, unit_price: 20 },
+  ];
+
   return (
     <div className="w-full  mb-8 px-4 py-6 border border-gray-100 rounded-lg">
-      <h3 className="pb-4 text-xl text-center font-semibold">
-        Selecione o método de pagamento
-      </h3>
+      <h3 className="pb-4 text-xl text-center font-semibold">Meios de Pagamento</h3>
       <div className="mb-4 border border-gray-100 rounded-lg">
         <div className="p-4 border-b border-gray-100">
           <div className="flex flex-wrap justify-between -m-2 items-center">
@@ -88,7 +106,7 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({ totalPrice }) => {
               </label>
             </div>
             <div className="w-auto p-2">
-              <i className="ri-bank-card-fill" style={{ fontSize: 30 }}></i>
+              <IconCreditCard />
             </div>
           </div>
         </div>
@@ -188,10 +206,54 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({ totalPrice }) => {
                 </label>
               </div>
               <div className="w-auto p-2">
-                <i className="ri-paypal-fill" style={{ fontSize: 30 }}></i>
+                <IconPaypal />
               </div>
             </div>
             {/* {selectedMethod === 'paypal' && <PayPalGateway />} */}
+          </div>
+        </div>
+        <div className="w-full p-2">
+          <div className="p-4 border border-gray-100 rounded-lg">
+            <div className="flex flex-wrap items-center justify-between -m-2">
+              <div className="w-auto p-2">
+                <label className="relative flex items-center gap-2">
+                  <input
+                    className="custom-radio-1 opacity-0 absolute h-4 w-4"
+                    type="radio"
+                    name="payment-method"
+                    checked={selectedMethod === 'mercadopago'}
+                    onChange={() => handleMethodChange('mercadopago')}
+                  />
+                  <span className="border border-gray-600 w-4 h-4 flex justify-center items-center rounded-full">
+                    {selectedMethod === 'mercadopago' && (
+                      <svg
+                        className="fill-current"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="8"
+                        height="8"
+                        viewBox="0 0 8 8"
+                        fill="none"
+                      >
+                        <circle cx="4" cy="4" r="4" fill="#1E2238"></circle>
+                      </svg>
+                    )}
+                  </span>
+                  <p className="text-sm font-semibold whitespace-nowrap">Mercado Pago</p>
+                </label>
+              </div>
+              <div className="w-auto p-2">
+                <IconMercadoPago />
+              </div>
+            </div>
+            {selectedMethod === 'mercadopago' && (
+              <div>
+                {/* <MercadoPago
+                 onPaymentSuccess={handlePaymentSuccess}
+                 onPaymentError={handlePaymentError}
+                 transactionAmount={totalPrice}
+               /> */}
+              </div>
+            )}
           </div>
         </div>
         <div className="w-full p-2">
@@ -224,7 +286,7 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({ totalPrice }) => {
                 </label>
               </div>
               <div className="w-auto p-2">
-                <i className="ri-pixelfed-fill" style={{ fontSize: 30 }}></i>
+                <IconPix />
               </div>
             </div>
             {selectedMethod === 'pix' && <PixQRCode />}
