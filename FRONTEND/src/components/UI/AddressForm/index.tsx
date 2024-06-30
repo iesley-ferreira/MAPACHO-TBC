@@ -106,7 +106,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
   };
 
   return (
-    <form className="max-w-xl">
+    <form className="w-full max-w-xl">
       <div className="border-b border-coolGray-200 mb-6 max-w-xl">
         <Typography component="h6" variant="h5" sx={{ mt: 2, mb: 2, color: '#22c55e' }}>
           <LocationOnIcon
@@ -127,33 +127,37 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
         <Grid item xs={8}>
           <CustomInput
             name="postalCode"
+            id="postalCode"
             type="text"
             placeholder="CEP"
-            value={form.postalCode}
+            value={form.postalCode.replace(/^(\d{5})(\d)/, '$1-$2')}
             onChange={handleCepChange}
+            maxLength={9}
             disabled={form.postalCode.length === 9}
           />
         </Grid>
         <Grid item xs={4}>
           {form.postalCode.length === 9 ? (
             <button
-              className="group relative flex items-center justify-center px-5 h-11 w-full font-bold text-white bg-gradient-to-br from-violet-800 to-violet-400 rounded-lg transition-all duration-300 focus:outline-none"
+              className="group relative flex items-center justify-center px-5 h-10 w-full font-medium text-white shadow-md rounded-md text-sm uppercase focus:outline-none hover:scale-105 transition-all duration-300 bg-violet-600 "
               onClick={handleCepReset}
             >
-              <div className="absolute top-0 left-0 w-full h-full rounded-lg  animate-pulse group-hover:ring-2 ring-indigo-300 transition duration-300"></div>
-              <span>Alterar</span>
+              Alterar
             </button>
           ) : (
             <>
               {loading ? (
                 <CircularProgress size={20} color="info" />
               ) : (
-                <button className="group relative flex items-center justify-center px-5 h-11 w-full font-bold text-white bg-gradient-to-br from-emerald-400 to-emerald-200 rounded-lg transition-all duration-300 focus:outline-none">
-                  <div
-                    className="absolute top-0 left-0 w-full h-full rounded-lg  animate-pulse transition duration-300 group-hover:ring-2
-                  ring-green-300 "
-                  ></div>
-                  <span>Buscar</span>
+                <button
+                  className={`group relative flex items-center justify-center px-5 h-10 w-full font-medium text-white shadow-md rounded-md text-sm uppercase focus:outline-none transition-all duration-300 ${
+                    form.postalCode.length < 9
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-emerald-400 hover:scale-105'
+                  }`}
+                  disabled={form.postalCode.length < 9}
+                >
+                  Buscar
                 </button>
               )}
             </>
@@ -175,10 +179,12 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
             <Grid item xs={12}>
               <CustomInput
                 name="address"
+                id="address"
                 type="text"
                 placeholder="Endereço"
                 value={form.address}
                 onChange={handleChange}
+                error={errors.address}
               />
               {errors.address && (
                 <p className="text-red-500 text-xs">*Endereço obrigatório</p>
@@ -187,10 +193,12 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
             <Grid item xs={12} sm={6}>
               <CustomInput
                 name="number"
+                id="number"
                 type="text"
                 placeholder="Número"
                 value={form.number}
                 onChange={handleChange}
+                error={errors.number}
               />
               {errors.number && (
                 <p className="text-red-500 text-xs">*Número obrigatório</p>
@@ -199,6 +207,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
             <Grid item xs={12} sm={6}>
               <CustomInput
                 name="complement"
+                id="complement"
                 type="text"
                 placeholder="Complemento"
                 value={form.complement}
@@ -208,10 +217,12 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
             <Grid item xs={12}>
               <CustomInput
                 name="neighborhood"
+                id="neighborhood"
                 type="text"
-                placeholder="Complemento"
+                placeholder="Bairro"
                 value={form.neighborhood}
                 onChange={handleChange}
+                error={errors.neighborhood}
               />
               {errors.neighborhood && (
                 <p className="text-red-500 text-xs">*Bairro obrigatório</p>
@@ -220,20 +231,24 @@ const AddressForm: React.FC<AddressFormProps> = ({ setIsFormValid }) => {
             <Grid item xs={12} sm={6}>
               <CustomInput
                 name="city"
+                id="city"
                 type="text"
                 placeholder="Cidade"
                 value={form.city}
                 onChange={handleChange}
+                error={errors.city}
               />
               {errors.city && <p className="text-red-500 text-xs">*Cidade obrigatório</p>}
             </Grid>
             <Grid item xs={12} sm={6}>
               <CustomInput
                 name="state"
+                id="state"
                 type="text"
-                placeholder="Cidade"
+                placeholder="Estado"
                 value={form.state}
                 onChange={handleChange}
+                error={errors.state}
               />
               {errors.state && (
                 <p className="text-red-500 text-xs">*Estado obrigatório</p>
