@@ -1,6 +1,7 @@
 import React, { CSSProperties, ChangeEvent } from 'react';
 
 interface CustomInputProps {
+  id?: string;
   value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
@@ -12,9 +13,11 @@ interface CustomInputProps {
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   maxLength?: number;
   disabled?: boolean;
+  error?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
+  id,
   type = 'text',
   name,
   value,
@@ -26,12 +29,15 @@ const CustomInput: React.FC<CustomInputProps> = ({
   maxLength,
   onBlur,
   disabled,
+  error = false,
 }) => {
   return (
     <input
-      className={`py-2 px-4 h-11 w-full text-gray-500 placeholder-gray-500 bg-white border border-gray-200 focus:border-yellowGreen-500 rounded-lg shadow-sm outline-none ring-1 ring-transparent focus:ring-yellowGreen-500 ${className}`}
+      className={`py-2 px-4 h-11 w-full text-gray-500 placeholder-gray-500 bg-white border border-gray-200 focus:border-yellowGreen-500 rounded-lg shadow-sm outline-none ring-1 ring-transparent focus:ring-yellowGreen-500 ${
+        error ? 'border-red-500' : 'border-gray-300'
+      } ${className}`}
+      id={id}
       type={type}
-      id={name}
       name={name}
       placeholder={placeholder}
       value={value}
