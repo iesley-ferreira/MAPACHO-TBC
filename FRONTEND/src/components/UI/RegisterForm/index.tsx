@@ -92,6 +92,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         <CustomInput
           type="text"
           name="nome"
+          id="nome"
           placeholder="Primeiro nome"
           value={formData.nome}
           onChange={handleChange}
@@ -105,6 +106,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         <CustomInput
           type="text"
           name="sobrenome"
+          id="sobrenome"
           placeholder="Segundo nome"
           value={formData.sobrenome}
           onChange={handleChange}
@@ -118,6 +120,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         <CustomInput
           type="tel"
           name="telefone"
+          id="telefone"
           placeholder="(XX) XXXXX-XXXX"
           maxLength={15}
           value={formData.telefone}
@@ -130,8 +133,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           Email
         </label>
         <CustomInput
-          type="text"
+          type="email"
           name="email"
+          id="email"
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
@@ -146,6 +150,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           <CustomInput
             type={showPassword ? 'text' : 'password'}
             name="senha"
+            id="senha"
             placeholder="Senha"
             value={formData.senha}
             onChange={handleChange}
@@ -168,6 +173,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           className="py-2 px-4 h-11 w-full text-gray-500 placeholder-gray-500 bg-white border border-gray-200 focus:border-yellowGreen-500 rounded-lg shadow-sm outline-none ring-1 ring-transparent focus:ring-yellowGreen-500"
           type={showPassword ? 'text' : 'password'}
           name="confirmarSenha"
+          id="confirmarSenha"
           placeholder="Confirmar Senha"
           value={formData.confirmarSenha}
           onChange={handleChange}

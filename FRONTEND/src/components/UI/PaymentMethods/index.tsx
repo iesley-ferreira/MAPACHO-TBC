@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import CustomInput from '../../common/CustomInput';
 import InstallmentPlan from '../InstallmentPlan';
 import { PixQRCode } from './PaymentComponents';
-import CustomInput from '../../common/CustomInput';
 
 interface PaymentMethodsProps {
   totalPrice: number;
@@ -9,13 +9,47 @@ interface PaymentMethodsProps {
 
 const PaymentMethods: React.FC<PaymentMethodsProps> = ({ totalPrice }) => {
   const [selectedMethod, setSelectedMethod] = useState<string>('');
+  const [cardDetails, setCardDetails] = useState({
+    cardNumber: '',
+    cardName: '',
+    cardExpiration: '',
+    cardCVV: '',
+  });
 
   const handleMethodChange = (method: string) => {
     setSelectedMethod(method);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    console.log('cardDetails', cardDetails);
+
+    setCardDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
+  };
+
+  const formatCardNumber = (number: string) => {
+    return number
+      .replace(/\D/g, '')
+      .replace(/(\d{4})(?=\d)/g, '$1 ')
+      .trim();
+  };
+
+  const formatExpirationDate = (date: string) => {
+    return date
+      .replace(/\D/g, '')
+      .replace(/^(\d{2})(\d{0,2})/, '$1/$2')
+      .slice(0, 5);
+  };
+
+  const formatCVV = (cvv: string) => {
+    return cvv.replace(/\D/g, '').slice(0, 3);
+  };
+
   return (
-    <div className="mb-8 px-4 py-6 border border-gray-100 rounded-lg">
+    <div className="w-full  mb-8 px-4 py-6 border border-gray-100 rounded-lg">
       <h3 className="pb-4 text-xl text-center font-semibold">
         Selecione o método de pagamento
       </h3>
@@ -65,40 +99,28 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({ totalPrice }) => {
                 Numero do cartão
               </label>
               <CustomInput
-                // id="input-01-1"
-                name="card-number"
-                type="password"
-                placeholder="**** **** **** ****"
-                onChange={() => {}}
-                value=""
-              />
-              {/* <input
                 id="input-01-1"
-                name="card-number"
-                type="password"
-                className="py-3 px-4 w-full text-sm placeholder-gray-500 outline-none border focus:border-gray-300 focus:ring focus:ring-gray-100 border-gray-100 rounded-lg transition duration-200"
+                name="cardNumber"
+                type="tel"
                 placeholder="**** **** **** ****"
-              /> */}
+                onChange={handleInputChange}
+                value={formatCardNumber(cardDetails.cardNumber)}
+                maxLength={19}
+              />
             </div>
             <div className="mb-4">
               <label htmlFor="input-01-2" className="mb-1.5 inline-block text-sm">
                 Nome impresso no cartão
               </label>
               <CustomInput
-                // id="input-01-2"
-                name="card-name"
-                type="text"
-                placeholder="Seu nome"
-                onChange={() => {}}
-                value=""
-              />
-              {/* <input
                 id="input-01-2"
-                name="card-name"
+                name="cardName"
                 type="text"
-                className="py-3 px-4 w-full text-sm placeholder-gray-500 outline-none border focus:border-gray-300 focus:ring focus:ring-gray-100 border-gray-100 rounded-lg transition duration-200"
                 placeholder="Seu nome"
-              /> */}
+                onChange={handleInputChange}
+                value={cardDetails.cardName}
+                maxLength={60}
+              />
             </div>
             <div className="flex flex-wrap -m-2">
               <div className="w-full lg:w-1/2 p-2">
@@ -107,20 +129,14 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({ totalPrice }) => {
                   <span className="text-gray-500">(MM/AA)</span>
                 </label>
                 <CustomInput
-                  // id="input-01-3"
-                  name="card-expiration"
-                  type="text"
-                  placeholder="(MM/AA)"
-                  onChange={() => {}}
-                  value=""
-                />
-                {/* <input
                   id="input-01-3"
-                  name="card-expiration"
-                  type="text"
-                  className="py-3 px-4 w-full text-sm placeholder-gray-500 outline-none border focus:border-gray-300 focus:ring focus:ring-gray-100 border-gray-100 rounded-lg transition duration-200"
+                  name="cardExpiration"
+                  type="tel"
                   placeholder="(MM/AA)"
-                /> */}
+                  onChange={handleInputChange}
+                  value={formatExpirationDate(cardDetails.cardExpiration)}
+                  maxLength={5}
+                />
               </div>
               <div className="w-full lg:w-1/2 p-2">
                 <label htmlFor="input-01-4" className="mb-1.5 inline-block text-sm">
@@ -128,20 +144,14 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({ totalPrice }) => {
                   <span className="text-gray-500"> (3 dígitos)</span>
                 </label>
                 <CustomInput
-                  // id="input-01-4"
-                  name="card-cvv"
-                  type="text"
-                  placeholder="***"
-                  onChange={() => {}}
-                  value=""
-                />
-                {/* <input
                   id="input-01-4"
-                  name="card-cvv"
-                  type="text"
-                  className="py-3 px-4 w-full text-sm placeholder-gray-500 outline-none border focus:border-gray-300 focus:ring focus:ring-gray-100 border-gray-100 rounded-lg transition duration-200"
+                  name="cardCVV"
+                  type="tel"
                   placeholder="***"
-                /> */}
+                  onChange={handleInputChange}
+                  value={formatCVV(cardDetails.cardCVV)}
+                  maxLength={3}
+                />
               </div>
             </div>
           </div>

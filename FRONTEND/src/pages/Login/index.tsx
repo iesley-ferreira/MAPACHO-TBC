@@ -86,6 +86,8 @@ const Login: React.FC = () => {
 
                 <CustomInput
                   type="email"
+                  name="email"
+                  id="email"
                   placeholder="Seu email"
                   value={email}
                   onChange={handleEmailChange}
@@ -98,6 +100,8 @@ const Login: React.FC = () => {
                 <div className="relative">
                   <CustomInput
                     type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    id="password"
                     placeholder="Sua senha"
                     value={password}
                     onChange={handlePasswordChange}
