@@ -6,11 +6,11 @@ import { useLocation } from 'react-router-dom';
 import BannerCarousel from '../../components/Layout/BannerCarousel';
 import InstagramCarousel from '../../components/UI/InstagramCarousel';
 import Menu from '../../components/UI/Menu';
+import Product from '../../components/UI/Product';
 import Products from '../../components/UI/Products/Products';
 import CategoryBreadcrumbs from '../../components/common/CategoryBreadcrumbs';
 import { fetchProductsRequest, setPage } from '../../store/ducks/products/actions';
 import { RootState } from '../../store/ducks/rootReducer';
-import Product from '../Product';
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -75,10 +75,15 @@ const Home: React.FC = () => {
             </Box>
           )}
           <div className="flex flex-col items-center w-full">
-            <div className="w-full md:max-w-[94%] xl:max-w-[88%] pt-8 md:pt-14 lg:pt-20">
+            <div className="w-full md:max-w-[94%] xl:max-w-[90%] pt-8 md:pt-14 lg:pt-20">
               <div className="flex flex-row justify-center md:gap-4 lg:gap-10 xl:gap-20">
                 <div className="left-16 min-w-max pt-0 hidden lg:block">
-                  <Menu />
+                  <div className="sticky top-20 max-h-[90vh] overflow-y-auto custom-scrollbar">
+                    <h1 className="font-heading uppercase font-semibold text-green-900 pl-6 pb-2 text-1xl ">
+                      Categorias
+                    </h1>
+                    <Menu />
+                  </div>
                 </div>
                 <div className="flex flex-col items-center lg:justify-start w-full">
                   <div className="w-full">
