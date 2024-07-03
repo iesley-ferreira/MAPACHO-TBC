@@ -23,8 +23,8 @@ export default {
           500: '#9ACD32',
           600: '#6B8E23',
         },
-        green: {
-          300: '#90EE90',
+        greenButton: {
+          500: '#11ab6b',
         },
         fluorescenGreen: {
           100: '#f5fecd',

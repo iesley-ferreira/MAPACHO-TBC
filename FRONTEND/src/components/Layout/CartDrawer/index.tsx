@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../../store/ducks/rootReducer';
 import CartList from '../../UI/CartList';
+import CartSummary from '../../UI/CartSummary';
 
 interface CartDrawerProps {
   cartDrawerOpen: boolean;
@@ -16,27 +17,34 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ cartDrawerOpen, setCartDrawerOp
   const [navigateAfterClose, setNavigateAfterClose] = useState(false);
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
 
-  const handleGoToCart = () => {
+  const handleGoToCheckout = () => {
     setCartDrawerOpen(!cartDrawerOpen);
     setNavigateAfterClose(true);
   };
 
   useEffect(() => {
     if (!cartDrawerOpen && navigateAfterClose) {
-      navigate('/carrinho');
+      navigate('/envio');
       setNavigateAfterClose(false);
     }
   }, [navigateAfterClose]);
+
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.preco * item.quantidade,
+    0,
+  );
 
   return (
     <Drawer
       anchor="right"
       open={cartDrawerOpen}
       onClose={() => setCartDrawerOpen(!cartDrawerOpen)}
-      sx={{ '.MuiDrawer-paper': { width: '320px', maxHeight: '100vh' } }}
+      sx={{
+        '.MuiDrawer-paper': { width: '100%', maxWidth: '540px', maxHeight: '100vh' },
+      }}
     >
       <div className="flex justify-between items-center p-4">
-        <h1 className="font-heading uppercase text-1xl ">produtos</h1>
+        <h1 className="font-heading uppercase text-1xl ">meu carrinho</h1>
         <IconButton onClick={() => setCartDrawerOpen(!cartDrawerOpen)}>
           <CloseIcon />
         </IconButton>
@@ -49,13 +57,8 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ cartDrawerOpen, setCartDrawerOp
       ) : (
         <>
           <CartList cartItems={cartItems} />
-          <div className="p-4">
-            <button
-              className="bg-emerald-500 hover:bg-emerald-600 py-3 px-4 rounded-md text-white text-center  transition uppercase duration-200 w-full inline-block active:scale-105"
-              onClick={handleGoToCart}
-            >
-              Carrinho
-            </button>
+          <div className="relative px-8 py-4 shadow-[0px_-9px_12px_-3px_#0000001a]">
+            <CartSummary totalPrice={totalPrice} />
           </div>
         </>
       )}

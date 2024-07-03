@@ -4,10 +4,12 @@ import CartDrawer from './CartDrawer';
 import Footer from './Footer';
 import Header from './Header';
 import MenuDrawer from './MenuDrawer';
+import SearchDrawer from './SearchDrawer';
 
 const Layout: React.FC = () => {
   const [menuDrawerOpen, setMenuDrawerOpen] = useState(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
+  const [searchDrawerOpen, setSearchDrawerOpen] = useState(false);
   const isLoginPage = useMatch('/login');
   const isSignUpPage = useMatch('/cadastro');
   const isUserPage = useMatch('/usuario');
@@ -17,9 +19,15 @@ const Layout: React.FC = () => {
     <div className="flex flex-col">
       <Header
         menuDrawerOpen={menuDrawerOpen}
-        setMenuDrawerOpen={setMenuDrawerOpen}
         cartDrawerOpen={cartDrawerOpen}
+        searchDrawerOpen={searchDrawerOpen}
+        setMenuDrawerOpen={setMenuDrawerOpen}
         setCartDrawerOpen={setCartDrawerOpen}
+        setSearchDrawerOpen={setSearchDrawerOpen}
+      />
+      <SearchDrawer
+        searchDrawerOpen={searchDrawerOpen}
+        setSearchDrawerOpen={setSearchDrawerOpen}
       />
       <MenuDrawer menuDrawerOpen={menuDrawerOpen} setMenuDrawerOpen={setMenuDrawerOpen} />
       <CartDrawer cartDrawerOpen={cartDrawerOpen} setCartDrawerOpen={setCartDrawerOpen} />

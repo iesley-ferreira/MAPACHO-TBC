@@ -18,29 +18,29 @@ const IconCreditCard: React.FC = () => {
       <path
         d="M42.3545 28.6124H3.27319C2.02268 28.6124 1.00879 27.6123 1.00879 26.3787V3.51377C1.00879 2.28025 2.02268 1.28015 3.27319 1.28015H42.3545C43.605 1.28015 44.6189 2.28025 44.6189 3.51377V26.3787C44.6189 27.6123 43.605 28.6124 42.3545 28.6124"
         stroke="#333333"
-        stroke-width="1.5"
+        strokeWidth="1.5"
       ></path>
-      <path d="M5.21284 16.1735H22.976" stroke="#333333" stroke-width="1.5"></path>
-      <path d="M25.6419 16.1735H30.1992" stroke="#333333" stroke-width="1.5"></path>
+      <path d="M5.21284 16.1735H22.976" stroke="#333333" strokeWidth="1.5"></path>
+      <path d="M25.6419 16.1735H30.1992" stroke="#333333" strokeWidth="1.5"></path>
       <path
         d="M1.75879 10.8749V6.81934H43.8689V10.8749H1.75879Z"
         fill="#5AD2FF"
         stroke="white"
-        stroke-width="1.5"
+        strokeWidth="1.5"
       ></path>
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"
         d="M44.6189 6.06934H1.00879V11.6249H44.6189V6.06934Z"
         stroke="#333333"
-        stroke-width="1.5"
+        strokeWidth="1.5"
       ></path>
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"
         d="M6.5648 24.0555H12.4466C12.7638 24.0555 13.0212 23.9335 13.0212 23.7831V20.9946C13.0212 20.8442 12.7638 20.7222 12.4466 20.7222H6.5648C6.24764 20.7222 5.99023 20.8442 5.99023 20.9946V23.7831C5.99023 23.9335 6.24764 24.0555 6.5648 24.0555Z"
         stroke="#333333"
-        stroke-width="1.5"
+        strokeWidth="1.5"
       ></path>
     </svg>
   );
