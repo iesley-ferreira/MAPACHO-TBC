@@ -18,7 +18,7 @@ const Home: React.FC = () => {
               <a className="group block text-center" href="#">
                 <img
                   className="block mb-5 w-full h-40 object-cover"
-                  src="/public/assets/images/bongs02.webp"
+                  src="/public/assets/images/categories/bongs02.webp"
                   alt=""
                 />
                 <h6 className="font-bold text-slate-800 group-hover:text-yellow-500">
@@ -30,7 +30,7 @@ const Home: React.FC = () => {
               <a className="group block text-center" href="#">
                 <img
                   className="block mb-5 w-full h-40 object-cover"
-                  src="/public/assets/images/sedas02.webp"
+                  src="/public/assets/images/categories/sedas02.jpg"
                   alt=""
                 />
                 <h6 className="font-bold text-slate-800 group-hover:text-yellow-500">
@@ -42,7 +42,7 @@ const Home: React.FC = () => {
               <a className="group block text-center" href="#">
                 <img
                   className="block mb-5 w-full h-40 object-cover"
-                  src="/public/assets/images/grinders.jpg"
+                  src="/public/assets/images/categories/grinders.jpg"
                   alt=""
                 />
                 <h6 className="font-bold text-slate-800 group-hover:text-yellow-500">
@@ -123,7 +123,7 @@ const Home: React.FC = () => {
                 </div>
                 <img
                   className="relative z-0 block w-full object-cover transition-transform duration-500 group-hover:scale-102 transform"
-                  src="/public/assets/images/bongs02.jpg"
+                  src="/public/assets/images/categories/bongs02.jpg"
                   alt=""
                 />
               </a>
@@ -136,7 +136,7 @@ const Home: React.FC = () => {
                 </div>
                 <img
                   className="relative z-0 block w-full object-cover transition-transform duration-500 group-hover:scale-102 transform"
-                  src="/public/assets/images/sedas02.jpg"
+                  src="/public/assets/images/categories/sedas02.jpg"
                   alt=""
                 />
               </a>
@@ -147,7 +147,7 @@ const Home: React.FC = () => {
                 </div>
                 <img
                   className="relative z-0 block w-full object-cover transition-transform duration-500 group-hover:scale-102 transform"
-                  src="/public/assets/images/bandejas02.jpg"
+                  src="/public/assets/images/categories/bandejas02.jpg"
                   alt=""
                 />
               </a>
