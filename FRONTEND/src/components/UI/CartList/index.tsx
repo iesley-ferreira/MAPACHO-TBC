@@ -84,19 +84,6 @@ const CartList: React.FC<CartListProps> = ({ cartItems }) => {
             </div>
           </div>
         ))}
-        <div className="pt-4 border-t border-gray-50">
-          <div className="flex items-center justify-between flex-wrap px-2">
-            <p className="text-xl font-semibold">Total</p>
-            <p className="text-xl font-semibold text-green-900">
-              {priceFormatter.format(
-                cartItems.reduce(
-                  (total, item) => total + item.preco * item.quantidade,
-                  0,
-                ),
-              )}
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   );

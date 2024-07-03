@@ -1,18 +1,17 @@
-import { Box, CircularProgress, IconButton } from '@mui/material';
+import { Box, CircularProgress, MenuItem, Select } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
 import { addProductToCart } from '../../../store/ducks/cart/actions';
 import { fetchProductRequest } from '../../../store/ducks/products/actions';
 import { RootState } from '../../../store/ducks/rootReducer';
+import ScrollToTop from '../../../utils/ScrollToTop';
 import { priceFormatter } from '../../../utils/priceFormatter';
-import AddIcon from '../../common/AddIcon';
-import RemoveIcon from '../../common/RemoveIcon';
 import CalculateFreight from '../CalculateFreight';
 import InstallmentPlan from '../InstallmentPlan';
+import QuantityControl from './QuantityControl';
+import './description.css';
 import { convertProductIdToProduct } from './helpers';
-
 // const useQuery = () => {
 //   return new URLSearchParams(useLocation().search);
 // };
@@ -26,6 +25,7 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [productQuantity, setProductQuantity] = useState(1);
+  const [selectedVariation, setSelectedVariation] = useState<number | null>(null);
 
   const { product, loading, error } = useSelector((state: RootState) => state.products);
 
@@ -33,6 +33,12 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
     if (!productId) return;
     dispatch(fetchProductRequest(productId));
   }, [productId]);
+
+  useEffect(() => {
+    if (product?.variacoes?.length > 0) {
+      setSelectedVariation(product.variacoes[0].id);
+    }
+  }, [product]);
 
   const variationName = product?.variacoes?.[0]?.nome;
   let variationType = '';
@@ -82,8 +88,11 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
     window.location.href = url.toString();
   };
 
+  const description = product?.descricaoCurta;
+
   return (
     <section className="py-6 px-2 md:py-20 mt-14">
+      <ScrollToTop />
       {loading ? (
         <Box
           sx={{
@@ -97,7 +106,7 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
         </Box>
       ) : (
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap -mx-4 mb-24">
+          <div className="flex flex-wrap -mx-4 mb-2">
             <div className="w-full md:w-1/2 px-4 mb-8 md:mb-0">
               <div className="relative mb-10" style={{ height: '400px' }}>
                 <img
@@ -128,11 +137,12 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
                   <h1 className="text-rhino-700 font-semibold text-4xl mb-2 font-heading">
                     {product?.nome}
                   </h1>
+
                   <p className="inline-block mb-8 text-2xl font-bold font-heading text-green-500">
                     <span>{priceFormatter.format(product?.preco)}</span>
                   </p>
                   <InstallmentPlan totalPrice={product?.preco} />
-                  <p className="max-w-md text-gray-500">{product?.descricaoCurta}</p>
+                  {/* <p className="max-w-md text-gray-500">{product?.descricaoCurta}</p> */}
                 </div>
                 <div className="flex items-center justify-between flex-wrap mb-8">
                   <div className="w-full">
@@ -142,39 +152,32 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
                           <p className="uppercase text-xs font-bold text-rhino-500 mb-3">
                             QUANTIDADE
                           </p>
-                          <div className="py-3 px-4 rounded-sm border border-coolGray-200 gap-4 flex items-center">
-                            <div className="cursor-pointer text-coolGray-300 hover:text-coolGray-400 transition duration-200">
-                              <IconButton
-                                onClick={() => setProductQuantity(productQuantity - 1)}
-                                disabled={productQuantity === 1}
-                              >
-                                <RemoveIcon />
-                              </IconButton>
-                            </div>
-                            <span className="text-coolGray-700 text-md">
-                              {productQuantity}
-                            </span>
-                            <div className="cursor-pointer text-coolGray-300 hover:text-coolGray-400 transition duration-200">
-                              <IconButton
-                                onClick={() => setProductQuantity(productQuantity + 1)}
-                              >
-                                <AddIcon />
-                              </IconButton>
-                            </div>
-                          </div>
+                          <QuantityControl
+                            productQuantity={productQuantity}
+                            setProductQuantity={setProductQuantity}
+                          />
                         </div>
                         {product?.variacoes?.length > 0 && (
                           <div>
                             <p className="uppercase text-xs font-bold text-rhino-500 mb-3">
                               {variationType}
                             </p>
-                            <select className="rounded-sm border bg-white border-coolGray-200 py-4 px-4 text-coolGray-700 text-sm">
-                              {variationsOptions?.map((variation, index) => (
-                                <option key={index} value={variation.variationId}>
+                            <Select
+                              value={selectedVariation}
+                              onChange={(e) =>
+                                setSelectedVariation(e.target.value as number)
+                              }
+                              displayEmpty
+                              fullWidth
+                              variant="outlined"
+                              sx={{ minWidth: 120 }}
+                            >
+                              {variationsOptions.map((variation, index) => (
+                                <MenuItem key={index} value={variation.variationId}>
                                   {variation.name}
-                                </option>
+                                </MenuItem>
                               ))}
-                            </select>
+                            </Select>
                           </div>
                         )}
                       </div>
@@ -205,6 +208,18 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
                 <CalculateFreight />
               </div>
             </div>
+          </div>
+          <div className="flex flex-wrap w-full mb-8">
+            <div className="flex-1">
+              <div className="w-full h-full border-b border-rhino-200"></div>
+            </div>
+          </div>
+          <div>
+            <h2 className="font-semibold text-4xl underline-heading">Descrição:</h2>
+            <div
+              className="product-description"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
           </div>
         </div>
       )}

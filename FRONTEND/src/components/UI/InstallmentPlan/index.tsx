@@ -4,6 +4,7 @@ import { priceFormatter } from '../../../utils/priceFormatter';
 
 interface InstallmentPlanProps {
   totalPrice: number;
+  color?: string;
 }
 
 const renderInstallment = (price: number): string => {
@@ -23,17 +24,17 @@ const renderInstallment = (price: number): string => {
   return `${tier.installments}x de ${priceFormatter.format(installment)}`;
 };
 
-const InstallmentPlan: React.FC<InstallmentPlanProps> = ({ totalPrice }) => {
+const InstallmentPlan: React.FC<InstallmentPlanProps> = ({ totalPrice, color }) => {
   return (
     <Typography
       variant="subtitle1"
       sx={{
         fontFamily: 'Montserrat',
         fontSize: '14px',
-        color: 'green',
+        color: { color },
       }}
     >
-      até {renderInstallment(totalPrice)} sem Juros
+      ou {renderInstallment(totalPrice)}
     </Typography>
   );
 };

@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import Loader from './components/common/Loader';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import Auth from './pages/Auth';
+import Products from './pages/Products';
 import ScrollToTop from './utils/ScrollToTop';
 const Home = lazy(() => import('./pages/Home'));
 const Register = lazy(() => import('./pages/Register'));
@@ -26,6 +27,7 @@ const AppRoutes: React.FC = () => {
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to="/home" />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/produtos" element={<Products />} />
             <Route path="/cadastro" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/usuario" element={<ProtectedRoute component={User} />} />
