@@ -10,7 +10,7 @@ const initialState: ProductsState = {
   selectedCategoryName: null,
   searchValue: null,
   selectedSubCategoryName: null,
-  disableButtonShowMore: false,
+  isShowMoreProductsButtonDisabled: false,
   page: 1,
   product: {} as IProductId,
   loading: false,
@@ -89,7 +89,7 @@ const productReducer = createReducer<ProductsState, ProductActions>(initialState
   })
   .handleAction(actions.setDisableButtonShowMore, (state, action) => ({
     ...state,
-    disableButtonShowMore: action.payload,
+    isShowMoreProductsButtonDisabled: action.payload,
   }))
   .handleAction(actions.setNewCategoryNames, (state, action) => ({
     ...state,

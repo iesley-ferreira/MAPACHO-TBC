@@ -1,157 +1,179 @@
-import { Box, Button, CircularProgress } from '@mui/material';
-import queryString from 'query-string';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import React from 'react';
 import BannerCarousel from '../../components/Layout/BannerCarousel';
-import InstagramCarousel from '../../components/UI/InstagramCarousel';
-import Menu from '../../components/UI/Menu';
-import Product from '../../components/UI/Product';
-import Products from '../../components/UI/Products/Products';
-import CategoryBreadcrumbs from '../../components/common/CategoryBreadcrumbs';
-import { fetchProductsRequest, setPage } from '../../store/ducks/products/actions';
-import { RootState } from '../../store/ducks/rootReducer';
+import BrandsCarousel from '../../components/UI/BrandsCarousel';
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
-  const {
-    products,
-    filteredProducts,
-    loading,
-    error,
-    page,
-    disableButtonShowMore,
-    selectedCategoryId,
-    selectedCategoryName,
-    selectedSubCategoryName,
-    searchValue,
-  } = useSelector((state: RootState) => state.products);
-
-  const location = useLocation();
-  const { idCategoria, idSubCategoria, idProduto } = queryString.parse(location.search);
-
-  const categoriaId = Array.isArray(idCategoria) ? idCategoria[0] : idCategoria;
-  const subCategoriaId = Array.isArray(idSubCategoria)
-    ? idSubCategoria[0]
-    : idSubCategoria;
-  const produtoId = Array.isArray(idProduto) ? idProduto[0] : idProduto;
-
-  useEffect(() => {
-    console.log('CHAMOU HOME', page);
-    const category = subCategoriaId || categoriaId || null;
-    dispatch(
-      fetchProductsRequest({
-        page,
-        limit: 20,
-        categoryId: category?.toString(),
-        searchValue,
-      }),
-    );
-  }, [page, subCategoriaId, categoriaId]);
-
-  const loadMoreProducts = () => {
-    dispatch(setPage(page + 1));
-  };
-
   return (
-    <>
-      {produtoId ? (
-        <Product productId={produtoId} />
-      ) : (
-        <>
-          <div className="mt-20">
-            <BannerCarousel />
-          </div>
-          {error && (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '55vh',
-              }}
-            >
-              <h1>Erro ao carregar os produtos</h1>
-            </Box>
-          )}
-          <div className="flex flex-col items-center w-full">
-            <div className="w-full md:max-w-[94%] xl:max-w-[90%] pt-8 md:pt-14 lg:pt-20">
-              <div className="flex flex-row justify-center md:gap-4 lg:gap-10 xl:gap-20">
-                <div className="left-16 min-w-max pt-0 hidden lg:block">
-                  <div className="sticky top-20 max-h-[90vh] overflow-y-auto custom-scrollbar">
-                    <h1 className="font-heading uppercase font-semibold text-green-900 pl-6 pb-2 text-1xl ">
-                      Categorias
-                    </h1>
-                    <Menu />
-                  </div>
-                </div>
-                <div className="flex flex-col items-center lg:justify-start w-full">
-                  <div className="w-full">
-                    <CategoryBreadcrumbs
-                      selectedCategoryName={selectedCategoryName}
-                      selectedSubCategoryName={selectedSubCategoryName}
-                      searchValue={searchValue}
-                      selectedCategoryId={selectedCategoryId}
-                    />
-                    {loading ? (
-                      <div className="flex items-center justify-center w-full min-h-[60vh]">
-                        <CircularProgress sx={{ color: 'darkgreen' }} />
-                      </div>
-                    ) : (
-                      <>
-                        <Products
-                          products={
-                            filteredProducts.length > 0 || selectedCategoryId
-                              ? filteredProducts
-                              : products
-                          }
-                        />
-                      </>
-                    )}
-                  </div>
-                </div>
-                <div className="sticky top-2 hidden xl:block">
-                  <InstagramCarousel />
-                </div>
-              </div>
+    <div>
+      <section className="pt-12 md:pt-16 md:pb-20 bg-white ">
+        <div className="py-12 md:pb-24">
+          <BannerCarousel />
+        </div>
+        <div className="container mx-auto px-4">
+          <h1 className="text-center uppercase font-heading text-4xl text-slate-800 font-bold mb-16">
+            Mais populares
+          </h1>
+          <div className="flex flex-wrap -mx-4 mb-20">
+            <div className="w-1/2 md:w-1/3 lg:w-1/5 px-4">
+              <a className="group block text-center" href="#">
+                <img
+                  className="block mb-5 w-full h-40 object-cover"
+                  src="/public/assets/images/bongs02.webp"
+                  alt=""
+                />
+                <h6 className="font-bold text-slate-800 group-hover:text-yellow-500">
+                  Bongs
+                </h6>
+              </a>
             </div>
-            {loading ? (
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: '55vh',
-                }}
-              >
-                <CircularProgress sx={{ color: 'darkgreen' }} />
-              </Box>
-            ) : (
-              <>
-                <Button
-                  onClick={loadMoreProducts}
-                  disabled={disableButtonShowMore}
-                  sx={{
-                    my: 8,
-                    color: 'rgb(5 150 105)',
-                    '&:disabled': {
-                      color: 'GrayText',
-                    },
-                    '&:hover': {
-                      backgroundColor: 'inherit',
-                      color: 'rgb(5 150 105)',
-                      transform: 'scale(1.02)',
-                    },
-                  }}
-                >
-                  Mostrar Mais Produtos
-                </Button>
-              </>
-            )}
+            <div className="w-1/2 md:w-1/3 lg:w-1/5 px-4">
+              <a className="group block text-center" href="#">
+                <img
+                  className="block mb-5 w-full h-40 object-cover"
+                  src="/public/assets/images/sedas02.webp"
+                  alt=""
+                />
+                <h6 className="font-bold text-slate-800 group-hover:text-yellow-500">
+                  Sedas
+                </h6>
+              </a>
+            </div>
+            <div className="w-1/2 md:w-1/3 lg:w-1/5 px-4 hidden md:block">
+              <a className="group block text-center" href="#">
+                <img
+                  className="block mb-5 w-full h-40 object-cover"
+                  src="/public/assets/images/grinders.jpg"
+                  alt=""
+                />
+                <h6 className="font-bold text-slate-800 group-hover:text-yellow-500">
+                  Trituradores
+                </h6>
+              </a>
+            </div>
+            <div className="w-1/2 md:w-1/3 lg:w-1/5 px-4 hidden lg:block">
+              <a className="group block text-center" href="#">
+                <img
+                  className="block mb-5 w-full h-40 object-cover"
+                  src="/public/assets/images/categories/lighters02.jpg"
+                  alt=""
+                />
+                <h6 className="font-bold text-slate-800 group-hover:text-yellow-500">
+                  Isqueiros
+                </h6>
+              </a>
+            </div>
+            <div className="w-1/2 md:w-1/3 lg:w-1/5 px-4 hidden lg:block">
+              <a className="group block text-center" href="#">
+                <img
+                  className="block mb-5 w-full h-40 object-cover"
+                  src="/public/assets/images/categories/glassTip.webp"
+                  alt=""
+                />
+                <h6 className="font-bold text-slate-800 group-hover:text-yellow-500">
+                  Piteiras
+                </h6>
+              </a>
+            </div>
           </div>
-        </>
-      )}
-    </>
+          <div className="h-1 bg-blueGray-800 rounded-full">
+            <div className="h-full w-1/3 bg-yellow-500 rounded-full"></div>
+          </div>
+        </div>
+      </section>
+      <section className="py-12 md:py-12 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-wrap mb-10 -mx-4 items-end">
+            <div className="w-full sm:w-1/2 xl:w-3/5 mb-6 sm:mb-0 px-4">
+              <h1 className="font-heading uppercase font-bold text-4xl text-slate-800">
+                Categorias
+              </h1>
+            </div>
+            <div className="w-full sm:w-1/2 xl:w-auto ml-auto sm:text-right px-4">
+              <a
+                className="group inline-flex items-center text-base font-bold text-yellow-500 hover:text-yellow-600"
+                href="#"
+              >
+                <span className="mr-3">Ver todas categorias</span>
+                <span className="animate-bounce">
+                  <svg
+                    width="11"
+                    height="10"
+                    viewBox="0 0 11 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M2.95645 0.757299L9.55611 0.757299M9.55611 0.757299L9.55611 7.35696M9.55611 0.757299L1.07083 9.24258"
+                      stroke="#1E293E"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></path>
+                  </svg>
+                </span>
+              </a>
+            </div>
+          </div>
+          <div className="flex flex-wrap -mx-4 items-start mb-20">
+            <div className="w-full lg:w-1/2 mb-6 lg:mb-0 px-4">
+              <a className="group block h-full relative" href="#">
+                <div className="absolute bottom-0 left-0 w-full p-8 z-10">
+                  <h4 className="text-xl font-bold text-slate-200 mb-2">Novidades</h4>
+                  <span className="text-yellow-500 font-medium">Comprar agora</span>
+                </div>
+                <img
+                  className="relative z-0 block w-full object-cover transition-transform duration-500 group-hover:scale-102 transform"
+                  src="/public/assets/images/bongs02.jpg"
+                  alt=""
+                />
+              </a>
+            </div>
+            <div className="w-full lg:w-1/2 px-4">
+              <a className="group block h-full mb-6 relative" href="#">
+                <div className="absolute bottom-0 left-0 w-full p-8 z-10">
+                  <h4 className="text-xl font-bold text-slate-200 mb-2">Sedas</h4>
+                  <span className="text-yellow-500 font-medium">Comprar agora</span>
+                </div>
+                <img
+                  className="relative z-0 block w-full object-cover transition-transform duration-500 group-hover:scale-102 transform"
+                  src="/public/assets/images/sedas02.jpg"
+                  alt=""
+                />
+              </a>
+              <a className="group block h-full mb-6 relative" href="#">
+                <div className="absolute bottom-0 left-0 w-full p-8 z-10">
+                  <h4 className="text-xl font-bold text-slate-200 mb-2">Bandejas</h4>
+                  <span className="text-yellow-500 font-medium">Comprar agora</span>
+                </div>
+                <img
+                  className="relative z-0 block w-full object-cover transition-transform duration-500 group-hover:scale-102 transform"
+                  src="/public/assets/images/bandejas02.jpg"
+                  alt=""
+                />
+              </a>
+            </div>
+          </div>
+          <div className="h-1 bg-blueGray-800 rounded-full">
+            <div className="h-full w-1/3 bg-yellow-500 rounded-full"></div>
+          </div>
+        </div>
+      </section>
+      <section
+        x-data="{ showContent: false }"
+        className="py-12 md:pt-16 md:pb-20 bg-white"
+      >
+        <div className="container mx-auto px-4">
+          <div className="w-full sm:w-1/2 xl:w-3/5 sm:mb-0 px-4">
+            <h1 className="font-heading uppercase font-bold text-3xl text-slate-800">
+              Marcas
+            </h1>
+          </div>
+          <div className="flex px-10 flex-wrap -mx-4 items-start">
+            <BrandsCarousel />
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 

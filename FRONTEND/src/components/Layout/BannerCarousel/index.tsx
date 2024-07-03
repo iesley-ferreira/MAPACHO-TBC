@@ -39,7 +39,7 @@ const Item: React.FC<ItemProps> = ({ image }) => {
       <img
         src={image}
         alt={`carousel-${image}`}
-        className="carousel-image object-cover w-full h-[140px] md:h-[240px] lg:h-[300px] overflow-hidden"
+        className="carousel-image object-cover w-full h-[180px] md:h-[240px] lg:h-[500px] overflow-hidden"
       />
     </Paper>
   );

@@ -6,7 +6,7 @@ interface ProductsProps {
   products: IProduct[];
 }
 
-const Products: React.FC<ProductsProps> = ({ products }) => {
+const ProductsList: React.FC<ProductsProps> = ({ products }) => {
   return (
     <section className="">
       <div className="flex justify-center w-full px-4 ">
@@ -22,4 +22,4 @@ const Products: React.FC<ProductsProps> = ({ products }) => {
   );
 };
 
-export default Products;
+export default ProductsList;
