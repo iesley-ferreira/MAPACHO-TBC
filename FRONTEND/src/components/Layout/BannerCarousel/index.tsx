@@ -4,10 +4,8 @@ import Carousel from 'react-material-ui-carousel';
 import './BannerCarousel.css';
 
 const images = [
-  '../../../../public/assets/bannerPrimeiraCompra3.png',
-  '../../../../public/assets/bannermapacho.jpg',
-  '../../../../public/assets/bannerPrimeiraCompra3.png',
-  '../../../../public/assets/bannermapacho.jpg',
+  '/public/assets/images/banners/bannerPrimeiraCompra3.png',
+  '/public/assets/images/banners/bannermapacho.jpg',
 ];
 
 const BannerCarousel: React.FC = () => {
