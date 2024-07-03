@@ -28,7 +28,7 @@ const CalculateFreight: React.FC = () => {
   };
 
   return (
-    <div className="pb-4 border-b border-coolGray-200 mb-4">
+    <div className="pb-4 mb-4">
       <p className="text-rhino-800 mb-4">Calcular frete e prazo :</p>
       <div className="flex items-center space-x-2 mb-10">
         <input

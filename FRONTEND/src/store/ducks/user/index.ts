@@ -16,6 +16,7 @@ const initialUser = {
     neighborhood: '',
     complement: '',
   },
+  last_views: [],
   orders: [],
   isPending: null,
   created_at: '',

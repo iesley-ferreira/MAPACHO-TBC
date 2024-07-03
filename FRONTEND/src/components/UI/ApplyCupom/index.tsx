@@ -21,7 +21,7 @@ const ApplyCupom: React.FC = () => {
 
   return (
     <form className="pb-4 border-b border-coolGray-200 mb-4">
-      <p className="text-rhino-800 mb-4">Aplicar cupom de desconto:</p>
+      {/* <p className="text-rhino-800 mb-4">Aplicar cupom de desconto:</p> */}
       <div className="flex items-center space-x-2">
         <input
           className="flex-grow w-3/5 md:mb-0 px-2 py-2 text-sm placeholder-gray-800 font-bold font-heading border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md"

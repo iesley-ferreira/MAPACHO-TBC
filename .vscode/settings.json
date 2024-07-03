@@ -10,6 +10,8 @@
     "mercadopago",
     "paypal",
     "PRIMEIRACOMPRA",
+    "Swal",
+    "sweetalert",
     "variacoes"
   ],
   "prisma-smart-formatter.typescript.defaultFormatter": "esbenp.prettier-vscode",
