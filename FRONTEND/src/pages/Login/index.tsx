@@ -117,7 +117,7 @@ const Login: React.FC = () => {
                 <div className="text-right pt-1 pr-2">
                   <a
                     className="inline-block text-sm font-semibold text-green-600 hover:text-green-500"
-                    href="#"
+                    href="/esqueci-senha"
                   >
                     Esqueceu a senha?
                   </a>
