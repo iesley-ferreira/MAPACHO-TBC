@@ -124,21 +124,21 @@ const Footer: React.FC = () => {
                 <div className="security-type">
                   <img
                     className="h-10"
-                    src="/public/assets/siteSeguro.png"
+                    src="/public/assets/images/security/siteSeguro.png"
                     alt="siteSeguro"
                   />
                 </div>
                 <div className="security-type">
                   <img
                     className="h-10"
-                    src="/public/assets/googleSafeBrowsing.png"
+                    src="/public/assets/images/security/googleSafeBrowsing.png"
                     alt="google"
                   />
                 </div>
                 <div className="security-type">
                   <img
                     className="h-10"
-                    src="/public/assets/100Seguro.png"
+                    src="/public/assets/images/security/100Seguro.png"
                     alt="100seguro"
                   />
                 </div>

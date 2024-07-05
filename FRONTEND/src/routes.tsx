@@ -7,6 +7,7 @@ import ProtectedRoute from './components/common/ProtectedRoute';
 import Auth from './pages/Auth';
 import Products from './pages/Products';
 import ScrollToTop from './utils/ScrollToTop';
+import ForgotPassword from './pages/ForgotPassword';
 const Home = lazy(() => import('./pages/Home'));
 const Register = lazy(() => import('./pages/Register'));
 const User = lazy(() => import('./pages/User'));
@@ -30,6 +31,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/produtos" element={<Products />} />
             <Route path="/cadastro" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/esqueci-senha" element={<ForgotPassword />} />
             <Route path="/usuario" element={<ProtectedRoute component={User} />} />
             <Route path="/envio" element={<Shipping />} />
             <Route path="/pagamento" element={<Payment />} />
