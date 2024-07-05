@@ -48,7 +48,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <section className="relative pt-28 bg-gray-50 overflow-hidden">
+    <section className="relative pt-28 bg-gray-50 overflow-hidden bg-[url(/public/assets/shadow-light-top.png)] bg-no-repeat bg-cover">
       <img
         className="absolute top-0 left-0 md:ml-20"
         src="/public/assets/shadow-light-top.png"
