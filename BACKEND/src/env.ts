@@ -18,6 +18,7 @@ const envSchema = z.object({
   MAIL_USER: z.string(),
   MAIL_PASS: z.string(),
   MAIL_FROM: z.string(),
+  FRONTEND_URL: z.string().url(),
 });
 
 export const env = envSchema.parse(process.env);
