@@ -13,12 +13,17 @@ function* resetPasswordSaga(action: {
   try {
     console.log('resetPassword saga:', action.payload);
     const { email } = action.payload;
-    const response: { message: string } = yield call(
+    const response: { status: number; data: { message: string } } = yield call(
       resetPasswordApi.resetPassword,
       email,
     );
 
-    yield put(resetPasswordSuccess(response));
+    if (response.status !== 200) {
+      yield put(resetPasswordFailure(response.data.message));
+      return;
+    }
+
+    yield put(resetPasswordSuccess(response.data.message));
   } catch (error: any) {
     yield put(resetPasswordFailure(error.message || 'Erro desconhecido'));
   }

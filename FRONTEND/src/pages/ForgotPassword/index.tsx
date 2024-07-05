@@ -13,22 +13,28 @@ const ForgotPassword: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const { error, errorMessage, message } = useSelector(
-    (state: RootState) => state.password,
-  );
+  const [userNotFound, setUserNotFound] = useState(false);
+  const { error, message } = useSelector((state: RootState) => state.password);
 
   useEffect(() => {
-    if (message) {
+    if (message && error) {
+      setSnackbarOpen(true);
+      setUserNotFound(true);
+      setTimeout(() => {
+        setSnackbarOpen(false);
+      }, 6000);
+    } else if (message && !error) {
       setSnackbarOpen(true);
       setTimeout(() => {
         setSnackbarOpen(false);
         navigate('/login');
-      }, 6000);
+      }, 2750);
     }
   }, [message]);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
+    if (userNotFound) setUserNotFound(false);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -41,9 +47,9 @@ const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <section className="relative bg-gray-50 overflow-hidden">
+    <section className="relative bg-gray-50 overflow-hidden bg-[url(/public/assets/shadow-light-top.png)] bg-no-repeat bg-cover">
       <div className="flex flex-col justify-center container min-h-screen mx-auto">
-        {message ? (
+        {message && !error ? (
           <Lottie
             animationData={sendEmail}
             style={{ width: '240px', margin: '0 auto', paddingBottom: '40px' }}
@@ -75,10 +81,11 @@ const ForgotPassword: React.FC = () => {
                     placeholder="Seu email"
                     value={email}
                     onChange={handleEmailChange}
+                    error={userNotFound}
                   />
                 </div>
                 <button
-                  className="group relative flex items-center justify-center px-5 h-12 w-full font-bold text-white bg-gradient-to-br from-cyanGreen-800 to-cyan-800 rounded-lg transition-all duration-300 focus:outline-none"
+                  className="group relative flex items-center justify-center px-5 h-12 w-full font-bold text-white hover:scale-105 active:scale-95 bg-gradient-to-br from-cyanGreen-800 to-cyan-800 rounded-lg transition-all duration-300 focus:outline-none"
                   type="submit"
                 >
                   <div className="absolute top-0 left-0 w-full h-full rounded-lg animate-pulse group-hover:ring-2 ring-green-300 transition duration-300"></div>
@@ -93,7 +100,7 @@ const ForgotPassword: React.FC = () => {
         open={snackbarOpen}
         autoHideDuration={8000}
         onClose={handleSnackbarClose}
-        message={error ? errorMessage : message}
+        message={message}
       />
     </section>
   );

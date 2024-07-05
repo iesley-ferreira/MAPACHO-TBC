@@ -1,4 +1,3 @@
-// actions.ts
 import { createAction } from 'typesafe-actions';
 import { PasswordActionTypes } from './types';
 
@@ -8,7 +7,7 @@ export const resetPasswordRequest = createAction(
 
 export const resetPasswordSuccess = createAction(
   PasswordActionTypes.RESET_PASSWORD_SUCCESS,
-)<{ message: string }>();
+)<string>();
 
 export const resetPasswordFailure = createAction(
   PasswordActionTypes.RESET_PASSWORD_FAILURE,
