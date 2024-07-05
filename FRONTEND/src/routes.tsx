@@ -31,7 +31,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/produtos" element={<Products />} />
             <Route path="/cadastro" element={<Register />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/esqueci-senha" element={<ForgotPassword />} />
+            <Route path="/recuperarsenha" element={<ForgotPassword />} />
             <Route path="/usuario" element={<ProtectedRoute component={User} />} />
             <Route path="/envio" element={<Shipping />} />
             <Route path="/pagamento" element={<Payment />} />

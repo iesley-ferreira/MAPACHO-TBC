@@ -15,11 +15,17 @@ export interface ResetPasswordSuccessPayload {
   message: string;
 }
 
+export interface ResetPasswordApiResponse {
+  status: number;
+  data: {
+    message: string;
+  };
+}
+
 export interface PasswordState {
-  readonly error: boolean;
-  readonly errorMessage: string;
   readonly loading: boolean;
   readonly message: string;
+  readonly error: boolean;
 }
 
 export type PasswordActions = ActionType<typeof actions>;
