@@ -1,0 +1,22 @@
+{
+  "categories": [
+    {
+      "id": "2709995",
+      "description": "Bongs",
+      "subcategories": [
+        {
+          "id": "2709997",
+          "description": "Vidro"
+        },
+        {
+          "id": "2709998",
+          "description": "Acrílico"
+        },
+        {
+          "id": "2709999",
+          "description": "Silicone"
+        }
+      ]
+    }
+  ]
+}

@@ -20,17 +20,21 @@ const CategoryBreadcrumbs: React.FC<CategoryBreadcrumbsProps> = ({
     <div className="text-left pl-5 pb-8 md:pb-4">
       <Breadcrumbs
         aria-label="breadcrumb"
-        separator={<NavigateNextIcon fontSize="small" />}
+        separator={<NavigateNextIcon fontSize="large" />}
       >
-        <Link color="inherit" href="/" sx={{ display: 'flex', alignItems: 'center' }}>
-          <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-          Produtos
+        <Link
+          color="inherit"
+          href="/"
+          sx={{ display: 'flex', alignItems: 'center', fontSize: '1.3rem' }}
+        >
+          <HomeIcon sx={{ mr: 0.5 }} fontSize="medium" />
+          Home
         </Link>
 
         {searchValue && <Typography color="inherit">{searchValue}</Typography>}
 
         {selectedCategoryName && (
-          <Typography color="inherit">
+          <Typography color="inherit" style={{ fontSize: '1.3rem' }}>
             {selectedCategoryName} / {selectedSubCategoryName}
           </Typography>
         )}
