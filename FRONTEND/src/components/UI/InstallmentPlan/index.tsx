@@ -7,7 +7,7 @@ interface InstallmentPlanProps {
   color?: string;
 }
 
-const renderInstallment = (price: number): string => {
+const renderInstallment = (price: number): JSX.Element | string => {
   const tiers = [
     { upperBound: 79, installments: 1 },
     { upperBound: 120, installments: 2 },
@@ -21,7 +21,12 @@ const renderInstallment = (price: number): string => {
   if (!tier) return '';
 
   const installment = price / tier.installments;
-  return `${tier.installments}x de ${priceFormatter.format(installment)}`;
+  return (
+    <>
+      ou <strong>{tier.installments}x</strong> de{' '}
+      <strong>{priceFormatter.format(installment)}</strong>
+    </>
+  );
 };
 
 const InstallmentPlan: React.FC<InstallmentPlanProps> = ({ totalPrice, color }) => {
@@ -31,10 +36,11 @@ const InstallmentPlan: React.FC<InstallmentPlanProps> = ({ totalPrice, color }) 
       sx={{
         fontFamily: 'Montserrat',
         fontSize: '14px',
+        fontWeight: 500,
         color: { color },
       }}
     >
-      ou {renderInstallment(totalPrice)}
+      {renderInstallment(totalPrice)}
     </Typography>
   );
 };
