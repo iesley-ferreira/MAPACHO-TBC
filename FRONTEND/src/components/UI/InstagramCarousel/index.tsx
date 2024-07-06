@@ -33,12 +33,15 @@ const InstagramCarousel: React.FC = () => {
   };
 
   const items = [
-    { src: '/public/assets/images/post1.webp', alt: 'post1' },
-    { src: '/public/assets/images/post2.webp', alt: 'post2' },
-    { src: '/public/assets/images/post3.webp', alt: 'post3' },
-    { src: '/public/assets/images/post4.webp', alt: 'post4' },
-    { src: '/public/assets/images/post5.webp', alt: 'post5' },
-    { src: '/public/assets/images/post6.webp', alt: 'post6' },
+    {
+      src: '/public/assets/images/posts/post1.webp',
+      alt: 'post1',
+    },
+    { src: '/public/assets/images/posts/post2.webp', alt: 'post2' },
+    { src: '/public/assets/images/posts/post3.webp', alt: 'post3' },
+    { src: '/public/assets/images/posts/post4.webp', alt: 'post4' },
+    { src: '/public/assets/images/posts/post5.webp', alt: 'post5' },
+    { src: '/public/assets/images/posts/post6.webp', alt: 'post6' },
   ];
 
   return (
