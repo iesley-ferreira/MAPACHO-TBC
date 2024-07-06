@@ -3,7 +3,7 @@ import { Collapse, List, ListItem, ListItemText } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Category } from '../../../store/ducks/categories/types';
+import { IFormattedSubcategory } from '../../../interfaces/Category';
 import {
   clearFilteredProducts,
   setDisableButtonShowMore,
@@ -23,22 +23,18 @@ const Menu: React.FC<MenuProps> = ({ onClose, shouldCloseOnSubcategoryClick = tr
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [expandedItemId, setExpandedItemId] = useState<number | null>(null);
-  const { categories, subCategories } = useSelector(
-    (state: RootState) => state.categories,
-  );
+  const { formattedCategories } = useSelector((state: RootState) => state.categories);
 
-  const renderSubcategory = (id: number, categoryName: string) => {
-    const subCategoriesByCategory = subCategories.filter(
-      (s: Category) => s.categoriaPai.id === id,
-    );
+  const renderSubcategory = (categoryId: number, categoryName: string) => {
+    const subCategoriesByCategory = formattedCategories.find(
+      (category) => category.id === categoryId.toString(),
+    )?.subcategories;
 
-    if (subCategoriesByCategory.length === 0) {
-      const currentUrlParams = new URLSearchParams();
-      currentUrlParams.set('idCategoria', id.toString());
-      navigate(`/home?${currentUrlParams.toString()}`);
+    if (subCategoriesByCategory?.length === 0) {
+      navigate(`/categoria/${categoryName}?idCategoria=${categoryId}`);
       dispatch(setDisableButtonShowMore(false));
       dispatch(setSearchValue(null));
-      dispatch(setSelectedCategory(id.toString()));
+      dispatch(setSelectedCategory(categoryId.toString()));
       dispatch(
         setNewCategoryNames({
           newCategoryName: categoryName,
@@ -53,17 +49,18 @@ const Menu: React.FC<MenuProps> = ({ onClose, shouldCloseOnSubcategoryClick = tr
       return;
     }
 
-    setExpandedItemId(expandedItemId === id ? null : id);
+    setExpandedItemId(expandedItemId === categoryId ? null : categoryId);
   };
 
   const handleSubcategoryClick = (
     subcategoryId: number,
+    categoryId: number,
     categoryName: string,
     subCategoryName: string,
   ) => {
-    const currentUrlParams = new URLSearchParams();
-    currentUrlParams.set('idSubCategoria', subcategoryId.toString());
-    navigate(`/home?${currentUrlParams.toString()}`);
+    navigate(
+      `/categoria/${categoryName}?idCategoria=${categoryId}&idSubCategoria=${subcategoryId}`,
+    );
     dispatch(setDisableButtonShowMore(false));
     dispatch(setSearchValue(null));
     dispatch(setSelectedCategory(subcategoryId.toString()));
@@ -82,7 +79,8 @@ const Menu: React.FC<MenuProps> = ({ onClose, shouldCloseOnSubcategoryClick = tr
   };
 
   const getSubCategories = (parentId: number) => {
-    return subCategories.filter((s: Category) => s.categoriaPai.id === parentId);
+    return formattedCategories.find((category) => category.id === parentId.toString())
+      ?.subcategories;
   };
 
   return (
@@ -91,59 +89,75 @@ const Menu: React.FC<MenuProps> = ({ onClose, shouldCloseOnSubcategoryClick = tr
         pt: 2,
       }}
     >
-      {categories
-        .filter((c) => c.categoriaPai.id === 0)
-        .map((category) => (
-          <React.Fragment key={category.id}>
-            <ListItem
-              button
-              onClick={() => renderSubcategory(category.id, category.descricao)}
+      {formattedCategories.map((category) => (
+        <React.Fragment key={category.id}>
+          <ListItem
+            button
+            onClick={() => renderSubcategory(Number(category.id), category.description)}
+            sx={{
+              px: 2,
+              py: 1.2,
+              mb: 0,
+              gap: 3,
+              borderBottom: '1px solid #cccc',
+              fontSize: 18,
+              fontWeight: 500,
+              color: '#000',
+              backgroundColor:
+                expandedItemId?.toString() === category.id ? '#a1989875' : 'inherit',
+              fontFamily: 'Cooper Hewitt',
+              textTransform: 'uppercase',
+            }}
+          >
+            <ListItemText primary={category.description} disableTypography={true} />
+            {expandedItemId?.toString() === category.id ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <Collapse
+            in={expandedItemId?.toString() === category.id}
+            timeout="auto"
+            unmountOnExit
+          >
+            <List
               sx={{
-                px: 2,
-                py: 1.2,
-                mb: 0,
-                gap: 3,
-                borderBottom: '1px solid #cccc',
-                backgroundColor: expandedItemId === category.id ? '#f5f5f5' : 'inherit',
-                fontFamily: 'Montserrat, sans-serif',
+                pl: 0,
+                borderRadius: '8px',
               }}
+              component="div"
+              disablePadding
             >
-              <ListItemText primary={category.descricao} disableTypography={true} />
-              {expandedItemId === category.id ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={expandedItemId === category.id} timeout="auto" unmountOnExit>
-              <List
-                sx={{
-                  pl: 0,
-                  borderRadius: '8px',
-                }}
-                component="div"
-                disablePadding
-              >
-                {getSubCategories(category.id).map((subCategory: Category) => (
+              {getSubCategories(Number(category.id))?.map(
+                (subCategory: IFormattedSubcategory) => (
                   <ListItem
                     button
                     key={subCategory.id}
                     onClick={() =>
                       handleSubcategoryClick(
-                        subCategory.id,
-                        category.descricao,
-                        subCategory.descricao,
+                        Number(subCategory.id),
+                        Number(category.id),
+                        category.description,
+                        subCategory.description,
                       )
                     }
-                    sx={{ borderBottom: '1px solid #eee', paddingLeft: '32px' }}
+                    sx={{
+                      borderBottom: '1px solid #eee',
+                      paddingLeft: '32px',
+                      fontSize: 18,
+                      fontWeight: 500,
+                      textTransform: 'uppercase',
+                    }}
                   >
                     <i className="ri-fire-line" style={{ marginRight: '8px' }}></i>
                     <ListItemText
-                      primary={subCategory.descricao}
+                      primary={subCategory.description}
                       disableTypography={true}
                     />
                   </ListItem>
-                ))}
-              </List>
-            </Collapse>
-          </React.Fragment>
-        ))}
+                ),
+              )}
+            </List>
+          </Collapse>
+        </React.Fragment>
+      ))}
     </List>
   );
 };
