@@ -65,6 +65,10 @@ const BrandsCarousel: React.FC = () => {
       src: '/public/assets/images/brands/raw.png',
       alt: 'raw',
     },
+    // {
+    //   src: '/public/assets/images/brands/bulldog.png',
+    //   alt: 'BullDog',
+    // },
   ];
 
   return (
@@ -72,7 +76,7 @@ const BrandsCarousel: React.FC = () => {
       <Slider {...settings}>
         {items.map((image, index) => (
           <div key={index}>
-            <img src={image.src} alt={image.alt} />
+            <img className="filter grayscale" src={image.src} alt={image.alt} />
           </div>
         ))}
       </Slider>

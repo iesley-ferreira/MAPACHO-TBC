@@ -28,11 +28,11 @@ const CalculateFreight: React.FC = () => {
   };
 
   return (
-    <div className="pb-4 mb-4">
-      <p className="text-rhino-800 mb-4">Calcular frete e prazo :</p>
+    <div className="">
+      <p className="text-rhino-800 font-medium mb-4">Calcular frete e prazo:</p>
       <div className="flex items-center space-x-2 mb-10">
         <input
-          className="flex-grow md:mb-0 px-2 py-2 text-sm placeholder-gray-800 font-bold font-heading border border-gray-200 focus:ring-blue-300 focus:border-blue-300 rounded-md"
+          className="flex-grow md:mb-0 px-2 py-2 text-sm bg-transparent placeholder-gray-800 font-bold font-heading border border-gray-400 focus:ring-blue-300 focus:border-blue-300 rounded-md"
           type="text"
           placeholder="CEP"
           value={zipCode.replace(/^(\d{5})(\d)/, '$1-$2')}
@@ -50,7 +50,7 @@ const CalculateFreight: React.FC = () => {
       </div>
       {!loading && deliveryOptions.length > 0 && (
         <div className="mt-4">
-          <p className="text-rhino-800 mb-4">Opções de entrega :</p>
+          <p className="text-rhino-800 font-medium mb-4">Opções de entrega:</p>
           <DeliveryOptionsTable />
         </div>
       )}
