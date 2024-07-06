@@ -18,10 +18,12 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({ menuDrawerOpen, setMenuDrawerOp
         '& .MuiDrawer-paper': { width: 310 },
       }}
     >
-      <div className="flex justify-between items-center p-4">
-        <h1 className="font-heading uppercase text-1xl">Categorias</h1>
+      <div className="flex justify-between items-center p-2">
+        <h1 className="font-heading uppercase font-semibold text-2xl py-2 pl-3 mt-2">
+          Menu
+        </h1>
         <IconButton onClick={() => setMenuDrawerOpen(!menuDrawerOpen)}>
-          <CloseIcon />
+          <CloseIcon style={{ fontSize: '30px', marginRight: '10px' }} />
         </IconButton>
       </div>
       <Divider />

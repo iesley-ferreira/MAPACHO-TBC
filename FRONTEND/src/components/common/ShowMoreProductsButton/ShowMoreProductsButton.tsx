@@ -1,5 +1,5 @@
-import { Box, Button, CircularProgress } from '@mui/material';
-import React from 'react';
+import { Button, CircularProgress } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 
 interface ShowMoreProductsButtonProps {
   loading: boolean;
@@ -12,42 +12,43 @@ const ShowMoreProductsButton: React.FC<ShowMoreProductsButtonProps> = ({
   loadMoreProducts,
   isShowMoreProductsButtonDisabled,
 }) => {
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
+
+  useEffect(() => {
+    if (!loading) setIsButtonLoading(false);
+  }, [loading]);
+
+  const handleLoadMoreProducts = async () => {
+    setIsButtonLoading(true);
+    loadMoreProducts();
+  };
   return (
-    <>
-      {loading ? (
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '55vh',
-          }}
-        >
-          <CircularProgress sx={{ color: 'darkgreen' }} />
-        </Box>
+    <Button
+      onClick={handleLoadMoreProducts}
+      disabled={isShowMoreProductsButtonDisabled}
+      sx={{
+        my: 8,
+        border: '1px solid rgb(5 150 105)',
+        color: 'rgb(5 150 105)',
+        minWidth: '220px',
+        '&:disabled': {
+          color: 'GrayText',
+          border: '1px solid GrayText',
+          cursor: 'not-allowed',
+        },
+        '&:hover': {
+          backgroundColor: 'inherit',
+          color: 'rgb(5 150 105)',
+          transform: 'scale(1.02)',
+        },
+      }}
+    >
+      {isButtonLoading ? (
+        <CircularProgress thickness={3} size={24} sx={{ color: 'rgb(5 150 105)' }} />
       ) : (
-        <>
-          <Button
-            onClick={loadMoreProducts}
-            disabled={isShowMoreProductsButtonDisabled}
-            sx={{
-              my: 8,
-              color: 'rgb(5 150 105)',
-              '&:disabled': {
-                color: 'GrayText',
-              },
-              '&:hover': {
-                backgroundColor: 'inherit',
-                color: 'rgb(5 150 105)',
-                transform: 'scale(1.02)',
-              },
-            }}
-          >
-            Mostrar Mais Produtos
-          </Button>
-        </>
+        'Mostrar Mais Produtos'
       )}
-    </>
+    </Button>
   );
 };
 

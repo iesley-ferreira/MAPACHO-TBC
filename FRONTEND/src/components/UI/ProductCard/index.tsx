@@ -25,16 +25,16 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const handleViewProduct = () => {
     const currentUrlParams = new URLSearchParams(location.search);
     currentUrlParams.set('idProduto', product.id.toString());
-    navigate(`/home?${currentUrlParams.toString()}`);
+    navigate(`/produto?${currentUrlParams.toString()}`);
   };
 
   return (
     <div
       key={product.id}
-      className="w-full max-w-[340px] md:w-1/2 xl:w-1/3 xl:min-w-[288px] px-2 mb-6"
+      className="w-full max-w-[340px] md:w-1/2 xl:w-1/3 xl:min-w-[288px] px-2 mb-6 hover:-translate-y-1 transition-transform duration-300 ease-in-out"
       onClick={handleViewProduct}
     >
-      <div className="flex flex-col h-full rounded-md pt-4 pb-4 px-4 hover:shadow-lg">
+      <div className="flex flex-col h-full rounded-md pt-4 pb-4 px-4 shadow-[0px_3px_14px_rgba(0,0,0,0.08)] border border-[#ededed]">
         <img
           className="block mb-4 w-full  md:h-48 object-contain"
           src={product.imagemURL || defaultImageURL}
@@ -62,7 +62,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
             </h6>
           </Tooltip>
           <div className="flex mb-2 items-center justify-between">
-            <span className="text-lg font-bold text-green-900">
+            <span className="text-lg font-semibold text-green-900">
               {priceFormatter.format(product.preco)}
             </span>
           </div>
