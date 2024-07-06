@@ -1,7 +1,7 @@
-import { Category } from '../store/ducks/categories/types'
-import axios from './axiosConfig'
+import { ICategory } from '../interfaces/Category';
+import axios from './axiosConfig';
 
-export const fetchCategories = async (): Promise<Category[]> => {
-  const response = await axios.get<{ data: Category[] }>('categories')
-  return response.data.data
-}
+export const fetchCategories = async (): Promise<ICategory[]> => {
+  const response = await axios.get<{ data: ICategory[] }>('categories');
+  return response.data.data;
+};
