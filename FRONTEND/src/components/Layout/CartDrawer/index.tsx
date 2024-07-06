@@ -43,10 +43,12 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ cartDrawerOpen, setCartDrawerOp
         '.MuiDrawer-paper': { width: '100%', maxWidth: '540px', maxHeight: '100vh' },
       }}
     >
-      <div className="flex justify-between items-center p-4">
-        <h1 className="font-heading uppercase text-1xl ">meu carrinho</h1>
+      <div className="flex justify-between items-center p-2">
+        <h1 className="font-heading uppercase font-semibold text-2xl py-2 pl-3 mt-2">
+          carrinho
+        </h1>
         <IconButton onClick={() => setCartDrawerOpen(!cartDrawerOpen)}>
-          <CloseIcon />
+          <CloseIcon style={{ fontSize: '30px', marginRight: '10px' }} />
         </IconButton>
       </div>
       <Divider />
