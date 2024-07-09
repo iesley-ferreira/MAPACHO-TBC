@@ -16,7 +16,7 @@ const signUp = async ({ email, name, password, google_id }: UserInputType) => {
     };
   }
 
-  const hashedPassword = bcrypt.hashSync(password, 10);
+  const hashedPassword = bcrypt.hashSync(password!, 10);
   const newUser = await userModel.createUser({
     email,
     name,

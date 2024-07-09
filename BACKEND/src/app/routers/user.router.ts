@@ -7,5 +7,6 @@ const userRouter = Router();
 
 userRouter.route('/login').post(loginController.signIn);
 userRouter.route('/signUp').post(userMiddlewares.validateSignUp, userController.signUp);
+userRouter.route('/googleSignIn').post(loginController.googleSignIn);
 
 export default userRouter;
