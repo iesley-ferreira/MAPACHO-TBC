@@ -8,6 +8,7 @@ import orderRouter from './routers/order.router';
 import productsRouter from './routers/products.router';
 import shippingRouter from './routers/shipping.router';
 import userRouter from './routers/user.router';
+import passwordRouter from './routers/password.router';
 
 const app = express();
 app.use(cors());
@@ -31,6 +32,7 @@ app.use('/shipping', shippingRouter);
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/orders', orderRouter);
+app.use('/reset-password', passwordRouter);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);

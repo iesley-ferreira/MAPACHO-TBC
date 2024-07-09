@@ -46,7 +46,7 @@ export default {
         body: '#9CA3AF',
       },
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'],
+        // sans: ['Montserrat', 'sans-serif'],
       },
       maxWidth: {
         'product-card': '244px',
@@ -56,6 +56,9 @@ export default {
           '0%, 100%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(1.3)' },
         },
+      },
+      boxShadow: {
+        custom: '0 3px 14px rgba(0, 0, 0, 0.08)',
       },
       animation: {
         wiggle: 'wiggle 0.3s ease-in-out',
