@@ -42,9 +42,6 @@ function* loginUserSaga(action: { type: string; payload: IUserLogin }) {
     }
 
     if (response.status !== 200) {
-      console.log('responseSAGA !200', response.message);
-      console.log('responseSAGA !200', response.status);
-      console.log('responseSAGA !200', response.user);
       yield put(
         loginUserFailure({
           message: response.message,
@@ -57,13 +54,6 @@ function* loginUserSaga(action: { type: string; payload: IUserLogin }) {
       localStorage.setItem('token', response.token);
       yield put(loginUserSuccess(response.user));
     }
-    // if (response.data.user.isPending) {
-    //   yield put(loginUserSuccess(response.data.user));
-    //   return;
-    // }
-    // localStorage.setItem('token', response.data.token);
-
-    // yield put(loginUserSuccess(response.data.user));
   } catch (error: any) {
     yield put(
       loginUserFailure({

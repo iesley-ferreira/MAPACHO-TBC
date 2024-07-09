@@ -57,12 +57,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <section className="relative bg-gray-50 overflow-hidden">
-      <img
-        className="absolute top-0 left-0 md:ml-20"
-        src="/public/assets/shadow-light-top.png"
-        alt="shadow-light-top"
-      />
+    <section className="relative bg-gray-50 overflow-hidden bg-[url(/public/assets/shadow-light-top.png)] bg-no-repeat bg-cover">
       <div className="relative container mx-auto">
         <div className="min-h-screen flex items-center justify-center px-4">
           <div className="w-full max-w-sm mx-auto">
@@ -117,7 +112,7 @@ const Login: React.FC = () => {
                 <div className="text-right pt-1 pr-2">
                   <a
                     className="inline-block text-sm font-semibold text-green-600 hover:text-green-500"
-                    href="#"
+                    href="/recuperarsenha"
                   >
                     Esqueceu a senha?
                   </a>
