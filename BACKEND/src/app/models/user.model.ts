@@ -64,6 +64,14 @@ const updateUser = async (
   });
 };
 
+const getOrdersByUser = async (userId: string) => {
+  return prisma.order.findMany({
+    where: {
+      user_id: userId,
+    },
+  });
+};
+
 export default {
   createUser,
   findUserByEmail,
@@ -71,4 +79,5 @@ export default {
   findUserByResetToken,
   updateResetPasswordFields,
   updateUser,
+  getOrdersByUser,
 };

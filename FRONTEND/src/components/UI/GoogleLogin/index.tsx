@@ -1,41 +1,24 @@
-import {
-  GoogleLogin as GoogleOAuthLogin,
-  GoogleOAuthProvider,
-} from '@react-oauth/google';
-import axios from 'axios';
+import React from 'react';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
+import { GoogleCredential } from '../../../interfaces/GoogleCredential';
 
-// interface CredentialResponse {
-//   provider: string
-//   user: {
-//     id: string
-//     name: string
-//     email: string
-//     picture: string
-//   }
-// }
-
-function GoogleLogin() {
-  const handleSuccess = (credentialResponse: any) => {
-    axios
-      .post('http://localhost:3001/auth/google', credentialResponse)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error('Erro ao enviar dados da credencial para o backend:', error);
-      });
-  };
-
-  return (
-    <GoogleOAuthProvider clientId="257701820514-52pftd6ulpsdoqu4mp4t3hihpclmefnn.apps.googleusercontent.com">
-      <GoogleOAuthLogin
-        onSuccess={handleSuccess}
-        onError={() => {
-          console.log('Login Failed');
-        }}
-      />
-    </GoogleOAuthProvider>
-  );
+interface GoogleLoginProps {
+  handleLogin: (credentialResponse: GoogleCredential) => void;
 }
 
-export default GoogleLogin;
+const GoogleLoginComponent: React.FC<GoogleLoginProps> = ({ handleLogin }) => {
+  const handleSuccess = (credentialResponse: any) => {
+    const decoded = jwtDecode(credentialResponse?.credential) as GoogleCredential;
+
+    handleLogin(decoded);
+  };
+
+  const handleError = () => {
+    console.log('Login Failed');
+  };
+
+  return <GoogleLogin onSuccess={handleSuccess} onError={handleError} />;
+};
+
+export default GoogleLoginComponent;

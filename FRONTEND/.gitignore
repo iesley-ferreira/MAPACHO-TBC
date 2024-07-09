@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 devConfig.json
+
+.env
