@@ -27,7 +27,10 @@ const verifyAuthCode = async (email: string, code: string) => {
   }
 
   await userModel.updateUserStatus(user.id, false);
-  const token = jwtProvider.sign(user);
+
+  const userWithOrders = { orders: [], ...user };
+
+  const token = jwtProvider.sign(userWithOrders);
 
   return {
     data: {
