@@ -6,7 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import GoogleLogin from '../../components/UI/GoogleLogin';
 import CustomInput from '../../components/common/CustomInput';
 import { RootState } from '../../store/ducks/rootReducer';
-import { loginUserRequest } from '../../store/ducks/user/actions';
+import { googleLoginRequest, loginUserRequest } from '../../store/ducks/user/actions';
+import { GoogleCredential } from '../../interfaces/GoogleCredential';
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+
     if (token) {
       navigate('/usuario');
       return;
@@ -54,6 +56,17 @@ const Login: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(loginUserRequest({ email, password }));
+  };
+
+  const handleGoogleLogin = (credentialResponse: GoogleCredential) => {
+    dispatch(
+      googleLoginRequest({
+        email: credentialResponse.email,
+        name: credentialResponse.name,
+        img_profile: credentialResponse.picture,
+        google_id: credentialResponse.sub,
+      }),
+    );
   };
 
   return (
@@ -133,7 +146,7 @@ const Login: React.FC = () => {
                 <div className="h-px w-full bg-gray-200"></div>
               </div>
               <div className="flex w-full justify-center">
-                <GoogleLogin />
+                <GoogleLogin handleLogin={handleGoogleLogin} />
               </div>
               <p className="pt-5 text-sm text-center">
                 <span className="mr-1 text-gray-500">Não tem uma conta?</span>

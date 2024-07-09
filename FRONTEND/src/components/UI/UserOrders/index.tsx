@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { IOrder } from '../../../interfaces/User';
 import { priceFormatter } from '../../../utils/priceFormatter';
+import { dateFormatter } from '../../../utils/dateFormatter';
 
 type UserOrdersProps = {
   orders: IOrder[] | [];
@@ -9,7 +10,7 @@ type UserOrdersProps = {
 const UserOrders: React.FC<UserOrdersProps> = ({ orders }) => {
   const [expandedOrders, setExpandedOrders] = useState<{ [key: string]: boolean }>({});
 
-  const toggleOrderExpansion = (orderId: number) => {
+  const toggleOrderExpansion = (orderId: string) => {
     setExpandedOrders((prevExpandedOrders) => ({
       ...prevExpandedOrders,
       [orderId]: !prevExpandedOrders[orderId],
@@ -29,8 +30,6 @@ const UserOrders: React.FC<UserOrdersProps> = ({ orders }) => {
     }
   };
 
-  console.log('ORDERS', orders);
-
   return (
     <section className="flex items-center w-full py-8">
       <div className="container md:max-w-4xl px-4 mx-auto rounded-sm overflow-hidden">
@@ -38,7 +37,7 @@ const UserOrders: React.FC<UserOrdersProps> = ({ orders }) => {
           <div className="overflow-x-auto">
             <div className="flex items-center justify-between rounded-lg bg-gray-300 py-3 md:py-5 px-4 md:px-8">
               <div className="flex items-center w-full justify-between">
-                <div className="w-3/12 font-heading text-center font-semibold uppercase md:hidden">
+                <div className="w-4/12 md:w-2/12 font-heading text-center font-semibold uppercase md:hidden">
                   <p>ID</p>
                 </div>
                 <div className="md:w-2/12 font-heading text-center font-semibold uppercase hidden md:block">
@@ -63,11 +62,12 @@ const UserOrders: React.FC<UserOrdersProps> = ({ orders }) => {
               orders.map((order) => (
                 <div key={order.id} className="bg-gray-50 border-b border-gray-100">
                   <div className="flex w-full justify-between px-4 py-3 md:px-7 md:py-5">
-                    <div className="w-3/12 md:w-2/12 md:py-1 md:px-3 font-heading text-sm md:text-md text-center uppercase">
-                      #{order.id}
+                    <div className="w-4/12 md:w-2/12  font-heading text-sm md:text-md text-center uppercase">
+                      {/* {order.id} */}
+                      #123456
                     </div>
                     <div className="w-4/12 md:w-2/12 md:py-1 md:px-3 text-sm md:text-md font-heading text-center uppercase">
-                      {order.created_at}
+                      {dateFormatter(`${order.created_at}`)}
                     </div>
                     <div className="flex w-4/12 md:w-2/12 content-center justify-center">
                       <div
@@ -105,7 +105,7 @@ const UserOrders: React.FC<UserOrdersProps> = ({ orders }) => {
                               <p className="text-rhino-800 text-xs md:text-base">
                                 {product.quantidade}x
                               </p>
-                              <div className="rounded-lg w-36 lg:w-24 h-24 flex items-center justify-center">
+                              <div className="rounded-lg w-36 lg:w-24 h-24 sm:w-24 h-24 flex items-center justify-center">
                                 <img
                                   src={
                                     product.imagemURL ||
