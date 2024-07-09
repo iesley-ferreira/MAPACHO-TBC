@@ -5,19 +5,36 @@ import { UserInputType } from '../../types/User.type';
 const existingUser = async (email: string) =>
   prisma.user.findUnique({ where: { email } });
 
-const signUp = async ({ email, name, password, google_id }: UserInputType) => {
-  return prisma.user.create({
-    data: {
-      email,
-      name,
-      password,
-      google_id,
-    },
-  });
+const signUp = {
+  emailAndPassword: async ({ email, name, password, google_id }: UserInputType) =>
+    prisma.user.create({
+      data: {
+        email,
+        name,
+        password,
+        google_id,
+      },
+    }),
+
+  credentialsGoogleAccount: async ({
+    email,
+    name,
+    google_id,
+    img_profile,
+  }: UserInputType) =>
+    prisma.user.create({
+      data: {
+        email,
+        name,
+        google_id,
+        img_profile,
+        isPending: false,
+      },
+    }),
 };
 
 const signIn = {
-  credentialsGoogleAccount: (email: string, google_id: string) =>
+  credentialsGoogleAccount: async (email: string, google_id: string) =>
     prisma.user.findFirst({
       where: {
         email,
@@ -41,6 +58,13 @@ const signIn = {
       }
     }
   },
+
+  email: async (email: string) =>
+    prisma.user.findFirst({
+      where: {
+        email,
+      },
+    }),
 };
 
 const loginModel = {

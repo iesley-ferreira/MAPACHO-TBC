@@ -2,6 +2,7 @@ import { createAction } from 'typesafe-actions';
 import {
   IUser,
   IUserCreateParams,
+  IUserGoogleLogin,
   IUserLogin,
   IVerifyAuthCodeParams,
 } from '../../../interfaces/User';
@@ -28,6 +29,18 @@ export const loginUserFailure = createAction(UserActionTypes.LOGIN_USER_FAILURE)
 export const loginUserUnauthorized = createAction(
   UserActionTypes.LOGIN_USER_UNAUTHORIZED,
 )<IUser>();
+
+export const googleLoginRequest = createAction(
+  UserActionTypes.GOOGLE_LOGIN_REQUEST,
+)<IUserGoogleLogin>();
+
+export const googleLoginSuccess = createAction(
+  UserActionTypes.GOOGLE_LOGIN_SUCCESS,
+)<IUser>();
+
+export const googleLoginFailure = createAction(
+  UserActionTypes.GOOGLE_LOGIN_FAILURE,
+)<string>();
 
 export const logoutUser = createAction(UserActionTypes.LOGOUT_USER)<void>();
 
@@ -79,8 +92,16 @@ export const updateUserFailure = createAction(
   UserActionTypes.UPDATE_USER_FAILURE,
 )<string>();
 
-export const setUserFromToken = createAction(
-  UserActionTypes.SET_USER_FROM_TOKEN,
+export const setUserFromTokenRequest = createAction(
+  UserActionTypes.SET_USER_FROM_TOKEN_REQUEST,
+)<string>();
+
+export const setUserFromTokenSuccess = createAction(
+  UserActionTypes.SET_USER_FROM_TOKEN_SUCCESS,
+)<IUser>();
+
+export const setUserFromTokenFailure = createAction(
+  UserActionTypes.SET_USER_FROM_TOKEN_FAILURE,
 )<string>();
 
 export const setIsCodeSent = createAction(UserActionTypes.SET_IS_CODE_SENT)<boolean>();
