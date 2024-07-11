@@ -42,6 +42,17 @@ const signIn = {
       },
     }),
 
+  updateGoogleIdAndImgProfile: async (
+    email: string,
+    google_id: string,
+    img_profile: string,
+  ) => {
+    return prisma.user.update({
+      where: { email },
+      data: { google_id, img_profile },
+    });
+  },
+
   emailAndPassword: async (email: string, password: string) => {
     if (!email || !password) return null;
 
@@ -50,6 +61,22 @@ const signIn = {
         email,
       },
     });
+
+    if (user && !user.password) {
+      return {
+        id: '',
+        name: '',
+        email: '',
+        password: '',
+        img_profile: '',
+        google_id: user.google_id,
+        created_at: new Date(),
+        updated_at: new Date(),
+        isPending: false,
+        resetPasswordToken: '',
+        resetPasswordExpires: '',
+      };
+    }
 
     if (user && user.password) {
       const isPasswordValid = await bcrypt.compare(password, user.password);
