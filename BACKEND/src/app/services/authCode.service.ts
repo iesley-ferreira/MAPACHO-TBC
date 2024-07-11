@@ -4,7 +4,6 @@ import userModel from '../models/user.model';
 
 const verifyAuthCode = async (email: string, code: string) => {
   const user = await userModel.findUserByEmail(email);
-  console.log('user verifyAuthCodeSERVICE', user);
 
   if (!user) {
     return {

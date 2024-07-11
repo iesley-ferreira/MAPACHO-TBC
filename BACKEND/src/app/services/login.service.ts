@@ -26,9 +26,42 @@ const signIn = async (email: string, password: string): Promise<ReturnServiceTyp
       status: 400,
     };
   }
+
   const { password: _, ...userWithoutPassword } = user;
 
-  if (user.isPending) {
+  const ordersByUser = await userModel.getOrdersByUser(user.id);
+
+  const ordersWithProducts: IOrder[] = await Promise.all(
+    ordersByUser.map(async (order): Promise<IOrder> => {
+      const products: IProduct[] = await productsModel.getProductByOrderId(order.id);
+      return {
+        id: order.id,
+        total: order.total,
+        status: order.status,
+        products,
+        created_at: order.created_at,
+      };
+    }),
+  );
+
+  const userWithOrders = {
+    ...userWithoutPassword,
+    orders: ordersWithProducts,
+  };
+
+  const token = jwtProvider.sign(userWithOrders);
+
+  if (user && user.google_id) {
+    return {
+      data: {
+        message: 'Email já cadastrado com Google. Faça login com sua conta Google',
+        user: userWithoutPassword,
+      },
+      status: 400,
+    };
+  }
+
+  if (user?.isPending) {
     return {
       data: {
         message: 'Usuário não autenticado. Verifique seu email para completar o cadastro',
@@ -42,6 +75,7 @@ const signIn = async (email: string, password: string): Promise<ReturnServiceTyp
     data: {
       message: 'Usuário autenticado com sucesso',
       user: userWithoutPassword,
+      token,
     },
     status: 200,
   };
@@ -63,50 +97,6 @@ const googleSignIn = async ({
   }
 
   const userByEmail = await loginModel.signIn.email(email);
-
-  if (!userByEmail) {
-    throw new Error('User not found');
-  }
-
-  const ordersByUser = await userModel.getOrdersByUser(userByEmail.id);
-
-  const ordersWithProducts: IOrder[] = await Promise.all(
-    ordersByUser.map(async (order): Promise<IOrder> => {
-      const products: IProduct[] = await productsModel.getProductByOrderId(order.id);
-      return {
-        id: order.id,
-        total: order.total,
-        status: order.status,
-        products,
-        created_at: order.created_at,
-      };
-    }),
-  );
-
-  console.log('ordersWithProducts', ordersWithProducts);
-
-  const {
-    password: _,
-    resetPasswordExpires: __,
-    resetPasswordToken: ___,
-    ...userWithoutPassword
-  } = userByEmail!;
-
-  const userWithOrders = {
-    ...userWithoutPassword,
-    orders: ordersWithProducts,
-  };
-
-  const token = jwtProvider.sign(userWithOrders);
-
-  // if (userByEmail && !userByEmail.google_id) {
-  //   return {
-  //     data: {
-  //       message: 'Email já cadastrado. Faça login com sua senha',
-  //     },
-  //     status: 400,
-  //   };
-  // }
 
   if (!userByEmail) {
     const newUser = await loginModel.signUp.credentialsGoogleAccount({
@@ -135,10 +125,68 @@ const googleSignIn = async ({
     };
   }
 
+  const ordersByUser = await userModel.getOrdersByUser(userByEmail.id);
+
+  const ordersWithProducts: IOrder[] = await Promise.all(
+    ordersByUser.map(async (order): Promise<IOrder> => {
+      const products: IProduct[] = await productsModel.getProductByOrderId(order.id);
+      return {
+        id: order.id,
+        total: order.total,
+        status: order.status,
+        products,
+        created_at: order.created_at,
+      };
+    }),
+  );
+
+  const { password: _, ...userWithoutPassword } = userByEmail!;
+
+  const userWithOrders = {
+    ...userWithoutPassword,
+    orders: ordersWithProducts,
+  };
+
+  const token = jwtProvider.sign(userWithOrders);
+
+  if (
+    userByEmail &&
+    (!userByEmail.google_id || userByEmail.img_profile !== img_profile)
+  ) {
+    await loginModel.signIn.updateGoogleIdAndImgProfile(
+      userByEmail.email,
+      google_id,
+      img_profile!,
+    );
+    if (userByEmail.isPending) {
+      await userModel.updateUserStatus(userByEmail.id, false);
+    }
+
+    const updatedUser = await userModel.findUserByEmail(email);
+
+    const { password: __, ...userWithoutPassword } = updatedUser!;
+
+    const updatedUserWithOrders = {
+      ...userWithoutPassword,
+      orders: ordersWithProducts,
+    };
+
+    const updatedToken = jwtProvider.sign(updatedUserWithOrders);
+
+    return {
+      data: {
+        message: 'Usuário autenticado com sucesso',
+        user: updatedUserWithOrders,
+        token: updatedToken,
+      },
+      status: 200,
+    };
+  }
+
   return {
     data: {
       message: 'Usuário autenticado com sucesso',
-      user: userWithoutPassword,
+      user: userWithOrders,
       token,
     },
     status: 200,

@@ -2,11 +2,10 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import userModel from '../models/user.model';
 import nodemailerProvider from '../../providers/nodemailer.provider';
+import passwordModel from '../models/password.model';
 
 const requestPasswordReset = async (email: string) => {
   const user = await userModel.findUserByEmail(email);
-
-  console.log('Password service: ', user);
 
   if (!user) {
     return {
@@ -16,11 +15,13 @@ const requestPasswordReset = async (email: string) => {
   }
 
   const resetToken = crypto.randomBytes(20).toString('hex');
-  const resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour
+  const resetPasswordExpires = new Date(Date.now() + 3600000);
 
-  await userModel.updateResetPasswordFields(user.id, resetToken, resetPasswordExpires);
-
-  console.log('Password service resetToken: ', resetToken);
+  await passwordModel.createNewUserResetPassword(
+    user.id,
+    resetToken,
+    resetPasswordExpires,
+  );
 
   await nodemailerProvider.sendResetPasswordEmail(email, resetToken);
 
@@ -32,7 +33,8 @@ const requestPasswordReset = async (email: string) => {
 
 const resetPassword = async (token: string, newPassword: string) => {
   const user = await userModel.findUserByResetToken(token);
-  if (!user) {
+
+  if (!user || !user.resetPasswordExpires || user.resetPasswordExpires < new Date()) {
     return {
       data: { message: 'Token inválido ou expirado' },
       status: 400,
@@ -41,11 +43,10 @@ const resetPassword = async (token: string, newPassword: string) => {
 
   const hashedPassword = bcrypt.hashSync(newPassword, 10);
 
-  await userModel.updateUser(user.id, {
-    password: hashedPassword,
-    resetPasswordToken: null,
-    resetPasswordExpires: null,
-  });
+  const updatePasswordSuccess = await userModel.updateUser(user.user_id, hashedPassword);
+  if (updatePasswordSuccess) {
+    await passwordModel.deleteUserResetPassword(user.user_id);
+  }
 
   return {
     data: { message: 'Senha redefinida com sucesso' },
