@@ -14,10 +14,9 @@ const signIn = async (req: Request, res: Response) => {
     });
   }
 
-  const token = jwtProvider.sign(result.data);
   return res.status(200).json({
     data: {
-      token,
+      token: result.data.token,
       user: result.data.user,
       message: result.data.message,
     },
@@ -30,16 +29,17 @@ const googleSignIn = async (req: Request, res: Response) => {
 
   const result = await loginService.googleSignIn({ email, name, img_profile, google_id });
 
-  // if (result.status !== 200) {
-  //   return res.status(result.status).json({
-  //     data: {
-  //       token,
-  //       user: result.data.user,
-  //       message: result.data.message,
-  //     },
-  //     status: 200,
-  //   });
-  // }
+  if (result.status !== 200) {
+    return res.status(result.status).json({
+      data: {
+        token: result.data.token,
+        user: result.data.user,
+        message: result.data.message,
+        status: result.status,
+      },
+      status: 200,
+    });
+  }
 
   return res.status(200).json({
     data: {

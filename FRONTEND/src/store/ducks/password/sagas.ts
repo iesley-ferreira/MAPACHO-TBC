@@ -1,5 +1,10 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { resetPasswordSuccess, resetPasswordFailure } from './actions';
+import {
+  resetPasswordSuccess,
+  resetPasswordFailure,
+  setNewPasswordFailure,
+  setNewPasswordSuccess,
+} from './actions';
 import {
   PasswordActionTypes,
   ResetPasswordRequestPayload,
@@ -29,6 +34,30 @@ function* resetPasswordSaga(action: {
   }
 }
 
+function* setNewPasswordSaga(action: {
+  type: string;
+  payload: { token: string; newPassword: string };
+}) {
+  try {
+    const { token, newPassword } = action.payload;
+    const response: { status: number; data: { message: string } } = yield call(
+      resetPasswordApi.setNewPassword,
+      token,
+      newPassword,
+    );
+
+    if (response.status !== 200) {
+      yield put(setNewPasswordFailure(response.data.message));
+      return;
+    }
+
+    yield put(setNewPasswordSuccess(response.data.message));
+  } catch (error: any) {
+    yield put(setNewPasswordFailure(error.message || 'Erro desconhecido'));
+  }
+}
+
 export default function* watchUserSagas() {
   yield takeLatest(PasswordActionTypes.RESET_PASSWORD_REQUEST, resetPasswordSaga);
+  yield takeLatest(PasswordActionTypes.SET_NEW_PASSWORD_REQUEST, setNewPasswordSaga);
 }

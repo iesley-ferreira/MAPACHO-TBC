@@ -45,8 +45,6 @@ export const googleLogin = async (
   try {
     const response = await axios.post<IUserLoginResponse>('user/googleSignIn', user);
 
-    // console.log('RESPONSE API', response.data.data);
-
     return response.data;
   } catch (error: any) {
     if (error.response) {
