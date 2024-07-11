@@ -1,4 +1,4 @@
-import { IOrder, OrderInputType } from './Order.type';
+import { IOrder } from './Order.type';
 
 export type UserType = {
   id: string;
