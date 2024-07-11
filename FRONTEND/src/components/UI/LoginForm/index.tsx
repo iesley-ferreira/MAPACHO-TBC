@@ -1,9 +1,9 @@
-import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { IconButton, InputAdornment } from '@mui/material'
-import Button from '@mui/material/Button'
-import Stack from '@mui/material/Stack'
-import TextField from '@mui/material/TextField'
-import React, { useState } from 'react'
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { IconButton, InputAdornment } from '@mui/material';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import React, { useState } from 'react';
 
 // interface LoginFormData {
 //   email: string
@@ -11,35 +11,35 @@ import React, { useState } from 'react'
 // }
 
 const LoginForm: React.FC = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [emailError, setEmailError] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newEmail = event.target.value
-    setEmail(newEmail)
+    const newEmail = event.target.value;
+    setEmail(newEmail);
 
-    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)
-    setEmailError(isValidEmail ? '' : 'E-mail inválido')
-  }
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail);
+    setEmailError(isValidEmail ? '' : 'E-mail inválido');
+  };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value)
-  }
+    setPassword(event.target.value);
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+    event.preventDefault();
     // Aqui você pode implementar a lógica de autenticação
-    console.log('E-mail:', email)
-    console.log('Senha:', password)
-  }
+    console.log('E-mail:', email);
+    console.log('Senha:', password);
+  };
 
   const handleTogglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword)
-  }
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
 
-  const isFormValid = email !== '' && password !== '' && emailError === ''
+  const isFormValid = email !== '' && password !== '' && emailError === '';
 
   return (
     <Stack
@@ -91,7 +91,7 @@ const LoginForm: React.FC = () => {
         Entrar
       </Button>
     </Stack>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

@@ -60,7 +60,6 @@ const Products: React.FC = () => {
   const produtoId = Array.isArray(idProduto) ? idProduto[0] : idProduto;
 
   useEffect(() => {
-    console.log('CHAMOU HOME', page);
     const category = subCategoriaId || categoriaId || null;
     dispatch(
       fetchProductsRequest({

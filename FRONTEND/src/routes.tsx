@@ -9,6 +9,7 @@ import Categories from './pages/Categories';
 import Product from './pages/Product';
 import ScrollToTop from './utils/ScrollToTop';
 import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 const Home = lazy(() => import('./pages/Home'));
 const Register = lazy(() => import('./pages/Register'));
 const User = lazy(() => import('./pages/User'));
@@ -36,6 +37,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/cadastro" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/recuperarsenha" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/usuario" element={<ProtectedRoute component={User} />} />
             <Route path="/envio" element={<Shipping />} />
             <Route path="/pagamento" element={<Payment />} />

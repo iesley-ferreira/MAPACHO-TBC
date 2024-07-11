@@ -81,8 +81,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
     }
   };
 
-  console.log('formData', formData);
-
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">

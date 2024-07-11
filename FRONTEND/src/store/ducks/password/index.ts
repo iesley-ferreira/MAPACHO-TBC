@@ -26,6 +26,24 @@ const passwordReducer = createReducer<PasswordState, PasswordActions>(initialSta
     loading: false,
     message: action.payload,
     error: true,
+  }))
+  .handleAction(actions.setNewPasswordRequest, (state) => ({
+    ...state,
+    loading: true,
+    message: '',
+    error: false,
+  }))
+  .handleAction(actions.setNewPasswordSuccess, (state, action) => ({
+    ...state,
+    loading: false,
+    message: action.payload,
+    error: false,
+  }))
+  .handleAction(actions.setNewPasswordFailure, (state, action) => ({
+    ...state,
+    loading: false,
+    message: action.payload,
+    error: true,
   }));
 
 export default passwordReducer;
