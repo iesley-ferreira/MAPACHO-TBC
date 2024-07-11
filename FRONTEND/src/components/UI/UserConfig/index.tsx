@@ -94,8 +94,6 @@ const UserConfig: React.FC<UserConfigProps> = ({ user, onClose }) => {
     setIsEditing((prev) => ({ ...prev, [field]: false }));
   };
 
-  console.log('formData:', formData);
-
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
       <div className="bg-white rounded-lg p-6 relative max-w-md w-full">
