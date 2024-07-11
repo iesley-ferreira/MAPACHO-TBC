@@ -37,25 +37,28 @@ function* fetchUserSaga() {
 
 function* loginUserSaga(action: { type: string; payload: IUserLogin }) {
   try {
-    const response: IUserLoginResponse = yield call(userApi.loginUser, action.payload);
+    const response: { data: IUserLoginResponse; status: number } = yield call(
+      userApi.loginUser,
+      action.payload,
+    );
 
-    if (response.user?.isPending) {
-      yield put(loginUserUnauthorized(response.user));
+    if (response.data.user?.isPending) {
+      yield put(loginUserUnauthorized(response.data.user));
       return;
     }
 
     if (response.status !== 200) {
       yield put(
         loginUserFailure({
-          message: response.message,
+          message: response.data.message,
         }),
       );
       return;
     }
 
-    if (response.token && response.user) {
-      localStorage.setItem('token', response.token);
-      yield put(loginUserSuccess(response.user));
+    if (response.data.token && response.data.user) {
+      localStorage.setItem('token', response.data.token);
+      yield put(loginUserSuccess(response.data.user));
     }
   } catch (error: any) {
     yield put(
@@ -73,16 +76,24 @@ function* googleLoginUserSaga(action: { type: string; payload: IUserGoogleLogin 
       action.payload,
     );
 
-    console.log('response', response);
-
     // if (response.user?.isPending) {
     //   yield put(loginUserUnauthorized(response.user));
     //   return;
     // }
-    if (response.data.status === 200) {
-      console.log('RESPONSE 200', response.data.token);
+
+    if (response.data.status === 200 && !response.data.user?.email) {
+      yield put(
+        loginUserFailure({
+          message: response.data.message,
+        }),
+      );
+      return;
+    }
+
+    if (response.data.status === 200 || response.data.status === 201) {
       localStorage.setItem('token', response.data.token!);
       yield put(googleLoginSuccess(response.data.user!));
+      return;
     }
 
     if (response.data.status !== 200) {
@@ -145,8 +156,6 @@ function* setUserFromTokenSaga(action: { type: string; payload: string }) {
       created_at: string;
       orders: [];
     } = jwtDecode(action.payload);
-
-    console.log('decodedToken', decodedToken.created_at);
 
     const user: IUser = {
       id: decodedToken.id,

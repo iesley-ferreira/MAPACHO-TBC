@@ -34,13 +34,11 @@ model User {
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
   isPending   Boolean  @default(true)
-  resetPasswordToken String?
-  resetPasswordExpires DateTime?
 
-
-  AuthCode AuthCode[]
-  Address  Address?
-  orders   Order[]
+  AuthCode  AuthCode[]
+  Address   Address?
+  orders    Order[]
+  passwords Password[]
 }
 
 model Address {
@@ -97,9 +95,10 @@ model AuthCode {
 }
 
 model Password {
-  id                 Int      @id @default(autoincrement())
-  email              String   @unique
-  password           String
-  resetPasswordToken String?
+  id                   String    @id @default(cuid())
+  user_id              String    @unique
+  resetPasswordToken   String?   @unique
   resetPasswordExpires DateTime?
+
+  user User @relation(fields: [user_id], references: [id])
 }

@@ -46,10 +46,7 @@ const Categories: React.FC = () => {
   const { formattedCategories } = useSelector((state: RootState) => state.categories);
 
   useEffect(() => {
-    console.log('RENDER2');
     if (categoryId && subCategoryId) {
-      console.log('RENDER IF1');
-
       dispatch(
         fetchProductsRequest({
           page,
@@ -60,8 +57,6 @@ const Categories: React.FC = () => {
       );
     }
     if (categoryId && !subCategoryId) {
-      console.log('RENDER IF2');
-
       dispatch(
         fetchProductsRequest({
           page,
@@ -77,8 +72,6 @@ const Categories: React.FC = () => {
   useEffect(() => {}, [categoryId, subCategoryId]);
 
   useEffect(() => {
-    console.log('RENDER1');
-
     const category = formattedCategories.find(
       (category: IFormattedCategory) => category.id === categoryId,
     );
