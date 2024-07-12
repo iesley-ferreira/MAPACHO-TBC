@@ -16,7 +16,7 @@ const brandSecondaryColor = 'var(--brand-secondary)';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-green-50">
+    <footer className="bg-[#8d8d8d40] shadow-[rgba(0,_0,_0,_0.4)_90px_30px_90px]">
       <div className="flex flex-col py-8 px-2 lg:p-8">
         <div className="flex flex-col lg:flex-row w-full">
           <div className="flex flex-col self-center w-full  h-full pb-12 lg:pb-4 md:max-w-1/3">
@@ -26,7 +26,9 @@ const Footer: React.FC = () => {
             </button>
             <div className="flex flex-col self-center align-center w-full justify-center">
               <div className="localization py-8  w-full justify-center">
-                <div
+                <a href="mailto:"></a>
+                <Link
+                  to="https://www.google.com/maps/dir//R.+Santa+Maria,+251+-+Rio+Grande,+RS,+96205-170/@-32.1747184,-52.2471941,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x95118558a8ed446b:0xf06c158360d3fdb0!2m2!1d-52.1647928!2d-32.1747451?entry=ttu"
                   className="flex flex-row w-full text-teal-900 justify-content-center text-center justify-center mb-1 gap-2 "
                   style={{ color: 'var(--text-title)' }}
                 >
@@ -37,8 +39,9 @@ const Footer: React.FC = () => {
                   <h4 className="text-base mt-0.5">
                     Rua Santa Maria, 251 - Cassino - RS
                   </h4>
-                </div>
-                <div
+                </Link>
+                <a
+                  href="mailto:mapachotabacaria@hotmail.com"
                   className="flex flex-row w-full justify-content-center text-center justify-center mb-1 gap-2 "
                   style={{ color: 'var(--text-title)' }}
                 >
@@ -49,14 +52,15 @@ const Footer: React.FC = () => {
                     />
                   </div>
                   <h4>mapachotabacaria@hotmail.com</h4>
-                </div>
-                <div
+                </a>
+                <Link
+                  to="https://api.whatsapp.com/send?l=pt-BR&phone=5553991504785"
                   className="flex flex-row w-full justify-content-center text-center justify-center gap-2 "
                   style={{ color: 'var(--text-title)' }}
                 >
                   <i className="ri-phone-line text-teal-900"></i>
                   <h4 className="text-base mt-0.5">(53) 99150-4785</h4>
-                </div>
+                </Link>
               </div>
             </div>
             <div className="flex w-fit gap-10  self-center justify-evenly">
@@ -146,46 +150,46 @@ const Footer: React.FC = () => {
             </div>
           </div>
           <div className="flex w-full justify-center md:max-w-1/3">
-            <div className="px-4 mb-6">
+            <div className="px-4 w-3/5 mb-6">
               <h5 className="text-xl text-center lg:text-start font-semibold mb-6 text-teal-900">
                 Legal
               </h5>
-              <ul>
-                <li className="mb-4 text-center lg:text-start">
+              <ul className="w-full">
+                <li className="mb-4 w-full text-center lg:text-start">
                   <a
-                    className="inline-block text-md text-gray-900 hover:text-yellowGreen-700"
+                    className="inline-block w-full text-md text-[#4b5563] hover:text-[#0d5e53] hover:font-semibold"
                     href="#"
                   >
                     Termos de Uso
                   </a>
                 </li>
-                <li className="mb-4 text-center lg:text-start">
+                <li className="mb-4 w-full text-center lg:text-start">
                   <a
-                    className="inline-block text-md text-gray-900 hover:text-yellowGreen-700"
+                    className="inline-block w-full text-md text-[#4b5563] hover:text-[#0d5e53] hover:font-semibold"
                     href="#"
                   >
                     Politica de Privacidade
                   </a>
                 </li>
-                <li className="mb-4 text-center lg:text-start">
+                <li className="mb-4 w-full text-center lg:text-start">
                   <a
-                    className="inline-block text-md text-gray-900 hover:text-yellowGreen-700"
+                    className="inline-block w-full text-md text-[#4b5563] hover:text-[#0d5e53] hover:font-semibold"
                     href="#"
                   >
                     Noticias
                   </a>
                 </li>
-                <li className="mb-4 text-center lg:text-start">
+                <li className="mb-4 w-full text-center lg:text-start">
                   <a
-                    className="inline-block text-md text-gray-900 hover:text-yellowGreen-700"
+                    className="inline-block w-full text-md text-[#4b5563] hover:text-[#0d5e53] hover:font-semibold"
                     href="#"
                   >
                     Cookie e Uso de Dados
                   </a>
                 </li>
-                <li className="text-center lg:text-start">
+                <li className="text-center w-full lg:text-start">
                   <a
-                    className="inline-block text-md text-gray-900 hover:text-yellowGreen-700"
+                    className="inline-block w-full text-md text-[#4b5563] hover:text-[#0d5e53] hover:font-semibold"
                     href="#"
                   >
                     Sobre Nós

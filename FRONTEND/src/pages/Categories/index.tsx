@@ -95,7 +95,7 @@ const Categories: React.FC = () => {
 
   return (
     <div className="min-h-screen w-full">
-      <section className="pt-24 pb-4 md:pb-24 bg-blueGray-950">
+      <section className="pt-14 md:pt-24 pb-4 md:pb-24 bg-blueGray-950">
         {/* <ScrollToTop /> */}
         <div className="flex flex-col items-center lg:px-10 w-full ">
           <div className="text-center w-fit pb-8 pt-4 my-4 ">
@@ -113,7 +113,6 @@ const Categories: React.FC = () => {
                 subcategory={subCategory}
                 category={category}
                 image={`/public/assets/images/categories/${(category?.description).replace(/\s+/g, '')}/${subCategory?.id}.jpg`}
-                // onClick={handleSubCategoryClick}
               />
             ))}
           </div>
@@ -137,9 +136,9 @@ const Categories: React.FC = () => {
               </Box>
             )}
             <div className="flex flex-col items-center w-full lg:pb-20">
-              <div className="w-full md:max-w-[94%] xl:max-w-[90%] pt-8 md:pt-14 lg:pt-20">
+              <div className="w-full md:max-w-[94%] xl:max-w-[90%]">
                 <div className="flex flex-row justify-center md:gap-4 lg:gap-10 xl:gap-20">
-                  <div className="left-16 min-w-max pt-0 hidden lg:block">
+                  <div className="left-16 pt-16 min-w-max hidden lg:block">
                     <div className="sticky top-20 max-h-[90vh] overflow-y-auto custom-scrollbar">
                       <h1 className="font-heading uppercase font-semibold pl-6 pb-2  text-4xl lg:text-3xl text-slate-800 tracking-8xl mx-auto">
                         Categorias
@@ -175,7 +174,7 @@ const Categories: React.FC = () => {
                       )}
                     </div>
                   </div>
-                  <div className="sticky top-2 hidden xl:block">
+                  <div className="sticky pt-16 top-2 hidden xl:block">
                     <InstagramCarousel />
                   </div>
                 </div>

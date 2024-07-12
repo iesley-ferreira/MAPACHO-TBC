@@ -63,6 +63,11 @@ export default {
       animation: {
         wiggle: 'wiggle 0.3s ease-in-out',
       },
+      gridTemplateColumns: {
+        'auto-fit-155': 'repeat(auto-fit, minmax(155px, 1fr))',
+        'auto-fit-188': 'repeat(auto-fit, minmax(188px, 1fr))',
+        'auto-fit-244': 'repeat(auto-fit, minmax(244px, 1fr))',
+      },
     },
   },
   variants: {
