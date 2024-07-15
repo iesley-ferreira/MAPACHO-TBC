@@ -17,7 +17,7 @@ interface CartListProps {
   cartItems: ICartItem[];
 }
 
-const defaultImageURL = '/public/assets/noImageAvailable.png';
+const defaultImageURL = '/public/assets/no-image.png';
 
 const CartList: React.FC<CartListProps> = ({ cartItems }) => {
   const dispatch = useDispatch();

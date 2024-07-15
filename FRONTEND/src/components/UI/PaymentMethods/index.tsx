@@ -288,7 +288,7 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({ totalPrice }) => {
                 <IconPix />
               </div>
             </div>
-            {selectedMethod === 'pix' && <PixQRCode />}
+            {selectedMethod === 'pix' && <PixQRCode total={totalPrice} />}
           </div>
         </div>
       </div>
