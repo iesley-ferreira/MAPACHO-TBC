@@ -5,6 +5,7 @@
     "Bunary",
     "criterio",
     "fluorescen",
+    "idempotency",
     "Km",
     "mailgun",
     "mercadopago",
@@ -13,6 +14,7 @@
     "PRIMEIRACOMPRA",
     "Swal",
     "sweetalert",
+    "uuidv",
     "variacoes"
   ],
   "prisma-smart-formatter.typescript.defaultFormatter": "esbenp.prettier-vscode",
