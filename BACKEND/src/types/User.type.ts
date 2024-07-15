@@ -1,3 +1,5 @@
+import { IOrder } from './Order.type';
+
 export type UserType = {
   id: string;
   name: string;
@@ -6,17 +8,25 @@ export type UserType = {
   address?: string;
   city?: string;
   country?: string;
-  password: string;
-  img_profile?: string;
-  google_id?: string | undefined;
+  password?: string | null;
+  img_profile?: string | null;
+  google_id?: string | null;
   created_at: Date;
   updated_at: Date;
   isPending?: boolean;
+  orders: IOrder[] | null;
 };
 
 export type UserLoginType = {
   email: string;
   password: string;
+};
+
+export type IUserGoogleLogin = {
+  email: string;
+  name: string;
+  img_profile: string;
+  google_id: string;
 };
 
 export type UserInputType = Omit<
@@ -29,4 +39,5 @@ export type UserInputType = Omit<
   | 'isPending'
   | 'created_at'
   | 'updated_at'
+  | 'orders'
 >;

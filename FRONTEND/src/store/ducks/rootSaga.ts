@@ -1,10 +1,12 @@
-import { all } from 'redux-saga/effects'
+import { all } from 'redux-saga/effects';
 
-import cartSagas from './cart/sagas'
-import categoriesSagas from './categories/sagas'
-import productSagas from './products/sagas'
-import shippingSagas from './shipping/sagas'
-import userSagas from './user/sagas'
+import cartSagas from './cart/sagas';
+import categoriesSagas from './categories/sagas';
+import ordersSagas from './order/sagas';
+import watchUserSagas from './password/sagas';
+import productSagas from './products/sagas';
+import shippingSagas from './shipping/sagas';
+import userSagas from './user/sagas';
 // Importar outras sagas aqui
 
 export default function* rootSaga() {
@@ -14,6 +16,8 @@ export default function* rootSaga() {
     userSagas(),
     shippingSagas(),
     cartSagas(),
+    watchUserSagas(),
+    ordersSagas(),
     // Incluir outras sagas aqui
-  ])
+  ]);
 }

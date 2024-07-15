@@ -73,6 +73,25 @@ const userReducer = createReducer<UserState, UserActions>(initialState)
     error: true,
     errorMessage: action.payload.message,
   }))
+  .handleAction(actions.googleLoginRequest, (state) => ({
+    ...state,
+    loading: true,
+    error: false,
+    errorMessage: '',
+    user: initialUser,
+  }))
+  .handleAction(actions.googleLoginSuccess, (state, action) => ({
+    ...state,
+    loading: false,
+    error: false,
+    user: action.payload,
+  }))
+  .handleAction(actions.googleLoginFailure, (state, action) => ({
+    ...state,
+    loading: false,
+    error: true,
+    errorMessage: action.payload,
+  }))
   .handleAction(actions.createUserRequest, (state) => ({
     ...state,
     loading: true,
@@ -115,6 +134,22 @@ const userReducer = createReducer<UserState, UserActions>(initialState)
     },
   }))
   .handleAction(actions.verifyAuthCodeFailure, (state) => ({
+    ...state,
+    loading: false,
+    error: true,
+  }))
+  .handleAction(actions.setUserFromTokenRequest, (state) => ({
+    ...state,
+    loading: true,
+    error: false,
+  }))
+  .handleAction(actions.setUserFromTokenSuccess, (state, action) => ({
+    ...state,
+    loading: false,
+    error: false,
+    user: action.payload,
+  }))
+  .handleAction(actions.setUserFromTokenFailure, (state) => ({
     ...state,
     loading: false,
     error: true,

@@ -29,7 +29,6 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({ totalPrice }) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log('cardDetails', cardDetails);
 
     setCardDetails((prevDetails) => ({
       ...prevDetails,
@@ -289,7 +288,7 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({ totalPrice }) => {
                 <IconPix />
               </div>
             </div>
-            {selectedMethod === 'pix' && <PixQRCode />}
+            {selectedMethod === 'pix' && <PixQRCode total={totalPrice} />}
           </div>
         </div>
       </div>
