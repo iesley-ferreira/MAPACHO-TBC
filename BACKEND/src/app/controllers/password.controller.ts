@@ -1,5 +1,5 @@
-import passwordService from '../services/password.service';
 import { Request, Response } from 'express';
+import passwordService from '../services/password.service';
 
 const requestPasswordReset = async (req: Request, res: Response) => {
   const { email } = req.params;

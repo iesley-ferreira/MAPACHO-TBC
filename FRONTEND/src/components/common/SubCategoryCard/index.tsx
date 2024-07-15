@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { IFormattedCategory, IFormattedSubcategory } from '../../../interfaces/Category';
 import {
@@ -10,24 +10,20 @@ import {
   setSearchValue,
   setSelectedCategory,
 } from '../../../store/ducks/products/actions';
-import { RootState } from '../../../store/ducks/rootReducer';
 
 interface CategoryShowcaseProps {
   subcategory: IFormattedSubcategory;
   image: string;
   category: IFormattedCategory;
-  // onClick: () => void;
 }
 
 const SubCategoryCard: React.FC<CategoryShowcaseProps> = ({
   subcategory,
   image,
   category,
-  // onClick,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { formattedCategories } = useSelector((state: RootState) => state.categories);
   const queryParams = new URLSearchParams(location.search);
   const subCategoryId = queryParams.get('idSubCategoria');
 
@@ -37,7 +33,6 @@ const SubCategoryCard: React.FC<CategoryShowcaseProps> = ({
     categoryName: string,
     subCategoryName: string,
   ) => {
-    // onClick();
     navigate(
       `/categoria/${categoryName}?idCategoria=${categoryId}&idSubCategoria=${subcategoryId}`,
     );
@@ -56,7 +51,7 @@ const SubCategoryCard: React.FC<CategoryShowcaseProps> = ({
 
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4">
-      <div className="relative mb-8 overflow-hidden shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  rounded-3xl">
+      <div className="relative mb-8 overflow-hidden shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  rounded-xl">
         <img
           className="w-full h-full max-h-[295px] object-cover transform hover:scale-125 transition duration-1000"
           src={image}

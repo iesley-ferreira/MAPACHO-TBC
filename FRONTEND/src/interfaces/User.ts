@@ -1,7 +1,8 @@
 import { IProduct } from './Product';
 
 export interface IOrder {
-  id: string;
+  id: number;
+  // date: string;
   total: number;
   status: string;
   products: IProduct[] | [];
