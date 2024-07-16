@@ -2,14 +2,15 @@ import React, { Suspense, lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AuthInitializer from './AuthInitializer';
 import Layout from './components/Layout';
+import AgeVerification from './components/common/AgeVerification';
 import Loader from './components/common/Loader';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import Auth from './pages/Auth';
 import Categories from './pages/Categories';
-import Product from './pages/Product';
-import ScrollToTop from './utils/ScrollToTop';
 import ForgotPassword from './pages/ForgotPassword';
+import Product from './pages/Product';
 import ResetPassword from './pages/ResetPassword';
+import ScrollToTop from './utils/ScrollToTop';
 const Home = lazy(() => import('./pages/Home'));
 const Register = lazy(() => import('./pages/Register'));
 const User = lazy(() => import('./pages/User'));
@@ -25,13 +26,13 @@ const AppRoutes: React.FC = () => {
     <>
       <ScrollToTop />
       <AuthInitializer />
+      <AgeVerification />
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to="/home" />} />
             <Route path="/home" element={<Home />} />
             {/* <Route path="/produtos" element={<Products />} /> */}
-            {/* <Route path="/categoria/bongs" element={<Bongs />} /> */}
             <Route path="/produto" element={<Product />} />
             <Route path="/categoria/:categoryName" element={<Categories />} />
             <Route path="/cadastro" element={<Register />} />
