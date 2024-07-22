@@ -13,7 +13,9 @@ const createUser = async ({ email, name, password, google_id }: UserInputType) =
 };
 
 const findUserByEmail = async (email: string) => {
-  return await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findUnique({ where: { email } });
+
+  return user;
 };
 
 const updateUserStatus = async (userId: string, isPending: boolean) => {
@@ -23,8 +25,35 @@ const updateUserStatus = async (userId: string, isPending: boolean) => {
   });
 };
 
+const findUserByResetToken = async (resetPasswordToken: any) => {
+  return await prisma.password.findFirst({
+    where: {
+      resetPasswordToken,
+      resetPasswordExpires: { gt: new Date() },
+    },
+  });
+};
+
+const updateUser = async (userId: string, password: string) => {
+  return await prisma.user.update({
+    where: { id: userId },
+    data: { password },
+  });
+};
+
+const getOrdersByUser = async (userId: string) => {
+  return prisma.order.findMany({
+    where: {
+      user_id: userId,
+    },
+  });
+};
+
 export default {
   createUser,
   findUserByEmail,
   updateUserStatus,
+  findUserByResetToken,
+  updateUser,
+  getOrdersByUser,
 };

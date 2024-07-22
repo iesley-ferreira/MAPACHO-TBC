@@ -1,38 +1,54 @@
-import { Box, CircularProgress, IconButton } from '@mui/material';
+import { Box, CircularProgress, MenuItem, Select } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 import CalculateFreight from '../../components/UI/CalculateFreight';
 import InstallmentPlan from '../../components/UI/InstallmentPlan';
-import AddIcon from '../../components/common/AddIcon';
-import RemoveIcon from '../../components/common/RemoveIcon';
+import QuantityControl from '../../components/UI/Product/QuantityControl';
+import { convertProductIdToProduct } from '../../components/UI/Product/helpers';
 import { addProductToCart } from '../../store/ducks/cart/actions';
 import { fetchProductRequest } from '../../store/ducks/products/actions';
 import { RootState } from '../../store/ducks/rootReducer';
+import ScrollToTop from '../../utils/ScrollToTop';
 import { priceFormatter } from '../../utils/priceFormatter';
-import { convertProductIdToProduct } from './helpers';
-
+import './description.css';
 // const useQuery = () => {
 //   return new URLSearchParams(useLocation().search);
 // };
 
-type ProductProps = {
-  productId: string;
-};
-
-const Product: React.FC<ProductProps> = ({ productId }) => {
+const Product: React.FC = () => {
   // const query = useQuery();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [productQuantity, setProductQuantity] = useState(1);
+  const [selectedVariation, setSelectedVariation] = useState<number | null>(null);
 
+  const { formattedCategories } = useSelector((state: RootState) => state.categories);
   const { product, loading, error } = useSelector((state: RootState) => state.products);
+  const queryParams = new URLSearchParams(location.search);
+  const productId = queryParams.get('idProduto');
+  const idCategory = queryParams.get('idCategoria');
+  const idSubCategory = queryParams.get('idSubCategoria');
+
+  const categoryName = formattedCategories.find(
+    (category) => category.id === idCategory,
+  )?.description;
+
+  console.log('categoryNamAAAAAAAAAAAAAAAAAAe', categoryName);
 
   useEffect(() => {
     if (!productId) return;
     dispatch(fetchProductRequest(productId));
   }, [productId]);
+
+  useEffect(() => {
+    if (product?.variacoes?.length > 0) {
+      setSelectedVariation(product.variacoes[0].id);
+    }
+  }, [product]);
 
   const variationName = product?.variacoes?.[0]?.nome;
   let variationType = '';
@@ -76,8 +92,28 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
     );
   }
 
+  const handleKeepBuying = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('idProduto');
+    const newUrl = `/categoria/${categoryName}${url.search}`;
+    navigate(newUrl);
+  };
+
+  const description = product?.descricaoCurta;
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
+  };
+
   return (
-    <section className="py-6 md:py-20 mt-14">
+    <section className="py-6 px-2 md:py-20 mt-14">
+      <ScrollToTop />
       {loading ? (
         <Box
           sx={{
@@ -91,9 +127,9 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
         </Box>
       ) : (
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap -mx-4 mb-24">
+          <div className="flex flex-wrap justify-around -mx-4 mb-2">
             <div className="w-full md:w-1/2 px-4 mb-8 md:mb-0">
-              <div className="relative mb-10" style={{ height: '400px' }}>
+              <div className="relative mb-10 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-2xl h-[400px] md:h-[500px] lg:h-[600px] p-16">
                 <img
                   className="object-cover w-full h-full"
                   style={{ objectFit: 'contain' }}
@@ -104,29 +140,35 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
                   alt="Product"
                 />
               </div>
-              <div className="flex align-center content-center md:justify-center flex-wrap -mx-2">
-                {variationsImages?.map((variation, index) => (
-                  <div key={index} className="w-1/2 sm:w-1/4 p-2">
-                    <img
-                      className="object-cover"
-                      src={variation.image || '/public/assets/noImageAvailable.png'}
-                      alt="Product Thumbnail"
-                    />
-                  </div>
-                ))}
+              <div className="flex align-center max-w-[500px] content-center md:justify-center flex-wrap -mx-2">
+                <Slider {...settings}>
+                  {variationsImages?.map((variation, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-center h-28 w-28 p-2 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-lg ml-3"
+                    >
+                      <img
+                        className="object-cover h-auto"
+                        src={variation.image || '/public/assets/noImageAvailable.png'}
+                        alt={variation.variationId.toString()}
+                      />
+                    </div>
+                  ))}
+                </Slider>
               </div>
             </div>
-            <div className="w-full max-w-xl md:w-1/2 px-4">
-              <div className="lg:pl-20">
-                <div className="mb-10 pb-10 border-b">
-                  <h1 className="text-rhino-700 font-semibold text-4xl mb-2 font-heading">
+            <div className="w-full max-w-xl md:w-1/2 px-4 bg-gray-200 bg-opacity-0 rounded-xl  backdrop-blur-md border border-gray-200 border-opacity-30 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
+              <div className="p-10">
+                <div className="mb-10 mt-4 border-b border-gray-400">
+                  <h1 className="text-rhino-700 font-semibold text-4xl mb-8 font-heading">
                     {product?.nome}
                   </h1>
-                  <p className="inline-block mb-8 text-2xl font-bold font-heading text-green-500">
-                    <span>{priceFormatter.format(product?.preco)}</span>
-                  </p>
-                  <InstallmentPlan totalPrice={product?.preco} />
-                  <p className="max-w-md text-gray-500">{product?.descricaoCurta}</p>
+                  <div className="flex items-center mb-8 gap-3">
+                    <p className="inline-block  text-3xl font-bold font-heading text-green-500">
+                      <span>{priceFormatter.format(product?.preco)}</span>
+                    </p>
+                    <InstallmentPlan totalPrice={product?.preco} />
+                  </div>
                 </div>
                 <div className="flex items-center justify-between flex-wrap mb-8">
                   <div className="w-full">
@@ -136,54 +178,50 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
                           <p className="uppercase text-xs font-bold text-rhino-500 mb-3">
                             QUANTIDADE
                           </p>
-                          <div className="py-3 px-4 rounded-sm border border-coolGray-200 gap-4 flex items-center">
-                            <div className="cursor-pointer text-coolGray-300 hover:text-coolGray-400 transition duration-200">
-                              <IconButton
-                                onClick={() => setProductQuantity(productQuantity - 1)}
-                                disabled={productQuantity === 1}
-                              >
-                                <RemoveIcon />
-                              </IconButton>
-                            </div>
-                            <span className="text-coolGray-700 text-md">
-                              {productQuantity}
-                            </span>
-                            <div className="cursor-pointer text-coolGray-300 hover:text-coolGray-400 transition duration-200">
-                              <IconButton
-                                onClick={() => setProductQuantity(productQuantity + 1)}
-                              >
-                                <AddIcon />
-                              </IconButton>
-                            </div>
-                          </div>
+                          <QuantityControl
+                            productQuantity={productQuantity}
+                            setProductQuantity={setProductQuantity}
+                          />
                         </div>
                         {product?.variacoes?.length > 0 && (
                           <div>
                             <p className="uppercase text-xs font-bold text-rhino-500 mb-3">
                               {variationType}
                             </p>
-                            <select className="rounded-sm border bg-white border-coolGray-200 py-4 px-4 text-coolGray-700 text-sm">
-                              {variationsOptions?.map((variation, index) => (
-                                <option key={index} value={variation.variationId}>
+                            <Select
+                              value={selectedVariation}
+                              onChange={(e) =>
+                                setSelectedVariation(e.target.value as number)
+                              }
+                              displayEmpty
+                              fullWidth
+                              variant="outlined"
+                              color="success"
+                              sx={{
+                                minWidth: 120,
+                              }}
+                            >
+                              {variationsOptions.map((variation, index) => (
+                                <MenuItem key={index} value={variation.variationId}>
                                   {variation.name}
-                                </option>
+                                </MenuItem>
                               ))}
-                            </select>
+                            </Select>
                           </div>
                         )}
                       </div>
                     </div>
                     <div className="mb-4 flex flex-wrap gap-4">
                       <button
-                        className="uppercase inline-block flex-1 w-full px-3 py-4 rounded-md text-center text-green-500 border border-green-500 text-sm font-medium bg-white hover:bg-green-100 transition duration-200"
-                        onClick={() => navigate(-1)}
+                        className="uppercase inline-block flex-1 w-full px-3 py-4 rounded-md text-center text-emerald-500 border border-emerald-500 text-sm font-medium bg-transparent hover:bg-emerald-100 active:scale-105 transition duration-200"
+                        onClick={handleKeepBuying}
                       >
                         Continuar comprando
                       </button>
                     </div>
                     <div className="mb-8 flex flex-wrap gap-4">
                       <button
-                        className="uppercase inline-block flex-1 w-full px-3 py-4 rounded-md text-center text-white text-sm font-medium bg-green-500 hover:bg-green-600 transition duration-200"
+                        className="uppercase inline-block flex-1 w-full px-3 py-4 rounded-md text-center text-white text-sm font-medium bg-emerald-500 hover:bg-emerald-600 active:scale-105 transition duration-200"
                         onClick={handleAddToCart}
                       >
                         Adicionar ao carrinho
@@ -193,16 +231,54 @@ const Product: React.FC<ProductProps> = ({ productId }) => {
                 </div>
                 <div className="flex flex-wrap w-full mb-8">
                   <div className="flex-1">
-                    <div className="w-full h-full border-b border-rhino-200"></div>
+                    <div className="w-full h-full border-b border-gray-400"></div>
                   </div>
                 </div>
                 <CalculateFreight />
               </div>
             </div>
           </div>
+          {description && (
+            <>
+              <div className="flex flex-wrap w-full mb-8">
+                <div className="flex-1">
+                  <div className="w-full h-full border-b border-gray-400"></div>
+                </div>
+              </div>
+              <div>
+                <h2 className="font-semibold text-4xl underline-heading">Descrição:</h2>
+                <div
+                  className="product-description"
+                  dangerouslySetInnerHTML={{ __html: description }}
+                />
+              </div>
+            </>
+          )}
         </div>
       )}
     </section>
+  );
+};
+
+const SampleNextArrow = (props: any) => {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: 'block', background: 'black' }}
+      onClick={onClick}
+    />
+  );
+};
+
+const SamplePrevArrow = (props: any) => {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: 'block', background: 'black' }}
+      onClick={onClick}
+    />
   );
 };
 

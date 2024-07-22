@@ -1,22 +1,57 @@
-// const signIn = () => {
-//   const { email, password } = req.body;
-//   const user = await loginModel.emailAndPassword(email, password);
-//   if (!user) {
-//     return res.status(401).json({
-//       data: {
-//         message: 'Usuário ou senha inválidos',
-//       },
-//     });
-//   }
-//   const token = jwtProvider.sign({ id: user.id });
-//   return res.status(200).json({
-//     data: {
-//       message: 'Usuário logado com sucesso',
-//       token,
-//     },
-//   });
-// };
+import { Request, Response } from 'express';
+import jwtProvider from '../../providers/jwt.provider';
+import { UserLoginType } from '../../types/User.type';
+import loginService from '../services/login.service';
 
-// const loginController = { signIn };
+const signIn = async (req: Request, res: Response) => {
+  const { email, password }: UserLoginType = req.body;
 
-// export default loginController;
+  const result = await loginService.signIn(email, password);
+
+  if (result.status !== 200) {
+    return res.status(result.status).json({
+      result,
+    });
+  }
+
+  return res.status(200).json({
+    data: {
+      token: result.data.token,
+      user: result.data.user,
+      message: result.data.message,
+    },
+    status: 200,
+  });
+};
+
+const googleSignIn = async (req: Request, res: Response) => {
+  const { email, name, img_profile, google_id } = req.body;
+
+  const result = await loginService.googleSignIn({ email, name, img_profile, google_id });
+
+  if (result.status !== 200) {
+    return res.status(result.status).json({
+      data: {
+        token: result.data.token,
+        user: result.data.user,
+        message: result.data.message,
+        status: result.status,
+      },
+      status: 200,
+    });
+  }
+
+  return res.status(200).json({
+    data: {
+      token: result.data.token,
+      user: result.data.user,
+      message: result.data.message,
+      status: result.status,
+    },
+    status: 200,
+  });
+};
+
+const loginController = { signIn, googleSignIn };
+
+export default loginController;

@@ -4,7 +4,6 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { IconButton } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import 'tailwindcss/tailwind.css';
 import { ICartItem } from '../../../interfaces/Cart';
 import {
@@ -16,19 +15,12 @@ import { priceFormatter } from '../../../utils/priceFormatter';
 
 interface CartListProps {
   cartItems: ICartItem[];
-  onClose: () => void;
 }
 
-const defaultImageURL = '/public/assets/noImageAvailable.png';
+const defaultImageURL = '/public/assets/no-image.png';
 
-const CartList: React.FC<CartListProps> = ({ cartItems, onClose }) => {
+const CartList: React.FC<CartListProps> = ({ cartItems }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const handleGoToCart = () => {
-    onClose();
-    navigate('/carrinho');
-  };
 
   const handleIncrement = (id: number) => {
     dispatch(incrementProductQuantity(id));
@@ -43,7 +35,7 @@ const CartList: React.FC<CartListProps> = ({ cartItems, onClose }) => {
   };
 
   return (
-    <div className="relative p-4  h-full bg-white overflow-y-auto flex flex-col justify-between">
+    <div className="relative p-4 bg-white overflow-y-auto flex flex-col justify-between">
       <div>
         {cartItems.map((item) => (
           <div
@@ -57,7 +49,7 @@ const CartList: React.FC<CartListProps> = ({ cartItems, onClose }) => {
             />
             <div className="flex-1">
               <div className="flex justify-between mb-4">
-                <p className="text-sm font-semibold pr-3">{item.nome}</p>
+                <p className="text-sm font-semibold line-clamp-2 pr-3">{item.nome}</p>
               </div>
               <div className="flex items-center justify-between flex-wrap">
                 <p className="font-semibold text-green-900 whitespace-nowrap">
@@ -92,26 +84,6 @@ const CartList: React.FC<CartListProps> = ({ cartItems, onClose }) => {
             </div>
           </div>
         ))}
-        <div className="pt-5 border-t border-gray-50">
-          <div className="flex items-center justify-between flex-wrap px-2 mb-6">
-            <p className="text-xl font-semibold">Total</p>
-            <p className="text-xl font-semibold text-green-900">
-              {priceFormatter.format(
-                cartItems.reduce(
-                  (total, item) => total + item.preco * item.quantidade,
-                  0,
-                ),
-              )}
-            </p>
-          </div>
-
-          <button
-            className="bg-green-500 py-3 px-4 rounded-md text-white text-center hover:bg-green-600 transition uppercase duration-200 w-full inline-block"
-            onClick={handleGoToCart}
-          >
-            Carrinho
-          </button>
-        </div>
       </div>
     </div>
   );

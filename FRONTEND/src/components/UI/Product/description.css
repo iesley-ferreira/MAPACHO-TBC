@@ -1,0 +1,38 @@
+.product-description {
+  padding-bottom: 2.5rem;
+  font-size: 1rem;
+  color: #4a5568;
+  background-color: #ffffff;
+  line-height: 1.5;
+  font-family: 'Monsterrat', sans-serif;
+}
+
+.product-description p {
+  margin-bottom: 1rem;
+}
+
+.product-description h1,
+.product-description h2,
+.product-description h3,
+.product-description h4,
+.product-description h5,
+.product-description h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.product-description ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.product-description li {
+  margin-bottom: 0.5rem; /* Espaçamento entre itens da lista */
+}
+
+.product-description a {
+  color: #3182ce;
+  text-decoration: underline;
+}

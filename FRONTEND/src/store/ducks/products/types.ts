@@ -60,7 +60,7 @@ export interface ProductsState {
   readonly selectedCategoryName: string | null;
   readonly selectedSubCategoryName: string | null;
   readonly page: number;
-  readonly disableButtonShowMore: boolean;
+  readonly isShowMoreProductsButtonDisabled: boolean;
   readonly product: IProductId;
   readonly loading: boolean;
   readonly error: boolean;

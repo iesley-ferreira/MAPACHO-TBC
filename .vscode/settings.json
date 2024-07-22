@@ -1,13 +1,23 @@
 {
   "cSpell.words": [
+    "autenticacao",
     "autoincrement",
     "Bunary",
     "criterio",
+    "fluorescen",
+    "idempotency",
     "Km",
     "mailgun",
+    "mercadopago",
+    "paypal",
+    "Piteirasefiltros",
     "PRIMEIRACOMPRA",
+    "Swal",
+    "sweetalert",
+    "uuidv",
     "variacoes"
   ],
   "prisma-smart-formatter.typescript.defaultFormatter": "esbenp.prettier-vscode",
-  "prisma-smart-formatter.typescriptreact.defaultFormatter": "esbenp.prettier-vscode"
+  "prisma-smart-formatter.typescriptreact.defaultFormatter": "esbenp.prettier-vscode",
+  "prisma-smart-formatter.prisma.defaultFormatter": "Prisma.prisma"
 }

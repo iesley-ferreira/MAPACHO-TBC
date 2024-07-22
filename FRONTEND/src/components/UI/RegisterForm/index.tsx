@@ -2,6 +2,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useState } from 'react';
 import CustomInput from '../../common/CustomInput';
 import GoogleLogin from '../GoogleLogin';
+import { formatPhoneNumber, validatePassword } from './helpers';
 
 interface RegisterFormProps {
   formData: {
@@ -38,7 +39,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
     if (!formData.sobrenome) newErrors.sobrenome = 'Sobrenome é obrigatório';
     if (!formData.telefone) {
       newErrors.telefone = 'Telefone é obrigatório';
-    } else if (!/^\d{11}$/.test(formData.telefone)) {
+    } else if (formData.telefone.replace(/\D/g, '').length !== 11) {
       newErrors.telefone = 'Telefone deve conter 11 números';
     }
     if (!formData.email) {
@@ -46,7 +47,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email inválido';
     }
-    if (!formData.senha) newErrors.senha = 'Senha é obrigatória';
+    if (!formData.senha) {
+      newErrors.senha = 'Senha é obrigatória';
+    } else if (!validatePassword(formData.senha)) {
+      newErrors.senha =
+        'A senha deve ter pelo menos 6 caracteres, incluindo um número e um caractere especial.';
+    }
     if (!formData.confirmarSenha) {
       newErrors.confirmarSenha = 'Confirmação de senha é obrigatória';
     } else if (formData.senha !== formData.confirmarSenha) {
@@ -60,7 +66,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    const newValue = name === 'telefone' ? formatPhoneNumber(value) : value;
+    setFormData({ ...formData, [name]: newValue });
 
     if (errors[name]) {
       validateForm();
@@ -83,6 +90,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         <CustomInput
           type="text"
           name="nome"
+          id="nome"
           placeholder="Primeiro nome"
           value={formData.nome}
           onChange={handleChange}
@@ -96,6 +104,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         <CustomInput
           type="text"
           name="sobrenome"
+          id="sobrenome"
           placeholder="Segundo nome"
           value={formData.sobrenome}
           onChange={handleChange}
@@ -107,10 +116,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           Telefone
         </label>
         <CustomInput
-          type="text"
+          type="tel"
           name="telefone"
-          placeholder="Telefone"
-          maxLength={11}
+          id="telefone"
+          placeholder="(XX) XXXXX-XXXX"
+          maxLength={15}
           value={formData.telefone}
           onChange={handleChange}
         />
@@ -121,8 +131,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           Email
         </label>
         <CustomInput
-          type="text"
+          type="email"
           name="email"
+          id="email"
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
@@ -137,6 +148,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           <CustomInput
             type={showPassword ? 'text' : 'password'}
             name="senha"
+            id="senha"
             placeholder="Senha"
             value={formData.senha}
             onChange={handleChange}
@@ -159,6 +171,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           className="py-2 px-4 h-11 w-full text-gray-500 placeholder-gray-500 bg-white border border-gray-200 focus:border-yellowGreen-500 rounded-lg shadow-sm outline-none ring-1 ring-transparent focus:ring-yellowGreen-500"
           type={showPassword ? 'text' : 'password'}
           name="confirmarSenha"
+          id="confirmarSenha"
           placeholder="Confirmar Senha"
           value={formData.confirmarSenha}
           onChange={handleChange}
@@ -171,7 +184,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         className="group relative flex items-center justify-center px-5 h-12 w-full font-bold text-white bg-gradient-to-br from-cyanGreen-800 to-cyan-800 rounded-lg transition-all duration-300 focus:outline-none"
         type="submit"
       >
-        <div className="absolute top-0 left-0 w-full h-full rounded-lg ring ring-green-300 animate-pulse group-hover:ring-0 transition duration-300"></div>
+        <div className="absolute top-0 left-0 w-full h-full rounded-lg animate-pulse group-hover:ring-2 ring-green-300 transition duration-300"></div>
         <span>Registrar</span>
       </button>
       <div className="my-4 flex items-center">
@@ -179,7 +192,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         <span className="inline-block mx-4 text-xs font-medium text-gray-500">OU</span>
         <div className="h-px w-full bg-gray-200"></div>
       </div>
-      <GoogleLogin />
+      <div className="flex w-full justify-center">
+        <GoogleLogin />
+      </div>
     </form>
   );
 };

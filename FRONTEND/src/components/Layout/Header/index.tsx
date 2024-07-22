@@ -6,21 +6,17 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useMatch, useNavigate } from 'react-router-dom';
 import 'remixicon/fonts/remixicon.css';
-import {
-  setDisableButtonShowMore,
-  setNewCategoryNames,
-  setPage,
-  setSearchValue,
-  setSelectedCategory,
-} from '../../../store/ducks/products/actions';
+import { fetchCategoriesRequest } from '../../../store/ducks/categories/actions';
 import { RootState } from '../../../store/ducks/rootReducer';
 import Logo01 from '../../common/Logo/Logo01';
 
 interface HeaderProps {
-  showMenu: boolean;
-  drawerOpen: boolean;
-  setShowMenu: (show: boolean) => void;
-  setDrawerOpen: (drawerOpen: boolean) => void;
+  menuDrawerOpen: boolean;
+  cartDrawerOpen: boolean;
+  searchDrawerOpen: boolean;
+  setMenuDrawerOpen: (menuDrawerOpen: boolean) => void;
+  setCartDrawerOpen: (cartDrawerOpen: boolean) => void;
+  setSearchDrawerOpen: (searchDrawerOpen: boolean) => void;
 }
 
 const brandSecondaryColor = 'var(--brand-secondary)';
@@ -43,28 +39,35 @@ const StyledBadge = styled(Badge)<BadgeProps>(() => ({
 }));
 
 const Header: React.FC<HeaderProps> = ({
-  showMenu,
-  setShowMenu,
-  drawerOpen,
-  setDrawerOpen,
+  menuDrawerOpen,
+  cartDrawerOpen,
+  searchDrawerOpen,
+  setMenuDrawerOpen,
+  setCartDrawerOpen,
+  setSearchDrawerOpen,
 }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { items } = useSelector((state: RootState) => state.cart);
   const [showSearch, setShowSearch] = useState(false);
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const navigate = useNavigate();
   const matchHome = useMatch('/home');
   const matchCategory = useMatch('/categoria/:categoryId');
   const matchSubcategory = useMatch('/subcategoria/:subcategoryId');
+  const isLoginRoute = useMatch('/login');
+  const isSignUpRoute = useMatch('/cadastro');
+  const isUserRoute = useMatch('/usuario');
+  const isAuthRoute = useMatch('/autenticacao');
   const [animateBadge, setAnimateBadge] = useState(false);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
-  const [search, setSearch] = useState('');
-  const dispatch = useDispatch();
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [overlayVisible, setOverlayVisible] = useState(false);
   const { idProduto } = queryString.parse(location.search);
   const matchCart = useMatch('/carrinho');
   const totalItems = items.reduce((sum, item) => sum + item.quantidade, 0);
+
+  useEffect(() => {
+    dispatch(fetchCategoriesRequest());
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -89,140 +92,61 @@ const Header: React.FC<HeaderProps> = ({
   }, [items]);
 
   const toggleMenu = () => {
-    setShowMenu(!showMenu);
+    setMenuDrawerOpen(!menuDrawerOpen);
   };
 
   const toggleCartDrawer = () => {
-    setDrawerOpen(!drawerOpen);
-  };
-
-  const toggleSearch = () => {
-    setShowSearch(!showSearch);
-    if (!showSearch && isMobile) {
-      setOverlayVisible(true);
-    } else {
-      setOverlayVisible(false);
-    }
-  };
-
-  const handleSearch = () => {
-    navigate(`?search=${search}`);
-    dispatch(setDisableButtonShowMore(false));
-    dispatch(setSelectedCategory(null));
-    dispatch(
-      setNewCategoryNames({
-        newCategoryName: null,
-        newSubCategoryName: null,
-      }),
-    );
-    dispatch(setSearchValue(search));
-    dispatch(setPage(1));
-    setShowSearch(false);
-    setOverlayVisible(false);
-  };
-
-  const closeSearch = () => {
-    setShowSearch(false);
-    setOverlayVisible(false);
-  };
-
-  const handleSearchFocus = () => {
-    setIsSearchFocused(true);
-  };
-
-  const handleSearchBlur = () => {
-    setIsSearchFocused(false);
+    setCartDrawerOpen(!cartDrawerOpen);
   };
 
   return (
-    <>
-      <header
-        className={`bg-brand-primary flex items-center justify-between px-6 py-2 text-xl shadow-md transition-transform duration-300 ${
-          visible ? 'translate-y-0' : '-translate-y-full'
-        }`}
-        style={{ position: 'fixed', top: 0, width: '100%', zIndex: 10 }}
-      >
-        {(matchHome || matchCategory || matchSubcategory) && (
-          <button onClick={toggleMenu}>
-            <i className="ri-menu-fill text-brand-secondary"></i>
-          </button>
-        )}
+    <header
+      className={`bg-brand-primary flex items-center justify-between px-6 py-2 text-xl shadow-md w-full fixed top-0 z-50 transition-transform duration-300 ${
+        visible ? 'translate-y-0' : '-translate-y-full'
+      }`}
+    >
+      {(matchHome || matchCategory || matchSubcategory) && (
+        <button onClick={toggleMenu} className="lg:hidden">
+          <i className="ri-menu-fill text-brand-secondary"></i>
+        </button>
+      )}
 
-        <div>
-          <Link to="/">
-            <Logo01 color={brandSecondaryColor} strokeWidth={2} />
-          </Link>
-        </div>
-        <nav className="flex items-center gap-4">
-          {!matchCart && (
-            <button onClick={toggleSearch}>
+      <div className="lg:px-12">
+        <Link to="/">
+          <Logo01 color={brandSecondaryColor} strokeWidth={2} />
+        </Link>
+      </div>
+      <nav className="flex items-center gap-4 lg:gap-9 lg:px-8">
+        {!matchCart &&
+          !isLoginRoute &&
+          !isSignUpRoute &&
+          !isAuthRoute &&
+          !isUserRoute && (
+            <button onClick={() => setSearchDrawerOpen(!searchDrawerOpen)}>
               <i
-                className={`ri-search-line text-brand-secondary ${showSearch || idProduto ? 'hidden' : ''}`}
+                className={`ri-search-line text-brand-secondary md:text-2xl lg:text-3xl ${searchDrawerOpen || idProduto ? 'hidden' : ''}`}
               ></i>
             </button>
           )}
-          {!matchCart && (
-            <button
-              className="text-brand-secondary hover:scale-105"
-              onClick={toggleCartDrawer}
+        {!matchCart && (
+          <button
+            className="text-brand-secondary hover:scale-105"
+            onClick={toggleCartDrawer}
+          >
+            <StyledBadge
+              badgeContent={totalItems}
+              color="secondary"
+              className={animateBadge ? 'animate-wiggle' : ''}
             >
-              <StyledBadge
-                badgeContent={totalItems}
-                color="secondary"
-                className={animateBadge ? 'animate-wiggle' : ''}
-              >
-                <i className="ri-shopping-cart-line text-xl hover:scale-105"></i>
-              </StyledBadge>
-            </button>
-          )}
-          <Link to="/usuario" className="text-brand-secondary hover:scale-105">
-            <i className="ri-user-3-line text-xl hover:scale-105"></i>
-          </Link>
-        </nav>
-      </header>
-      {overlayVisible && (
-        <div
-          className="fixed inset-0 bg-black opacity-50 z-50"
-          onClick={closeSearch}
-        ></div>
-      )}
-      {showSearch && visible && (
-        <div
-          className="relative w-3/5 px-4 py-2"
-          style={{
-            width: isMobile ? '80%' : '40%',
-            maxWidth: '420px',
-            position: 'fixed',
-            zIndex: 51,
-            top: isMobile ? '80px' : '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          <input
-            type="text"
-            placeholder="Pesquisar..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className={`w-full p-2 pl-10 pr-10 border border-gray-300 rounded-md shadow focus:outline-none focus:ring-1 focus:ring-brand-secondary focus:border-transparent ${isSearchFocused ? 'ring-2 ring-brand-secondary' : ''}`}
-            onFocus={handleSearchFocus}
-            onBlur={handleSearchBlur}
-          />
-          <button
-            className="absolute inset-y-0 h-auto right-5 flex items-center px-3 text-gray-500 hover:text-gray-700"
-            onClick={handleSearch}
-          >
-            <i className="ri-search-line"></i>
+              <i className="ri-shopping-cart-line text-xl md:text-2xl lg:text-3xl hover:scale-105"></i>
+            </StyledBadge>
           </button>
-          <button
-            className="absolute inset-y-0 left-0 flex items-center px-3 text-gray-500 hover:text-gray-700"
-            onClick={closeSearch}
-          >
-            <i className="ri-close-line px-4"></i>
-          </button>
-        </div>
-      )}
-    </>
+        )}
+        <Link to="/usuario" className="text-brand-secondary hover:scale-105">
+          <i className="ri-user-3-line text-xl md:text-2xl lg:text-3xl hover:scale-105"></i>
+        </Link>
+      </nav>
+    </header>
   );
 };
 

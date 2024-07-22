@@ -25,29 +25,80 @@ model AuthBling {
 }
 
 model User {
-  id           String  @id @default(uuid())
-  name         String
-  email        String  @unique
-  cep          String?
-  address      String?
-  city         String?
-  country      String?
-  password     String?
-  img_profile  String?
-  google_id    String?  @unique
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
-  isPending    Boolean @default(true)
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  password    String?
+  img_profile String?
+  google_id   String?  @unique
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  isPending   Boolean  @default(true)
 
-  AuthCode AuthCode[]
+  AuthCode  AuthCode[]
+  Address   Address?
+  orders    Order[]
+  passwords Password[]
+}
+
+model Address {
+  id           String   @id @default(uuid())
+  user_id      String   @unique
+  cep          String
+  address      String
+  city         String
+  state        String
+  neighborhood String
+  complement   String?
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt()
+
+  USER User @relation(fields: [user_id], references: [id])
+}
+
+model Order {
+  id         String   @id @default(uuid())
+  user_id    String
+  total      Float
+  status     String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt()
+
+  User     User      @relation(fields: [user_id], references: [id])
+  products Product[]
+}
+
+model Product {
+  id             String @id @default(uuid())
+  order_id       String
+  nome           String
+  codigo         String
+  preco          Float
+  tipo           String
+  situacao       String
+  formato        String
+  descricaoCurta String
+  imagemURL      String
+  variacao       String
+  quantidade     Int
+
+  Order Order @relation(fields: [order_id], references: [id])
 }
 
 model AuthCode {
-  id          String   @id @default(cuid())
-  user_id     String   @unique
-  code        String   @unique
-  created_at  DateTime @default(now())
-
+  id         String   @id @default(cuid())
+  user_id    String   @unique
+  code       String   @unique
+  created_at DateTime @default(now())
 
   USER User @relation(fields: [user_id], references: [id])
+}
+
+model Password {
+  id                   String    @id @default(cuid())
+  user_id              String    @unique
+  resetPasswordToken   String?   @unique
+  resetPasswordExpires DateTime?
+
+  user User @relation(fields: [user_id], references: [id])
 }

@@ -13,5 +13,164 @@
 }
 
 body {
-  @apply bg-gray-50;
+  font-family: 'Cooper Hewitt Bold', sans-serif;
+  background-image: url('/public/assets/textura06.jpg');
+  /* background-repeat: no-repeat; */
+  /* background-size: cover; */
+  /* background-attachment: fixed; */
+}
+
+h1 {
+  font-family: 'Cooper Hewitt', sans-serif;
+  font-weight: 900; /* Heavy */
+}
+
+h2 {
+  font-family: 'Cooper Hewitt', sans-serif;
+  font-weight: bold; /* Bold */
+}
+
+h3 {
+  font-family: 'Cooper Hewitt', sans-serif;
+  font-weight: 600; /* Semibold */
+}
+
+p.light {
+  font-family: 'Cooper Hewitt', sans-serif;
+  font-weight: 300; /* Light */
+}
+
+p.thin {
+  font-family: 'Cooper Hewitt', sans-serif;
+  font-weight: 100; /* Thin */
+}
+
+em {
+  font-family: 'Cooper Hewitt', sans-serif;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src:
+    url('/path/to/fonts/CooperHewitt-Regular.woff2') format('opentype'),
+    url('/path/to/fonts/CooperHewitt-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src:
+    url('/public/assets/Fonts/CooperHewitt-Bold.otf') format('opentype'),
+    url('/public/assets/Fonts/CooperHewitt-BoldItalic.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src:
+    url('/public/assets/Fonts/CooperHewitt-Heavy.otf') format('opentype'),
+    url('/public/assets/Fonts/CooperHewitt-HeavyItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-BoldItalic.otf') format('opentype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-Book.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-BookItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-MediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-SemiboldItalic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-ThinItalic.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-Heavy.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cooper Hewitt';
+  src: url('/public/assets/Fonts/CooperHewitt-HeavyItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
 }

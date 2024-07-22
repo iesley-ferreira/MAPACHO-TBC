@@ -18,6 +18,8 @@ const envSchema = z.object({
   MAIL_USER: z.string(),
   MAIL_PASS: z.string(),
   MAIL_FROM: z.string(),
+  FRONTEND_URL: z.string().url(),
+  MERCADO_PAGO_ACCESS_TOKEN_02: z.string(),
 });
 
 export const env = envSchema.parse(process.env);
