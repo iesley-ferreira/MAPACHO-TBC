@@ -34,16 +34,14 @@ const Cart: React.FC = () => {
   );
 
   return (
-    <section className=" bg-gray-50 pt-20 pb-20 flex items-center justify-center min-h-screen">
+    <section className="bg-gray-50 py-24 md:py-32 flex min-h-screen">
       <div className="container px-4 mx-auto md:max-w-7xl">
         <h1 className="font-heading text-coolGray-800 text-3xl font-semibold mb-6">
           Carrinho
         </h1>
         {cartItems.length === 0 ? (
           <div className="flex items-center justify-center text-center h-full">
-            <p className="text-rhino-800 mt-40">
-              Você ainda não tem produtos no carrinho
-            </p>
+            <p className="text-rhino-800">Você ainda não tem produtos no carrinho</p>
           </div>
         ) : (
           <div className="flex flex-wrap -mx-4 justify-center">

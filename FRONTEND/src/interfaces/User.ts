@@ -2,7 +2,7 @@ import { IProduct } from './Product';
 
 export interface IOrder {
   id: number;
-  date: string;
+  // date: string;
   total: number;
   status: string;
   products: IProduct[] | [];
@@ -14,11 +14,27 @@ export interface IUserLogin {
   password: string;
 }
 
+export interface IUserGoogleLogin {
+  email: string;
+  name: string;
+  img_profile: string;
+  google_id: string;
+}
+
 export interface IUserLoginResponse {
   status: number;
   message: string;
   user: IUser | null;
   token?: string | null;
+}
+
+export interface IUserGoogleLoginResponse {
+  data: {
+    status: number;
+    message: string;
+    user: IUser | null;
+    token?: string | null;
+  };
 }
 
 export interface IUser {

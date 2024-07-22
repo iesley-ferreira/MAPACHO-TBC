@@ -4,10 +4,8 @@ import Carousel from 'react-material-ui-carousel';
 import './BannerCarousel.css';
 
 const images = [
-  '../../../../public/assets/bannerPrimeiraCompra3.png',
-  '../../../../public/assets/bannermapacho.jpg',
-  '../../../../public/assets/bannerPrimeiraCompra3.png',
-  '../../../../public/assets/bannermapacho.jpg',
+  '/public/assets/images/banners/bannerPrimeiraCompra3.png',
+  '/public/assets/images/banners/bannermapacho.jpg',
 ];
 
 const BannerCarousel: React.FC = () => {
@@ -39,7 +37,7 @@ const Item: React.FC<ItemProps> = ({ image }) => {
       <img
         src={image}
         alt={`carousel-${image}`}
-        className="carousel-image object-cover w-full h-[140px] md:h-[240px] lg:h-[300px] overflow-hidden"
+        className="carousel-image object-cover w-full h-[180px] md:h-[240px] lg:h-[500px] overflow-hidden"
       />
     </Paper>
   );

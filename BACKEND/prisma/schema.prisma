@@ -35,9 +35,10 @@ model User {
   updated_at  DateTime @updatedAt
   isPending   Boolean  @default(true)
 
-  AuthCode AuthCode[]
-  Address  Address?
-  orders   Order[]
+  AuthCode  AuthCode[]
+  Address   Address?
+  orders    Order[]
+  passwords Password[]
 }
 
 model Address {
@@ -94,8 +95,17 @@ model AuthCode {
   USER User @relation(fields: [user_id], references: [id])
 }
 
+model Password {
+  id                   String    @id @default(cuid())
+  user_id              String    @unique
+  resetPasswordToken   String?   @unique
+  resetPasswordExpires DateTime?
+
+  user User @relation(fields: [user_id], references: [id])
+}
+
 enum PaymentStatusEnum {
-  processing
-  approved
-  pending
+  PENDING
+  APPROVED
+  REJECTED
 }

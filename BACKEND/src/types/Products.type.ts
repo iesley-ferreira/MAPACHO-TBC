@@ -25,3 +25,4 @@ export interface ProductInputType {
   variacao: string;
   quantidade: number;
 }
+

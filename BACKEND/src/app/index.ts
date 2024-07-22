@@ -3,7 +3,9 @@ import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import authRouter from './routers/auth.router';
 import categoriesRouter from './routers/categories.router';
+import mercadoPagoRouter from './routers/mercadoPago.router';
 import orderRouter from './routers/order.router';
+import passwordRouter from './routers/password.router';
 import productsRouter from './routers/products.router';
 import shippingRouter from './routers/shipping.router';
 import userRouter from './routers/user.router';
@@ -33,7 +35,13 @@ app.use('/shipping', shippingRouter);
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/orders', orderRouter);
+<<<<<<< HEAD
 app.use('/payment', paymentRouter);
+=======
+app.use('/reset-password', passwordRouter);
+app.use('/mercado-pago', mercadoPagoRouter);
+// ========================= Middleware de erro ============================= //
+>>>>>>> develop
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);

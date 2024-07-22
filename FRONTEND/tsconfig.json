@@ -6,7 +6,7 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "typeRoots": ["./node_modules/@types", "./src/types"],
-    "types": [],
+    "types": ["node"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -22,6 +22,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["FRONTEND/src", "src/**/*"],
+  "include": ["FRONTEND/src", "src/**/*", "src/utils", "./webpack.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

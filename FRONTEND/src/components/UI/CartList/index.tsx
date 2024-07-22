@@ -17,7 +17,7 @@ interface CartListProps {
   cartItems: ICartItem[];
 }
 
-const defaultImageURL = '/public/assets/noImageAvailable.png';
+const defaultImageURL = '/public/assets/no-image.png';
 
 const CartList: React.FC<CartListProps> = ({ cartItems }) => {
   const dispatch = useDispatch();
@@ -84,19 +84,6 @@ const CartList: React.FC<CartListProps> = ({ cartItems }) => {
             </div>
           </div>
         ))}
-        <div className="pt-5 border-t border-gray-50">
-          <div className="flex items-center justify-between flex-wrap px-2 mb-6">
-            <p className="text-xl font-semibold">Total</p>
-            <p className="text-xl font-semibold text-green-900">
-              {priceFormatter.format(
-                cartItems.reduce(
-                  (total, item) => total + item.preco * item.quantidade,
-                  0,
-                ),
-              )}
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -1,16 +1,15 @@
-import React from 'react'
+import React from 'react';
 
 interface Logo01Props {
-  color: string
-  strokeWidth: number
+  color: string;
+  strokeWidth: number;
 }
 
 const Logo01: React.FC<Logo01Props> = ({ color, strokeWidth }) => {
   return (
     <div>
       <svg
-        width="150px"
-        height="42px"
+        className="w-[150px] h-[42px] md:w-[180px] md:h-[46px] lg:w-[200px] lg:h-[52px]"
         fill={color}
         stroke={color}
         strokeWidth={strokeWidth}
@@ -144,7 +143,7 @@ const Logo01: React.FC<Logo01Props> = ({ color, strokeWidth }) => {
         />
       </svg>
     </div>
-  )
-}
+  );
+};
 
-export default Logo01
+export default Logo01;

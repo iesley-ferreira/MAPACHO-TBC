@@ -14,6 +14,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@mercadopago/sdk-react": "^0.0.19",
     "@mui/icons-material": "^5.15.19",
     "@mui/material": "^5.15.20",
     "@paypal/paypal-js": "^8.1.0",
@@ -21,6 +22,9 @@
     "@reduxjs/toolkit": "^2.2.5",
     "axios": "^1.7.2",
     "jwt-decode": "^4.0.0",
+    "load-script": "^2.0.0",
+    "lottie-react": "^2.4.0",
+    "mercadopago": "^2.0.10",
     "qrcode.react": "^3.1.0",
     "qs": "^6.12.1",
     "query-string": "^9.0.0",
@@ -30,17 +34,24 @@
     "react-paypal-button-v3": "^3.0.2",
     "react-redux": "^9.1.2",
     "react-router-dom": "^6.23.1",
+    "react-slick": "^0.30.2",
     "redux": "^5.0.1",
     "redux-saga": "^1.3.0",
     "remixicon": "^4.2.0",
-    "typesafe-actions": "^5.1.0"
+    "slick-carousel": "^1.8.1",
+    "sweetalert2": "^11.12.1",
+    "typesafe-actions": "^5.1.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/mercadopago": "^1.5.11",
+    "@types/node": "^20.14.9",
     "@types/qs": "^6.9.15",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@types/react-redux": "^7.1.33",
     "@types/react-router-dom": "^5.3.3",
+    "@types/react-slick": "^0.23.13",
     "@types/redux-saga": "^0.10.5",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
@@ -56,6 +67,6 @@
     "stylelint-config-tailwindcss": "^0.0.7",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.5",
-    "vite": "^5.2.0"
+    "vite": "^5.3.2"
   }
 }

@@ -4,7 +4,6 @@ import userModel from '../models/user.model';
 
 const verifyAuthCode = async (email: string, code: string) => {
   const user = await userModel.findUserByEmail(email);
-  console.log('user verifyAuthCodeSERVICE', user);
 
   if (!user) {
     return {
@@ -27,7 +26,10 @@ const verifyAuthCode = async (email: string, code: string) => {
   }
 
   await userModel.updateUserStatus(user.id, false);
-  const token = jwtProvider.sign(user);
+
+  const userWithOrders = { orders: [], ...user };
+
+  const token = jwtProvider.sign(userWithOrders);
 
   return {
     data: {

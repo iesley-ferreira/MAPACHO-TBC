@@ -6,7 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import GoogleLogin from '../../components/UI/GoogleLogin';
 import CustomInput from '../../components/common/CustomInput';
 import { RootState } from '../../store/ducks/rootReducer';
-import { loginUserRequest } from '../../store/ducks/user/actions';
+import { googleLoginRequest, loginUserRequest } from '../../store/ducks/user/actions';
+import { GoogleCredential } from '../../interfaces/GoogleCredential';
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+
     if (token) {
       navigate('/usuario');
       return;
@@ -56,13 +58,19 @@ const Login: React.FC = () => {
     dispatch(loginUserRequest({ email, password }));
   };
 
+  const handleGoogleLogin = (credentialResponse: GoogleCredential) => {
+    dispatch(
+      googleLoginRequest({
+        email: credentialResponse.email,
+        name: credentialResponse.name,
+        img_profile: credentialResponse.picture,
+        google_id: credentialResponse.sub,
+      }),
+    );
+  };
+
   return (
-    <section className="relative bg-gray-50 overflow-hidden">
-      <img
-        className="absolute top-0 left-0 md:ml-20"
-        src="/public/assets/shadow-light-top.png"
-        alt="shadow-light-top"
-      />
+    <section className="relative bg-gray-50 overflow-hidden bg-[url(/public/assets/shadow-light-top.png)] bg-no-repeat bg-cover">
       <div className="relative container mx-auto">
         <div className="min-h-screen flex items-center justify-center px-4">
           <div className="w-full max-w-sm mx-auto">
@@ -86,6 +94,8 @@ const Login: React.FC = () => {
 
                 <CustomInput
                   type="email"
+                  name="email"
+                  id="email"
                   placeholder="Seu email"
                   value={email}
                   onChange={handleEmailChange}
@@ -98,6 +108,8 @@ const Login: React.FC = () => {
                 <div className="relative">
                   <CustomInput
                     type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    id="password"
                     placeholder="Sua senha"
                     value={password}
                     onChange={handlePasswordChange}
@@ -113,7 +125,7 @@ const Login: React.FC = () => {
                 <div className="text-right pt-1 pr-2">
                   <a
                     className="inline-block text-sm font-semibold text-green-600 hover:text-green-500"
-                    href="#"
+                    href="/recuperarsenha"
                   >
                     Esqueceu a senha?
                   </a>
@@ -134,7 +146,7 @@ const Login: React.FC = () => {
                 <div className="h-px w-full bg-gray-200"></div>
               </div>
               <div className="flex w-full justify-center">
-                <GoogleLogin />
+                <GoogleLogin handleLogin={handleGoogleLogin} />
               </div>
               <p className="pt-5 text-sm text-center">
                 <span className="mr-1 text-gray-500">Não tem uma conta?</span>

@@ -23,8 +23,8 @@ export default {
           500: '#9ACD32',
           600: '#6B8E23',
         },
-        green: {
-          300: '#90EE90',
+        greenButton: {
+          500: '#11ab6b',
         },
         fluorescenGreen: {
           100: '#f5fecd',
@@ -46,7 +46,7 @@ export default {
         body: '#9CA3AF',
       },
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'],
+        // sans: ['Montserrat', 'sans-serif'],
       },
       maxWidth: {
         'product-card': '244px',
@@ -57,8 +57,16 @@ export default {
           '50%': { transform: 'scale(1.3)' },
         },
       },
+      boxShadow: {
+        custom: '0 3px 14px rgba(0, 0, 0, 0.08)',
+      },
       animation: {
         wiggle: 'wiggle 0.3s ease-in-out',
+      },
+      gridTemplateColumns: {
+        'auto-fit-155': 'repeat(auto-fit, minmax(155px, 1fr))',
+        'auto-fit-188': 'repeat(auto-fit, minmax(188px, 1fr))',
+        'auto-fit-244': 'repeat(auto-fit, minmax(244px, 1fr))',
       },
     },
   },
