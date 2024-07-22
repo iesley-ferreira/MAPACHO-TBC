@@ -1,31 +1,14 @@
 import { Request, Response } from "express";
-import mercadoPagoProvider from "../../providers/mercadopago.provider";
 import { PaymentGenerateType } from "../../types/Payment.type";
+import paymentService from "../services/payement.service";
+import { OrderInputType } from "../../types/Order.type";
 
 const createPayment = async (req: Request, res: Response) => {
-  const {
-    payMethod,
-    description,
-    price,
-    payer
-  }: PaymentGenerateType = req.body;
+  const body: PaymentGenerateType = req.body;
 
+  const { data, status } = await paymentService.createPayment(body)
 
-  const response = await mercadoPagoProvider.createPayment({ body: {
-    transaction_amount: price,
-    description,
-    payment_method_id: payMethod,
-    payer: {
-      email: payer?.paymentEmail,
-      first_name: payer?.paymentName,
-      address: payer?.address,
-    }
-  }});
-
-  console.log(response);
-
-
-  return res.status(201).json({ data: response });
+  return res.status(status).json(data);
 }
 
 const paymentController = {

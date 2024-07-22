@@ -1,14 +1,15 @@
 // models/order.model.ts
 
 import prisma from '../../providers/prisma.provider';
-import { OrderInputType } from '../../types/Order.type';
+import { OrderInputType, OrderType, OrderUpdateInputType } from '../../types/Order.type';
 
-const createOrder = async ({ userId, products, total }: OrderInputType) => {
+const createOrder = async ({ userId, products, total, paymentId }: OrderInputType) => {
   return await prisma.order.create({
     data: {
       user_id: userId,
       total,
-      status: 'processing',
+      payment_id: paymentId,
+      status: 'pending',
       products: {
         create: products.map((product) => ({
           nome: product.nome,
@@ -27,9 +28,18 @@ const createOrder = async ({ userId, products, total }: OrderInputType) => {
   });
 };
 
+const updateOrder = async ({ idOrder, status }: OrderUpdateInputType) => prisma.order.update({
+  where: {
+    id: idOrder,
+  },
+  data: {
+    status,
+  }
+})
+
 const orderModel = {
   createOrder,
+  updateOrder,
 }
 
 export default orderModel;
-

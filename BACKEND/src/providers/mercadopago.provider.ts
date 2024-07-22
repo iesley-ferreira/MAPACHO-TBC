@@ -13,8 +13,20 @@ const client = new MercadoPagoConfig({
 
 const payment = new Payment(client);
 
-const createPayment = async (body: PaymentCreateData) => payment.create(body)
+const createPayment = async (body: PaymentCreateData) => {
+  // try {
+  //   return payment.create(body)
+  // } catch (e) {
+  //   return {
+  //     data: {
+  //       message: 'Erro ao gerar meio de pagamento'
+  //     }
+  //   }
+  // }
 
+  return payment.create(body)
+
+}
 
 const mercadoPagoProvider = {
   createPayment,

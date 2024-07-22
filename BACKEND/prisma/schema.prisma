@@ -56,12 +56,13 @@ model Address {
 }
 
 model Order {
-  id         String   @id @default(uuid())
+  id         String            @id @default(uuid())
   user_id    String
+  payment_id BigInt
   total      Float
-  status     String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt()
+  status     PaymentStatusEnum
+  created_at DateTime          @default(now())
+  updated_at DateTime          @updatedAt()
 
   User     User      @relation(fields: [user_id], references: [id])
   products Product[]
@@ -91,4 +92,10 @@ model AuthCode {
   created_at DateTime @default(now())
 
   USER User @relation(fields: [user_id], references: [id])
+}
+
+enum PaymentStatusEnum {
+  processing
+  approved
+  pending
 }
