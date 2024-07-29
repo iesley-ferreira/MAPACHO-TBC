@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import CustomizedSteppers from '../../components/UI/CustomizedSteppers';
 import OrderView from '../../components/UI/OrderView';
-import PaymentMethods from '../../components/UI/PaymentMethods';
+import PaymentForm from '../../components/UI/PaymentForm';
 import { RootState } from '../../store/ducks/rootReducer';
 
 const Payment: React.FC = () => {
@@ -30,7 +30,7 @@ const Payment: React.FC = () => {
         </div>
         <div className="flex flex-wrap justify-center -m-8">
           <div className="w-full md:w-7/12 p-4 lg:max-w-xl">
-            <PaymentMethods totalPrice={getTotalWithShippingAndDiscount()} />
+            <PaymentForm />
           </div>
           <div className="w-full md:w-5/12 p-8">
             <OrderView />

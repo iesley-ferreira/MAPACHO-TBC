@@ -1,8 +1,10 @@
 import axios from 'axios';
-import { base_url } from '../../devConfig.json';
+import { env } from '../env';
+
+const dev_url = env.VITE_DEV_URL;
 
 const api = axios.create({
-  baseURL: `http://${base_url}:3333/`, //  Substituir pela URL do backend
+  baseURL: dev_url,
   headers: {
     'Content-Type': 'application/json',
   },

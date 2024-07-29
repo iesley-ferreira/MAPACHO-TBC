@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
 const envSchema = z.object({
+  VITE_DEV_URL: z.string(),
+  VITE_PROD_URL: z.string(),
   VITE_API_KEY_META: z.string(),
   VITE_API_URL_META: z.string().url(),
   VITE_MERCADO_PAGO_PUBLIC_KEY: z.string(),
@@ -8,6 +10,8 @@ const envSchema = z.object({
 });
 
 const envVars = {
+  VITE_DEV_URL: import.meta.env.VITE_DEV_URL,
+  VITE_PROD_URL: import.meta.env.VITE_PROD_URL,
   VITE_API_KEY_META: import.meta.env.VITE_API_KEY_META,
   VITE_API_URL_META: import.meta.env.VITE_API_URL_META,
   VITE_MERCADO_PAGO_PUBLIC_KEY: import.meta.env.VITE_MERCADO_PAGO_PUBLIC_KEY,
