@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import InstagramCarousel from '../../components/UI/InstagramCarousel';
 import Menu from '../../components/UI/Menu';
-import Product from '../../components/UI/Product';
 import ProductsList from '../../components/UI/ProductsList';
 import CategoryBreadcrumbs from '../../components/common/CategoryBreadcrumbs';
 import ShowMoreProductsButton from '../../components/common/ShowMoreProductsButton/ShowMoreProductsButton';
@@ -19,10 +18,11 @@ const Categories: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const categoryId = queryParams.get('idCategoria');
   const subCategoryId = queryParams.get('idSubCategoria');
+  const searchValue = queryParams.get('pesquisar');
+
   const categoryNameFromURL = decodeURIComponent(location.pathname.split('/')[2]);
   const productsListRef = useRef<HTMLDivElement>(null);
 
-  const produtoId = queryParams.get('idProduto');
   const [category, setCategory] = useState<IFormattedCategory>({
     id: '',
     description: '',
@@ -40,7 +40,7 @@ const Categories: React.FC = () => {
     selectedCategoryName,
     selectedSubCategoryName,
     products,
-    searchValue,
+    // searchValue,
   } = useSelector((state: RootState) => state.products);
 
   const { formattedCategories } = useSelector((state: RootState) => state.categories);
@@ -112,76 +112,74 @@ const Categories: React.FC = () => {
         </div>
       </section>
       <>
-        {produtoId ? (
-          <Product productId={produtoId} />
-        ) : (
-          <>
-            {error && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: '55vh',
-                }}
-              >
-                <h1>Erro ao carregar os produtos</h1>
-              </Box>
-            )}
-            <div className="flex flex-col items-center w-full lg:pb-20">
-              <div className="w-full md:max-w-[94%] xl:max-w-[90%]">
-                <div className="flex flex-row justify-center md:gap-4 lg:gap-10 xl:gap-20">
-                  <div className="left-16 pt-16 min-w-max hidden lg:block">
-                    <div className="sticky top-20 max-h-[90vh] overflow-y-auto custom-scrollbar">
-                      <h1 className="font-heading uppercase font-semibold pl-6 pb-2  text-4xl lg:text-3xl text-slate-800 tracking-8xl mx-auto">
-                        Categorias
-                      </h1>
-                      <Menu />
-                    </div>
-                  </div>
-                  <div
-                    className="flex flex-col items-center lg:justify-start w-full"
-                    ref={productsListRef}
-                  >
-                    <div className="w-full">
-                      {loading ? (
-                        <div className="flex items-center justify-center w-full min-h-[60vh]">
-                          <CircularProgress sx={{ color: 'darkgreen' }} />
-                        </div>
-                      ) : (
-                        <main>
-                          <CategoryBreadcrumbs
-                            selectedCategoryName={selectedCategoryName}
-                            selectedSubCategoryName={selectedSubCategoryName}
-                            searchValue={searchValue}
-                            selectedCategoryId={selectedCategoryId}
-                          />
-                          <ProductsList
-                            products={
-                              filteredProducts.length > 0 || selectedCategoryId
-                                ? filteredProducts
-                                : products
-                            }
-                          />
-                        </main>
-                      )}
-                    </div>
-                  </div>
-                  <div className="sticky pt-16 top-2 hidden xl:block">
-                    <InstagramCarousel />
-                  </div>
+        {error && (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '55vh',
+            }}
+          >
+            <h1>Erro ao carregar os produtos</h1>
+          </Box>
+        )}
+        <div className="flex flex-col items-center w-full lg:pb-20">
+          <div className="w-full md:max-w-[94%] xl:max-w-[90%]">
+            <div className="flex flex-row justify-center md:gap-4 lg:gap-10 xl:gap-20">
+              <div className="left-16 pt-16 min-w-max hidden lg:block">
+                <div className="sticky top-20 max-h-[90vh] overflow-y-auto custom-scrollbar">
+                  <h1 className="font-heading uppercase font-semibold pl-6 pb-2  text-4xl lg:text-3xl text-slate-800 tracking-8xl mx-auto">
+                    Categorias
+                  </h1>
+                  <Menu />
                 </div>
               </div>
-              <div>
-                <ShowMoreProductsButton
-                  loading={loading}
-                  loadMoreProducts={loadMoreProducts}
-                  isShowMoreProductsButtonDisabled={isShowMoreProductsButtonDisabled}
-                />
+              <div
+                className="flex flex-col items-center lg:justify-start w-full"
+                ref={productsListRef}
+              >
+                <div className="w-full">
+                  {loading ? (
+                    <div className="flex items-center justify-center w-full min-h-[60vh]">
+                      <CircularProgress sx={{ color: 'darkgreen' }} />
+                    </div>
+                  ) : (
+                    <main>
+                      <CategoryBreadcrumbs
+                        categoryId={categoryId}
+                        subCategoryId={subCategoryId}
+                        searchValue={searchValue}
+                      />
+                      {filteredProducts.length === 0 && (
+                        <div className="flex justify-center pt-14 w-full">
+                          <h4>Nenhum produto encontrado</h4>
+                        </div>
+                      )}
+                      <ProductsList
+                        products={
+                          filteredProducts.length > 0 || selectedCategoryId
+                            ? filteredProducts
+                            : products
+                        }
+                      />
+                    </main>
+                  )}
+                </div>
+              </div>
+              <div className="sticky pt-16 top-2 hidden xl:block">
+                <InstagramCarousel />
               </div>
             </div>
-          </>
-        )}
+          </div>
+          <div>
+            <ShowMoreProductsButton
+              loading={loading}
+              loadMoreProducts={loadMoreProducts}
+              isShowMoreProductsButtonDisabled={isShowMoreProductsButtonDisabled}
+            />
+          </div>
+        </div>
       </>
     </div>
   );

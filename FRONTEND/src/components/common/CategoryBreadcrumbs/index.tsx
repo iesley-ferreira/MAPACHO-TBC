@@ -3,21 +3,16 @@ import { RootState } from '../../../store/ducks/rootReducer';
 import Separator from './Separator';
 
 type CategoryBreadcrumbsProps = {
-  selectedCategoryName?: string | null;
-  selectedSubCategoryName?: string | null;
+  categoryId: string | null;
+  subCategoryId: string | null;
   searchValue?: string | null;
-  selectedCategoryId?: string | null;
 };
 
 const CategoryBreadcrumbs: React.FC<CategoryBreadcrumbsProps> = ({
-  selectedCategoryName,
-  selectedSubCategoryName,
+  categoryId,
+  subCategoryId,
   searchValue,
 }) => {
-  const queryParams = new URLSearchParams(location.search);
-  const categoryId = queryParams.get('idCategoria');
-  const subCategoryId = queryParams.get('idSubCategoria');
-
   const { formattedCategories } = useSelector((state: RootState) => state.categories);
 
   const categoryName = formattedCategories.find(
