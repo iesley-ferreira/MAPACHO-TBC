@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import cache from '../../cache';
 import productsService from '../services/products.service';
+import blingCache from '../../cache/bling.cache';
 
 const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const bling_token = cache.blingToken.get();
+    const bling_token = blingCache.blingToken.get();
     const { data, status } = await productsService.getAllProducts(bling_token, req.query);
 
     res.status(status).json(data.data);
@@ -16,7 +16,7 @@ const getAllProducts = async (req: Request, res: Response) => {
 
 const getProductByVariation = async (req: Request, res: Response) => {
   try {
-    const bling_token = cache.blingToken.get();
+    const bling_token = blingCache.blingToken.get();
     const { idProduct } = req.params;
 
     const { data, status } = await productsService.getProductByVariation(

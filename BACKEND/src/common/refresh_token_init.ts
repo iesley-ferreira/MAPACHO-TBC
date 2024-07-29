@@ -3,7 +3,7 @@ import authBlingModel from "../app/models/authBling.model";
 import scheduleUtils from "../utils/scheduler.utils";
 import { AuthBlingUpdateType } from "../types/AuthBling.type";
 import { env } from "../env";
-import cache from "../cache";
+import blingCache from "../cache/bling.cache";
 
 const credentials = Buffer.from(
   `${env.CLIENT_ID}:${env.CLIENT_SECRET}`,
@@ -19,14 +19,14 @@ const refresh_token_init = async () => {
       newToken.updated_at,
     );
 
-    cache.blingToken.set(newToken.access_token);
+    blingCache.blingToken.set(newToken.access_token);
 
     return scheduleUtils.scheduleTime(timeScheduleMs, () =>
       refresh_token(newToken.id, credentials, newToken.refresh_token),
     );
   }
 
-  cache.blingToken.set(authBling.access_token);
+  blingCache.blingToken.set(authBling.access_token);
 
   const timeScheduleMs = scheduleUtils.timeSchedule(
     authBling.expires_in,
@@ -64,7 +64,7 @@ const refresh_token = async (
     ...newTokenData,
   });
 
-  cache.blingToken.set(authBlingUpdated.access_token);
+  blingCache.blingToken.set(authBlingUpdated.access_token);
 
   const timeScheduleMs = scheduleUtils.timeSchedule(
     authBlingUpdated.expires_in,

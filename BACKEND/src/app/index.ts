@@ -35,13 +35,9 @@ app.use('/shipping', shippingRouter);
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/orders', orderRouter);
-<<<<<<< HEAD
-app.use('/payment', paymentRouter);
-=======
 app.use('/reset-password', passwordRouter);
 app.use('/mercado-pago', mercadoPagoRouter);
 // ========================= Middleware de erro ============================= //
->>>>>>> develop
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);

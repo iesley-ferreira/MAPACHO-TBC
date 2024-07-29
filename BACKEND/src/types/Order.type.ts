@@ -6,7 +6,7 @@ export interface OrderType {
   user_id: string;
   payment_id: number;
   total: number;
-  status: 'processing' | 'approved' | 'pending';
+  status: OrderStatusType
   created_at: Date;
   updated_at: Date;
   products: ProductType;
@@ -17,7 +17,15 @@ export interface OrderInputType {
   products: ProductInputType[];
   total: number;
   paymentId: number;
-  status?: 'processing' | 'approved' | 'pending'
+  status?: OrderStatusType
+}
+
+export type OrderStatusType = 'placed' | 'processing' | 'preparing' | 'shipped' | 'in_transit' | 'delivered' | 'cancelled' | 'returned' | 'refunded';
+
+
+export interface OrderUpdateInputType {
+  idOrder: string;
+  status: OrderStatusType;
 }
 
 export interface IOrder {

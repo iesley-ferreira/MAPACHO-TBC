@@ -9,7 +9,7 @@ const createOrder = async ({ userId, products, total, paymentId }: OrderInputTyp
       user_id: userId,
       total,
       payment_id: paymentId,
-      status: 'pending',
+      status: 'processing',
       products: {
         create: products.map((product) => ({
           nome: product.nome,

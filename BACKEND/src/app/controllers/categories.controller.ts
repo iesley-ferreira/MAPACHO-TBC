@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import cache from '../../cache';
 import categoriesService from '../services/categories.service';
+import blingCache from '../../cache/bling.cache';
 
 const getAllCategories = async (req: Request, res: Response) => {
   try {
-    const bling_token = cache.blingToken.get();
+    const bling_token = blingCache.blingToken.get();
 
     const { data, status } = await categoriesService.getAllCategories(
       bling_token,

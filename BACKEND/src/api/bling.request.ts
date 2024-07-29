@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { QueryType } from '../types/Query.type';
 import axiosRequest from './requests.axios';
 
@@ -27,8 +28,10 @@ const blingRequestAxios = async ({
   token,
   method,
   query,
-}: BlingRequestTypes) =>
-  axiosRequest({
+}: BlingRequestTypes) => {
+  // console.log(query);
+
+  return axiosRequest({
     BASE_URL,
     method,
     url,
@@ -40,6 +43,7 @@ const blingRequestAxios = async ({
     data,
     query,
   });
+}
 
 // ================== BLING_TOKEN =============================== //
 
@@ -88,12 +92,22 @@ const getAllCategories = async (token: string, query?: QueryType) =>
     query,
   });
 
+// =================== BLING_PRODUCTS_BY_CATEGORY =========================== //
+const getProductsByCategory = async (token: string, categoryId: number) =>
+  blingRequestAxios({
+    url: `/Api/v3/produtos?idCategoria=${categoryId}`,
+    method: 'get',
+    token,
+  });
+
+
 const bling_request = {
   getToken,
   refreshToken,
   getAllProducts,
   getProductsByVariation,
   getAllCategories,
+  getProductsByCategory
 };
 
 export default bling_request;

@@ -105,7 +105,13 @@ model Password {
 }
 
 enum PaymentStatusEnum {
-  PENDING
-  APPROVED
-  REJECTED
+  placed
+  processing
+  preparing
+  shipped
+  in_transit
+  delivered
+  cancelled
+  returned
+  refunded
 }
