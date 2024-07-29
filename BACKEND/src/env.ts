@@ -4,6 +4,7 @@ import { z } from 'zod';
 dotenv.config();
 
 const envSchema = z.object({
+  HOST: z.string(),
   DATABASE_URL: z.string().url(),
   AUTHORIZATION_CODE: z.string(),
   CLIENT_ID: z.string(),
