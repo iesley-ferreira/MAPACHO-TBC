@@ -83,7 +83,7 @@ const Home: React.FC = () => {
           <div className="flex flex-wrap mb-10 -mx-4 items-end">
             <div className="w-full sm:w-1/2 xl:w-3/5 mb-6 sm:mb-0 px-4">
               <div className="text-center w-fit my-4">
-                <h1 className="font-heading uppercase font-bold text-4xl text-slate-800 mb-2">
+                <h1 className="font-heading uppercase font-heading text-2xl md:text-4xl text-slate-800 font-bold mb-2">
                   Categorias
                 </h1>
                 <div className="h-[8px] bg-blueGray-800">
