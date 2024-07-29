@@ -46,9 +46,30 @@ const sendResetPasswordEmail = async (email: string, token: string) => {
   }
 };
 
+const sendPaymentConfirmationEmail = async (
+  email: string,
+  orderId: string,
+  status: string,
+) => {
+  const mailOptions = {
+    from: env.MAIL_USER,
+    to: email,
+    subject: 'Confirmação de Pagamento',
+    html: `<p>Seu pagamento ${orderId} foi confirmado e seu pedido está sendo processado.</p>`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Email de confirmação enviado com sucesso');
+  } catch (error) {
+    console.error('Erro ao enviar email de confirmação:', error);
+  }
+};
+
 const nodemailerProvider = {
   sendAuthCode,
   sendResetPasswordEmail,
+  sendPaymentConfirmationEmail,
 };
 
 export default nodemailerProvider;
