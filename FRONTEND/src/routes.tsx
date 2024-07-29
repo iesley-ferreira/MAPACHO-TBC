@@ -1,22 +1,24 @@
 import React, { Suspense, lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AuthInitializer from './AuthInitializer';
-import Layout from './components/Layout';
 import Loader from './components/common/Loader';
-import ProtectedRoute from './components/common/ProtectedRoute';
-import Auth from './pages/Auth';
-import Categories from './pages/Categories';
-import Product from './pages/Product';
 import ScrollToTop from './utils/ScrollToTop';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
+
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const Auth = lazy(() => import('./pages/Auth'));
+const ProtectedRoute = lazy(() => import('./components/common/ProtectedRoute'));
+const AgeVerification = lazy(() => import('./components/common/AgeVerification'));
+const Layout = lazy(() => import('./components/Layout'));
+const Categories = lazy(() => import('./pages/Categories'));
+const Order = lazy(() => import('./pages/Order'));
+const Product = lazy(() => import('./pages/Product'));
 const Home = lazy(() => import('./pages/Home'));
 const Register = lazy(() => import('./pages/Register'));
 const User = lazy(() => import('./pages/User'));
 const Login = lazy(() => import('./pages/Login'));
 const Shipping = lazy(() => import('./pages/Shipping'));
 const Payment = lazy(() => import('./pages/Payment'));
-const Success = lazy(() => import('./pages/Success'));
 const Cart = lazy(() => import('./pages/Cart'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
@@ -25,13 +27,12 @@ const AppRoutes: React.FC = () => {
     <>
       <ScrollToTop />
       <AuthInitializer />
+      <AgeVerification />
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to="/home" />} />
             <Route path="/home" element={<Home />} />
-            {/* <Route path="/produtos" element={<Products />} /> */}
-            {/* <Route path="/categoria/bongs" element={<Bongs />} /> */}
             <Route path="/produto" element={<Product />} />
             <Route path="/categoria/:categoryName" element={<Categories />} />
             <Route path="/cadastro" element={<Register />} />
@@ -41,7 +42,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/usuario" element={<ProtectedRoute component={User} />} />
             <Route path="/envio" element={<Shipping />} />
             <Route path="/pagamento" element={<Payment />} />
-            <Route path="/comprafinalizada" element={<Success />} />
+            <Route path="/pedido" element={<Order />} />
             <Route path="/carrinho" element={<Cart />} />
             <Route path="/autenticacao" element={<Auth />} />
             <Route path="*" element={<NotFound />} />

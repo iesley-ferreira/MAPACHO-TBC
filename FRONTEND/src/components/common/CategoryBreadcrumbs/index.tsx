@@ -1,23 +1,18 @@
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/ducks/rootReducer';
+import Separator from './Separator';
 
 type CategoryBreadcrumbsProps = {
-  selectedCategoryName?: string | null;
-  selectedSubCategoryName?: string | null;
+  categoryId: string | null;
+  subCategoryId: string | null;
   searchValue?: string | null;
-  selectedCategoryId?: string | null;
 };
 
 const CategoryBreadcrumbs: React.FC<CategoryBreadcrumbsProps> = ({
-  selectedCategoryName,
-  selectedSubCategoryName,
+  categoryId,
+  subCategoryId,
   searchValue,
 }) => {
-  const queryParams = new URLSearchParams(location.search);
-  const categoryId = queryParams.get('idCategoria');
-  const subCategoryId = queryParams.get('idSubCategoria');
-
   const { formattedCategories } = useSelector((state: RootState) => state.categories);
 
   const categoryName = formattedCategories.find(
@@ -31,26 +26,24 @@ const CategoryBreadcrumbs: React.FC<CategoryBreadcrumbsProps> = ({
     <section className="overflow-hidden py-2 pl-2 md:py-6">
       <div className="flex items-center gap-4 p-2">
         <a
-          className="text-[#1e293b] font-semibold uppercase text-opacity-70 text-xs sm:text-sm md:text-md"
-          href="#"
+          className="text-sm md:text-base font-bold text-gray-400 hover:text-gray-500"
+          href="/home"
         >
           Home
         </a>
-        <KeyboardArrowRightIcon style={{ color: '#586477' }} />
+        <Separator />
         {searchValue && (
-          <a className="text-[#1e293b] font-semibold uppercase text-opacity-70 text-xs sm:text-sm md:text-md">
+          <a className="text-sm md:text-base font-bold text-gray-400 hover:text-gray-500">
             {searchValue}
           </a>
         )}
         {categoryName && (
           <>
-            <a className="text-[#1e293b] font-semibold uppercase text-opacity-70 text-xs sm:text-sm md:text-md">
-              {categoryName}
-            </a>
-            <KeyboardArrowRightIcon style={{ color: '#586477' }} />
-            <a className="text-[#1e293b] font-semibold uppercase text-opacity-70 text-xs sm:text-sm md:text-md">
+            <p className="text-sm md:text-base font-bold text-gray-400">{categoryName}</p>
+            <Separator />
+            <p className="text-sm md:text-base font-bold text-gray-500 hover:text-gray-600">
               {subCategoryName}
-            </a>
+            </p>
           </>
         )}
       </div>

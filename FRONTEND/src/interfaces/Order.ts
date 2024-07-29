@@ -16,3 +16,14 @@ export interface ProductInputType {
   variacao: string;
   quantidade: number;
 }
+
+export type OrderStatusType =
+  | 'placed'
+  | 'processing'
+  | 'preparing'
+  | 'shipped'
+  | 'in_transit'
+  | 'delivered'
+  | 'cancelled'
+  | 'returned'
+  | 'refunded';

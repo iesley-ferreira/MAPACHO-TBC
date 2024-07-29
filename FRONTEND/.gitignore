@@ -1,3 +1,4 @@
+.env
 # Logs
 logs
 *.log
@@ -25,4 +26,3 @@ dist-ssr
 
 devConfig.json
 
-.env
