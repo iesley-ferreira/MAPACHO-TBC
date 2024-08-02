@@ -1,9 +1,7 @@
-import { dateFormatter } from './../../../FRONTEND/src/utils/dateFormatter';
-import { CategoriesBlingType, CategoriesFormateType } from './../types/Categories.type';
+import { CategoriesBlingType } from './../types/Categories.type';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import bling_request from '../api/bling.request';
-import authBlingModel from '../app/models/authBling.model';
 import { ProductType } from '../types/Products.type';
 
 interface TypeResponse<T> {
@@ -11,10 +9,10 @@ interface TypeResponse<T> {
     data: T;
   };
 }
-
-const pathRaiz = path.resolve(__dirname);
+const pathChacheFile = path.resolve(__dirname, '..', 'cache', 'data', 'products_cache.json');
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 
 const requestAllProductsByCategory = async (token: string, categoryId: number) => {
   const products = await bling_request.getProductsByCategory(token, categoryId);
@@ -56,10 +54,16 @@ const requestAllCategories = async (token: string) => {
           id: category.id,
           categoryFather: category.categoriaPai.id,
           description: category.descricao,
-          products: await requestProductsInformations(token, await requestAllProductsByCategory(token, category.id)),
+          products: await requestProductsInformations(
+            token,
+            await requestAllProductsByCategory(
+              token,
+              category.id
+            )
+          ),
         });
 
-        delay(300);
+        delay(500);
       }
     }
 
@@ -68,20 +72,23 @@ const requestAllCategories = async (token: string) => {
   return Array.from(categoriesMap.values());
 };
 
-const main = async () => {
-  const token = await authBlingModel.getAuthBling();
-
-  if (!token?.access_token) {
+const request_products_cache = async (token: string) => {
+  if (!token) {
     console.log('No token found');
     return;
   }
 
-  const categories = await requestAllCategories(token.access_token);
-
-  console.log(categories);
+  console.log('Requesting products cache started...');
 
 
-  writeFileSync(`${pathRaiz}/categories.json`, JSON.stringify(categories, null, 2));
+  try {
+    const categories = await requestAllCategories(token);
+
+    writeFileSync(pathChacheFile, JSON.stringify(categories, null, 2));
+  } catch (error) {
+    console.error('Error in request_products_cache:', error);
+    request_products_cache(token);
+  }
 };
 
-main();
+export default request_products_cache;

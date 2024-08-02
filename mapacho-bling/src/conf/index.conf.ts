@@ -11,5 +11,6 @@ export const commandFiles = fs.readdirSync(pathPastCommands).filter(file => file
 
 
 export const configJSON = {
-  userCache: false
+  userCache: false,
+  timeRequestCache: 0.91,
 }

@@ -10,7 +10,6 @@ class File {
     constructor() {
         this.pathPast = node_path_1.default.resolve(process.cwd(), 'bling');
         this.pathBase = node_path_1.default.resolve(this.pathPast, 'data.json');
-        this.pathConfigJson = node_path_1.default.resolve(this.pathPast, 'config.json');
         if (!node_fs_1.default.existsSync(this.pathPast)) {
             node_fs_1.default.mkdirSync(this.pathPast);
             console.log(`Pasta criada: ${this.pathPast}`);

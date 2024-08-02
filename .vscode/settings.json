@@ -7,21 +7,11 @@
     "ENVIO",
     "Erro",
     "fluorescen",
-<<<<<<< HEAD
-    "gerar",
     "idempotency",
+    "Iinstance",
     "Km",
     "mailgun",
-    "meio",
-    "MELHOR",
-    "pagamento",
-    "Pago",
-    "PRIMEIRACOMPRA",
-    "processar",
-=======
-    "idempotency",
-    "Km",
-    "mailgun",
+    "mapacho",
     "mercadopago",
     "paypal",
     "Piteirasefiltros",
@@ -29,7 +19,6 @@
     "Swal",
     "sweetalert",
     "uuidv",
->>>>>>> develop
     "variacoes"
   ],
   "prisma-smart-formatter.typescript.defaultFormatter": "esbenp.prettier-vscode",

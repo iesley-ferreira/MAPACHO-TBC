@@ -5,3 +5,9 @@ export interface IReturnToken {
   scope: string
   refresh_token: string;
 }
+
+export interface ITokenDataBase extends IReturnToken {
+  id: number;
+  updatedAt: Date;
+  createdAt: Date;
+}

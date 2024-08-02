@@ -9,7 +9,9 @@ const credentials = Buffer.from(
   `${env.CLIENT_ID}:${env.CLIENT_SECRET}`,
 ).toString("base64");
 
-const refresh_token_init = async () => {
+let isRefreshing = false;
+
+const refresh_token_init = async (callback?: (token?: string) => void | Promise<void>) => {
   const authBling = await authBlingModel.getAuthBling();
 
   if (!authBling) {
@@ -21,8 +23,8 @@ const refresh_token_init = async () => {
 
     blingCache.blingToken.set(newToken.access_token);
 
-    return scheduleUtils.scheduleTime(timeScheduleMs, () =>
-      refresh_token(newToken.id, credentials, newToken.refresh_token),
+    return scheduleUtils.scheduleTime(timeScheduleMs, async () =>
+      await refresh_token(newToken.id, credentials, newToken.refresh_token, callback),
     );
   }
 
@@ -32,8 +34,9 @@ const refresh_token_init = async () => {
     authBling.expires_in,
     authBling.updated_at,
   );
-  scheduleUtils.scheduleTime(timeScheduleMs, () =>
-    refresh_token(authBling.id, credentials, authBling.refresh_token),
+
+  scheduleUtils.scheduleTime(timeScheduleMs, async () =>
+    await refresh_token(authBling.id, credentials, authBling.refresh_token, callback),
   );
 };
 
@@ -56,27 +59,49 @@ const refresh_token = async (
   id: string,
   credentials: string,
   refresh_token_value: string,
+  callback?: (token?: string) => void | Promise<void>,
 ) => {
-  const { data: newTokenData }: { data: AuthBlingUpdateType } =
-    await bling_request.refreshToken(credentials, refresh_token_value);
+  if (isRefreshing) {
+    console.log("Refresh token já está em execução, aguardando...");
+    return;
+  }
 
-  const authBlingUpdated = await authBlingModel.updateAuthBling(id, {
-    ...newTokenData,
-  });
+  isRefreshing = true;
+  console.log("Refreshing token started...");
 
-  blingCache.blingToken.set(authBlingUpdated.access_token);
+  try {
+    const { data: newTokenData }: { data: AuthBlingUpdateType } =
+      await bling_request.refreshToken(credentials, refresh_token_value);
 
-  const timeScheduleMs = scheduleUtils.timeSchedule(
-    authBlingUpdated.expires_in,
-    authBlingUpdated.created_at,
-  );
-  scheduleUtils.scheduleTime(timeScheduleMs, () =>
-    refresh_token(
-      authBlingUpdated.id,
-      credentials,
-      authBlingUpdated.refresh_token,
-    ),
-  );
+    console.log(newTokenData);
+
+
+    const authBlingUpdated = await authBlingModel.updateAuthBling(id, {
+      ...newTokenData,
+    });
+
+    blingCache.blingToken.set(authBlingUpdated.access_token);
+
+    const timeScheduleMs = scheduleUtils.timeSchedule(
+      authBlingUpdated.expires_in,
+      authBlingUpdated.created_at,
+    );
+
+    scheduleUtils.scheduleTime(timeScheduleMs, async () =>
+      await refresh_token(
+        authBlingUpdated.id,
+        credentials,
+        authBlingUpdated.refresh_token,
+        callback,
+      ),
+    );
+
+    callback && await callback(authBlingUpdated.access_token);
+  } catch (error) {
+    console.error("Erro ao executar refresh token:", error);
+  } finally {
+    isRefreshing = false;
+  }
 };
 
 export { refresh_token_init };

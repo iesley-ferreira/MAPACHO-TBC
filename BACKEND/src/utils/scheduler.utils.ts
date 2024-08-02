@@ -1,8 +1,8 @@
 const now = new Date();
 
-const scheduleTime = (timeMs: number, exec: () => any) => {
-  setTimeout(() => {
-    exec();
+const scheduleTime = (timeMs: number, exec: () => Promise<any>) => {
+  setTimeout(async () => {
+    await exec();
   }, timeMs)
 }
 

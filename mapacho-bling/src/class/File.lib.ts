@@ -4,7 +4,6 @@ import fs from 'node:fs'
 export class File {
   private pathPast = path.resolve(process.cwd(), 'bling');
   private pathBase = path.resolve(this.pathPast, 'data.json');
-  private pathConfigJson = path.resolve(this.pathPast, 'config.json');
 
   constructor() {
     if (!fs.existsSync(this.pathPast)) {
@@ -12,7 +11,6 @@ export class File {
       console.log(`Pasta criada: ${this.pathPast}`);
     }
   }
-
 
   public writeFileSync(data: any) {
     fs.writeFileSync(this.pathBase, JSON.stringify(data, null, 2));

@@ -12,5 +12,6 @@ exports.pathConfigJson = node_path_1.default.resolve(exports.pathPastDataBase, '
 exports.pathPastCommands = node_path_1.default.resolve(__dirname, '..', 'commands');
 exports.commandFiles = node_fs_1.default.readdirSync(exports.pathPastCommands).filter(file => file.endsWith('.command.ts'));
 exports.configJSON = {
-    userCache: false
+    userCache: false,
+    timeRequestCache: 0.91,
 };
