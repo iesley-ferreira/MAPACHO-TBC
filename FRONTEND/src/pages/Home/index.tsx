@@ -145,11 +145,7 @@ const Home: React.FC = () => {
               </a>
             </div>
           </div>
-<<<<<<< HEAD
           <div className="flex flex-wrap -mx-4 md:pb-4 items-start">
-=======
-          <div className="flex flex-wrap -mx-4 items-start md:pb-16">
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
             <div className="w-full lg:w-1/2 mb-6 lg:mb-0 px-4">
               <a className="group block h-full max-h-2/2 relative" href="#">
                 <div className="absolute bottom-0 left-0 w-full p-8 z-10">

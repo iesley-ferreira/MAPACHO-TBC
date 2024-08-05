@@ -28,7 +28,6 @@ const CategoryBreadcrumbs: React.FC<CategoryBreadcrumbsProps> = ({
     ?.subcategories.find((subcategory) => subcategory.id === subCategoryId)?.description;
 
   return (
-<<<<<<< HEAD
     <section className="overflow-hidden py-2 pl-2 md:py-6">
       <div className="flex items-center gap-4 p-2">
         <a
@@ -42,28 +41,6 @@ const CategoryBreadcrumbs: React.FC<CategoryBreadcrumbsProps> = ({
           <a className="text-[#1e293b] font-semibold uppercase text-opacity-70 text-xs sm:text-sm md:text-md">
             {searchValue}
           </a>
-=======
-    <div className="text-left pl-5 pb-8 md:pb-4">
-      <Breadcrumbs
-        aria-label="breadcrumb"
-        separator={<NavigateNextIcon fontSize="large" />}
-      >
-        <Link
-          color="inherit"
-          href="/"
-          sx={{ display: 'flex', alignItems: 'center', fontSize: '1.3rem' }}
-        >
-          <HomeIcon sx={{ mr: 0.5 }} fontSize="medium" />
-          Home
-        </Link>
-
-        {searchValue && <Typography color="inherit">{searchValue}</Typography>}
-
-        {selectedCategoryName && (
-          <Typography color="inherit" style={{ fontSize: '1.3rem' }}>
-            {selectedCategoryName} / {selectedSubCategoryName}
-          </Typography>
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
         )}
         {categoryName && (
           <>

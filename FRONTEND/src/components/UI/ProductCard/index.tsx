@@ -31,7 +31,6 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   return (
     <div
       key={product.id}
-<<<<<<< HEAD
       className="min-w-[155px] md:min-w-[244px] max-w-[288px] w-full hover:-translate-y-1 transition-transform duration-300 ease-in-out"
       onClick={handleViewProduct}
     >
@@ -44,18 +43,6 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
           />
         </div>
         <div className="flex-grow flex flex-col justify-between">
-=======
-      className="w-full max-w-[340px] md:w-1/2 xl:w-1/3 xl:min-w-[288px] px-2 mb-6 hover:-translate-y-1 transition-transform duration-300 ease-in-out"
-      onClick={handleViewProduct}
-    >
-      <div className="flex flex-col h-full rounded-md pt-4 pb-4 px-4 shadow-[0px_3px_14px_rgba(0,0,0,0.08)] border border-[#ededed]">
-        <img
-          className="block mb-4 w-full  md:h-48 object-contain"
-          src={product.imagemURL || defaultImageURL}
-          alt={product.nome}
-        />
-        <div className="flex-grow flex flex-col justify-between pb-3">
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
           <Tooltip
             title={product.nome}
             placement="top-start"
@@ -72,32 +59,19 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
               padding: '0.5rem',
             }}
           >
-<<<<<<< HEAD
             <h6 className="line-clamp-1 desc md:mb-3 font-semibold md:text-lg text-gray-800">
               {product.nome}
             </h6>
           </Tooltip>
           <div className="flex md:mb-2 items-center justify-between">
             <span className="text-xl font-semibold text-green-900">
-=======
-            <h6 className="line-clamp-1 desc mb-3 font-semibold text-lg text-gray-800">
-              {product.nome}
-            </h6>
-          </Tooltip>
-          <div className="flex mb-2 items-center justify-between">
-            <span className="text-lg font-semibold text-green-900">
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
               {priceFormatter.format(product.preco)}
             </span>
           </div>
           <InstallmentPlan totalPrice={product.preco} />
         </div>
         <button
-<<<<<<< HEAD
           className="flex justify-center items-center gap-3 mt-auto px-10 py-1.5 text-center text-white text-sm font-bold bg-emerald-500 w-full rounded-md uppercase transition duration-200 hover:bg-emerald-600 active:scale-105"
-=======
-          className="flex justify-center items-center gap-3 mt-auto px-10 py-1.5 text-center text-white text-sm font-bold bg-emerald-500  rounded-md uppercase transition duration-200 hover:bg-emerald-600 active:scale-105"
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
           onClick={handleAddToCart}
         >
           Add

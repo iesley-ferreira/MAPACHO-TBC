@@ -13,10 +13,7 @@ import {
   setSelectedCategory,
 } from '../../../store/ducks/products/actions';
 import { RootState } from '../../../store/ducks/rootReducer';
-<<<<<<< HEAD
 import SubMenuIcon from './SubMenuIcon';
-=======
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
 
 interface MenuProps {
   onClose?: () => void;
@@ -144,7 +141,6 @@ const Menu: React.FC<MenuProps> = ({ onClose, shouldCloseOnSubcategoryClick = tr
                     }
                     sx={{
                       borderBottom: '1px solid #eee',
-<<<<<<< HEAD
                       paddingLeft: '22px',
                       fontSize: 16.5,
                       fontWeight: 500,
@@ -156,15 +152,6 @@ const Menu: React.FC<MenuProps> = ({ onClose, shouldCloseOnSubcategoryClick = tr
                     <div className="pr-2">
                       <SubMenuIcon />
                     </div>
-=======
-                      paddingLeft: '32px',
-                      fontSize: 18,
-                      fontWeight: 500,
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    <i className="ri-fire-line" style={{ marginRight: '8px' }}></i>
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
                     <ListItemText
                       primary={subCategory.description}
                       disableTypography={true}

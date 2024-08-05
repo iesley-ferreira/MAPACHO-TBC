@@ -15,17 +15,8 @@ import { RootState } from '../../store/ducks/rootReducer';
 import ScrollToTop from '../../utils/ScrollToTop';
 import { priceFormatter } from '../../utils/priceFormatter';
 import './description.css';
-<<<<<<< HEAD
 
 const Product: React.FC = () => {
-=======
-// const useQuery = () => {
-//   return new URLSearchParams(useLocation().search);
-// };
-
-const Product: React.FC = () => {
-  // const query = useQuery();
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [productQuantity, setProductQuantity] = useState(1);
@@ -41,11 +32,6 @@ const Product: React.FC = () => {
   const categoryName = formattedCategories.find(
     (category) => category.id === idCategory,
   )?.description;
-<<<<<<< HEAD
-=======
-
-  console.log('categoryNamAAAAAAAAAAAAAAAAAAe', categoryName);
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
 
   useEffect(() => {
     if (!productId) return;
@@ -129,7 +115,6 @@ const Product: React.FC = () => {
 
   const description = product?.descricaoCurta;
 
-<<<<<<< HEAD
   // const settings = {
   //   dots: true,
   //   infinite: true,
@@ -139,17 +124,6 @@ const Product: React.FC = () => {
   //   nextArrow: <SampleNextArrow />,
   //   prevArrow: <SamplePrevArrow />,
   // };
-=======
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
-  };
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
 
   return (
     <section className="py-6 px-2 md:py-20 mt-14">
@@ -181,11 +155,7 @@ const Product: React.FC = () => {
                 />
               </div>
               <div className="flex align-center max-w-[500px] content-center md:justify-center flex-wrap -mx-2">
-<<<<<<< HEAD
                 {/* <Slider {...settings}>
-=======
-                <Slider {...settings}>
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
                   {variationsImages?.map((variation, index) => (
                     <div
                       key={index}
@@ -198,11 +168,7 @@ const Product: React.FC = () => {
                       />
                     </div>
                   ))}
-<<<<<<< HEAD
                 </Slider> */}
-=======
-                </Slider>
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
               </div>
             </div>
             <div className="w-full max-w-xl md:w-1/2 px-4 bg-gray-200 bg-opacity-0 rounded-xl  backdrop-blur-md border border-gray-200 border-opacity-30 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
@@ -251,11 +217,7 @@ const Product: React.FC = () => {
                             >
                               {variationsOptions.map((variation, index) => (
                                 <MenuItem key={index} value={variation.variationId}>
-<<<<<<< HEAD
                                   {variation.variationName}
-=======
-                                  {variation.name}
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
                                 </MenuItem>
                               ))}
                             </Select>

@@ -23,11 +23,7 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({ menuDrawerOpen, setMenuDrawerOp
           Menu
         </h1>
         <IconButton onClick={() => setMenuDrawerOpen(!menuDrawerOpen)}>
-<<<<<<< HEAD
           <CloseIcon style={{ fontSize: '30px' }} />
-=======
-          <CloseIcon style={{ fontSize: '30px', marginRight: '10px' }} />
->>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
         </IconButton>
       </div>
       <Divider />
