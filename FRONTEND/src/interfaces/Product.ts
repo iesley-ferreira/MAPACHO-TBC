@@ -3,9 +3,15 @@ export interface IProduct {
   nome: string;
   preco: number;
   imagemURL: string;
-  variacao?: string;
+  variacao?: VariationType;
   quantidade?: number;
 }
+
+export type VariationType = {
+  variationId: number;
+  variationName: string;
+  variationType: string;
+};
 
 export interface IProductId {
   id: number;

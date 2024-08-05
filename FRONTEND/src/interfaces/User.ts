@@ -1,8 +1,12 @@
 import { IProduct } from './Product';
 
 export interface IOrder {
+<<<<<<< HEAD
   id: number;
   // date: string;
+=======
+  id: string;
+>>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
   total: number;
   status: string;
   products: IProduct[] | [];

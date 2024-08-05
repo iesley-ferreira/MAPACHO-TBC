@@ -35,22 +35,29 @@ const CartList: React.FC<CartListProps> = ({ cartItems }) => {
   };
 
   return (
-    <div className="relative p-4 bg-white overflow-y-auto flex flex-col justify-between">
+    <div className="relative w-full h-full p-4 bg-white overflow-y-auto flex flex-col justify-between">
       <div>
         {cartItems.map((item) => (
-          <div
-            key={item.id}
-            className="pb-4 border-b border-gray-50 flex gap-5 flex-wrap mb-6"
-          >
+          <div key={item.id} className="border-b border-gray-50 flex mb-6 gap-6">
             <img
               className="w-20 h-20 object-cover rounded-xl"
               src={item.imagemURL || defaultImageURL}
               alt={item.nome}
             />
-            <div className="flex-1">
-              <div className="flex justify-between mb-4">
-                <p className="text-sm font-semibold line-clamp-2 pr-3">{item.nome}</p>
+            <div className="flex flex-col justify-between w-full pr-1">
+              <div>
+                <p className="text-base font-semibold line-clamp-2 pr-3">{item.nome}</p>
               </div>
+              {item.variacao?.variationId && (
+                <div className="flex flex-row gap-1 justify-start">
+                  <p className="text-sm text-coolGray-400">
+                    {item.variacao?.variationType}:
+                  </p>
+                  <p className="text-sm text-coolGray-400">
+                    {item.variacao?.variationName}
+                  </p>
+                </div>
+              )}
               <div className="flex items-center justify-between flex-wrap">
                 <p className="font-semibold text-green-900 whitespace-nowrap">
                   {priceFormatter.format(item.preco)}

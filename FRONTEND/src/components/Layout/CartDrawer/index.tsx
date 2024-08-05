@@ -40,7 +40,11 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ cartDrawerOpen, setCartDrawerOp
       open={cartDrawerOpen}
       onClose={() => setCartDrawerOpen(!cartDrawerOpen)}
       sx={{
-        '.MuiDrawer-paper': { width: '100%', maxWidth: '540px', maxHeight: '100vh' },
+        '.MuiDrawer-paper': {
+          width: '100%',
+          maxWidth: '540px',
+          maxHeight: '100vh',
+        },
       }}
     >
       <div className="flex justify-between items-center p-2">
@@ -48,7 +52,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ cartDrawerOpen, setCartDrawerOp
           carrinho
         </h1>
         <IconButton onClick={() => setCartDrawerOpen(!cartDrawerOpen)}>
-          <CloseIcon style={{ fontSize: '30px', marginRight: '10px' }} />
+          <CloseIcon style={{ fontSize: '30px' }} />
         </IconButton>
       </div>
       <Divider />
@@ -59,8 +63,8 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ cartDrawerOpen, setCartDrawerOp
       ) : (
         <>
           <CartList cartItems={cartItems} />
-          <div className="relative px-8 py-4 shadow-[0px_-9px_12px_-3px_#0000001a]">
-            <CartSummary totalPrice={totalPrice} />
+          <div className="relative w-full px-8 py-8 shadow-[0px_-9px_12px_-3px_#0000001a]  bottom-0">
+            <CartSummary totalPrice={totalPrice} onClose={handleGoToCheckout} />
           </div>
         </>
       )}
