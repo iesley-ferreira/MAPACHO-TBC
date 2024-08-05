@@ -15,12 +15,8 @@ import { RootState } from '../../store/ducks/rootReducer';
 import ScrollToTop from '../../utils/ScrollToTop';
 import { priceFormatter } from '../../utils/priceFormatter';
 import './description.css';
-// const useQuery = () => {
-//   return new URLSearchParams(useLocation().search);
-// };
 
 const Product: React.FC = () => {
-  // const query = useQuery();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [productQuantity, setProductQuantity] = useState(1);
@@ -36,8 +32,6 @@ const Product: React.FC = () => {
   const categoryName = formattedCategories.find(
     (category) => category.id === idCategory,
   )?.description;
-
-  console.log('categoryNamAAAAAAAAAAAAAAAAAAe', categoryName);
 
   useEffect(() => {
     if (!productId) return;
@@ -67,27 +61,47 @@ const Product: React.FC = () => {
       const parts = variacao.nome.split(':');
       return {
         variationId: variacao.id,
-        name: parts[1]?.trim() || '',
+        variationType,
+        variationName: parts[1]?.trim() || '',
       };
     }) || [];
 
-  const variationsImages = product?.variacoes?.map((variacao) => {
-    return {
-      variationId: variacao.id,
-      image: variacao.midia?.imagens?.externas[0]?.link || '',
-    };
-  });
+  console.log('VariationOptions', variationsOptions);
+
+  // const variationsImages = product?.variacoes?.map((variacao) => ({
+  //   variationId: variacao.id,
+  //   image: variacao.midia?.imagens?.externas[0]?.link || '',
+  // }));
 
   const handleAddToCart = () => {
-    const productToAdd = convertProductIdToProduct(product);
-    dispatch(addProductToCart({ product: productToAdd, quantidade: productQuantity }));
-    navigate('/carrinho');
+    if (product && selectedVariation !== null) {
+      const selectedVar = product.variacoes.find((v) => v.id === selectedVariation);
+
+      // const productToAdd = convertProductIdToProduct(product);
+
+      // console.log('productToAdd', productToAdd);
+
+      const productWithVariation = {
+        id: product.id,
+        imagemURL: selectedVar?.midia?.imagens?.externas[0]?.link || '',
+        nome: product.nome,
+        preco: product.preco,
+        variacao: variationsOptions.find((v) => v.variationId === selectedVariation),
+        quantidade: productQuantity,
+      };
+
+      console.log('productWithVariation', productWithVariation);
+
+      dispatch(
+        addProductToCart({ product: productWithVariation, quantidade: productQuantity }),
+      );
+    }
   };
 
   if (error) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <span className="text-black">Product not found</span>
+        <span className="text-black"> not found</span>
       </div>
     );
   }
@@ -101,15 +115,15 @@ const Product: React.FC = () => {
 
   const description = product?.descricaoCurta;
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
-  };
+  // const settings = {
+  //   dots: true,
+  //   infinite: true,
+  //   speed: 500,
+  //   slidesToShow: 4,
+  //   slidesToScroll: 1,
+  //   nextArrow: <SampleNextArrow />,
+  //   prevArrow: <SamplePrevArrow />,
+  // };
 
   return (
     <section className="py-6 px-2 md:py-20 mt-14">
@@ -141,7 +155,7 @@ const Product: React.FC = () => {
                 />
               </div>
               <div className="flex align-center max-w-[500px] content-center md:justify-center flex-wrap -mx-2">
-                <Slider {...settings}>
+                {/* <Slider {...settings}>
                   {variationsImages?.map((variation, index) => (
                     <div
                       key={index}
@@ -154,7 +168,7 @@ const Product: React.FC = () => {
                       />
                     </div>
                   ))}
-                </Slider>
+                </Slider> */}
               </div>
             </div>
             <div className="w-full max-w-xl md:w-1/2 px-4 bg-gray-200 bg-opacity-0 rounded-xl  backdrop-blur-md border border-gray-200 border-opacity-30 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)]">
@@ -203,7 +217,7 @@ const Product: React.FC = () => {
                             >
                               {variationsOptions.map((variation, index) => (
                                 <MenuItem key={index} value={variation.variationId}>
-                                  {variation.name}
+                                  {variation.variationName}
                                 </MenuItem>
                               ))}
                             </Select>
