@@ -6,10 +6,10 @@ import authRouter from './routers/auth.router';
 import categoriesRouter from './routers/categories.router';
 import mercadoPagoRouter from './routers/mercadoPago.router';
 import orderRouter from './routers/order.router';
-import passwordRouter from './routers/password.router';
 import productsRouter from './routers/products.router';
 import shippingRouter from './routers/shipping.router';
 import userRouter from './routers/user.router';
+import passwordRouter from './routers/password.router';
 
 const app = express();
 app.use(cors());

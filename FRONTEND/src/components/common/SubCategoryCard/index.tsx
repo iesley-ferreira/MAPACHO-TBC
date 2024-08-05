@@ -1,5 +1,9 @@
 import React from 'react';
+<<<<<<< HEAD
 import { useDispatch } from 'react-redux';
+=======
+import { useDispatch, useSelector } from 'react-redux';
+>>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
 import { useNavigate } from 'react-router-dom';
 import { IFormattedCategory, IFormattedSubcategory } from '../../../interfaces/Category';
 import {
@@ -10,20 +14,36 @@ import {
   setSearchValue,
   setSelectedCategory,
 } from '../../../store/ducks/products/actions';
+<<<<<<< HEAD
+=======
+import { RootState } from '../../../store/ducks/rootReducer';
+>>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
 
 interface CategoryShowcaseProps {
   subcategory: IFormattedSubcategory;
   image: string;
   category: IFormattedCategory;
+<<<<<<< HEAD
+=======
+  // onClick: () => void;
+>>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
 }
 
 const SubCategoryCard: React.FC<CategoryShowcaseProps> = ({
   subcategory,
   image,
   category,
+<<<<<<< HEAD
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+=======
+  // onClick,
+}) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { formattedCategories } = useSelector((state: RootState) => state.categories);
+>>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
   const queryParams = new URLSearchParams(location.search);
   const subCategoryId = queryParams.get('idSubCategoria');
 
@@ -33,6 +53,10 @@ const SubCategoryCard: React.FC<CategoryShowcaseProps> = ({
     categoryName: string,
     subCategoryName: string,
   ) => {
+<<<<<<< HEAD
+=======
+    // onClick();
+>>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
     navigate(
       `/categoria/${categoryName}?idCategoria=${categoryId}&idSubCategoria=${subcategoryId}`,
     );
@@ -51,7 +75,11 @@ const SubCategoryCard: React.FC<CategoryShowcaseProps> = ({
 
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-4">
+<<<<<<< HEAD
       <div className="relative mb-8 overflow-hidden shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  rounded-xl">
+=======
+      <div className="relative mb-8 overflow-hidden shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]  rounded-3xl">
+>>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
         <img
           className="w-full h-full max-h-[295px] object-cover transform hover:scale-125 transition duration-1000"
           src={image}

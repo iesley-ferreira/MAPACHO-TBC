@@ -40,11 +40,15 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ cartDrawerOpen, setCartDrawerOp
       open={cartDrawerOpen}
       onClose={() => setCartDrawerOpen(!cartDrawerOpen)}
       sx={{
+<<<<<<< HEAD
         '.MuiDrawer-paper': {
           width: '100%',
           maxWidth: '540px',
           maxHeight: '100vh',
         },
+=======
+        '.MuiDrawer-paper': { width: '100%', maxWidth: '540px', maxHeight: '100vh' },
+>>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
       }}
     >
       <div className="flex justify-between items-center p-2">
@@ -52,7 +56,11 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ cartDrawerOpen, setCartDrawerOp
           carrinho
         </h1>
         <IconButton onClick={() => setCartDrawerOpen(!cartDrawerOpen)}>
+<<<<<<< HEAD
           <CloseIcon style={{ fontSize: '30px' }} />
+=======
+          <CloseIcon style={{ fontSize: '30px', marginRight: '10px' }} />
+>>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
         </IconButton>
       </div>
       <Divider />
@@ -63,8 +71,13 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ cartDrawerOpen, setCartDrawerOp
       ) : (
         <>
           <CartList cartItems={cartItems} />
+<<<<<<< HEAD
           <div className="relative w-full px-8 py-8 shadow-[0px_-9px_12px_-3px_#0000001a]  bottom-0">
             <CartSummary totalPrice={totalPrice} onClose={handleGoToCheckout} />
+=======
+          <div className="relative px-8 py-4 shadow-[0px_-9px_12px_-3px_#0000001a]">
+            <CartSummary totalPrice={totalPrice} />
+>>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
           </div>
         </>
       )}

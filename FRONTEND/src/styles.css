@@ -15,8 +15,13 @@
 body {
   font-family: 'Cooper Hewitt Bold', sans-serif;
   background-image: url('/public/assets/textura06.jpg');
+<<<<<<< HEAD
   /* background-repeat: no-repeat; */
   /* background-size: cover; */
+=======
+  background-repeat: no-repeat;
+  background-size: cover;
+>>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
   /* background-attachment: fixed; */
 }
 
