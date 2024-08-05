@@ -25,8 +25,8 @@ const OrderView: React.FC = () => {
   return (
     <div className="px-3 py-6 border border-gray-200 rounded-xl">
       <h6 className="mb-4 text-2xl font-semibold text-center">Seu Pedido</h6>
-      {cartItems.map((item) => (
-        <CartItemOverView item={item} />
+      {cartItems.map((item, index) => (
+        <CartItemOverView key={index} item={item} />
       ))}
       <div className="py-6 border-b border-dashed">
         {code !== null ? (

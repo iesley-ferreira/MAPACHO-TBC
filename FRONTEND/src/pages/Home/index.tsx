@@ -14,6 +14,7 @@ import {
 } from '../../store/ducks/products/actions';
 import { RootState } from '../../store/ducks/rootReducer';
 import CategoryImg from './categoryImg';
+import { mostPopularCategories } from './mostPopularCategories';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -46,35 +47,6 @@ const Home: React.FC = () => {
     dispatch(clearFilteredProducts());
     dispatch(setPage(1));
   };
-
-  const mostPopularCategories = [
-    {
-      id: 2709995,
-      description: 'Bongs',
-      imageSrc: '/public/assets/images/categories/Bongs/bongs02.webp',
-    },
-    {
-      id: 2709986,
-      description: 'Sedas',
-      imageSrc: '/public/assets/images/categories/SedaseBlunts/sedaseblunts.jpg',
-    },
-    {
-      id: 2710008,
-      description: 'Trituradores',
-      imageSrc: '/public/assets/images/categories/Trituradores/trituradores.jpg',
-    },
-    {
-      id: 2710001,
-      description: 'Isqueiros e Maçaricos',
-      imageSrc:
-        '/public/assets/images/categories/IsqueiroseMaçaricos/isqueirosemaçaricos.jpg',
-    },
-    {
-      id: 2709969,
-      description: 'Piteiras e Filtros',
-      imageSrc: '/public/assets/images/categories/Piteirasefiltros/filtros.jpg',
-    },
-  ];
 
   return (
     <main className="pb-20">
@@ -111,7 +83,7 @@ const Home: React.FC = () => {
           <div className="flex flex-wrap mb-10 -mx-4 items-end">
             <div className="w-full sm:w-1/2 xl:w-3/5 mb-6 sm:mb-0 px-4">
               <div className="text-center w-fit my-4">
-                <h1 className="font-heading uppercase font-bold text-4xl text-slate-800 mb-2">
+                <h1 className="font-heading uppercase font-heading text-2xl md:text-4xl text-slate-800 font-bold mb-2">
                   Categorias
                 </h1>
                 <div className="h-[8px] bg-blueGray-800">

@@ -1,13 +1,7 @@
 export interface IProduct {
   id: number;
-  // idProdutoPai: number;
   nome: string;
-  codigo: string;
   preco: number;
-  tipo: string;
-  situacao: string;
-  formato: string;
-  descricaoCurta: string;
   imagemURL: string;
   variacao?: string;
   quantidade?: number;
