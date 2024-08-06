@@ -11,18 +11,13 @@ const initialState: CartState = {
 const cartReducer = createReducer<CartState, CartActions>(initialState)
   .handleAction(actions.addProductToCart, (state, action) => {
     const { product, quantidade } = action.payload;
-    const existingProduct = state.items.find(
-      (item) =>
-        item.id === product.id &&
-        item.variacao?.variationId === product.variacao?.variationId,
-    );
+    const existingProduct = state.items.find((item) => item.id === product.id);
 
     if (existingProduct) {
       return {
         ...state,
         items: state.items.map((item) =>
-          item.id === product.id &&
-          item.variacao?.variationId === product.variacao?.variationId
+          item.id === product.id
             ? { ...item, quantidade: item.quantidade + quantidade }
             : item,
         ),

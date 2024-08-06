@@ -15,12 +15,13 @@ import { RootState } from '../../store/ducks/rootReducer';
 import ScrollToTop from '../../utils/ScrollToTop';
 import { priceFormatter } from '../../utils/priceFormatter';
 import './description.css';
+import { IFullProduct, VariationType } from '../../interfaces/Product';
 
 const Product: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [productQuantity, setProductQuantity] = useState(1);
-  const [selectedVariation, setSelectedVariation] = useState<number | null>(null);
+  const [selectedVariation, setSelectedVariation] = useState<number>(0);
 
   const { formattedCategories } = useSelector((state: RootState) => state.categories);
   const { product, loading, error } = useSelector((state: RootState) => state.products);
@@ -56,8 +57,8 @@ const Product: React.FC = () => {
     }
   }
 
-  const variationsOptions =
-    product?.variacoes?.map((variacao) => {
+  const variationsOptions: VariationType[] =
+    product?.variacoes?.map((variacao: IFullProduct) => {
       const parts = variacao.nome.split(':');
       return {
         variationId: variacao.id,
@@ -74,28 +75,20 @@ const Product: React.FC = () => {
   // }));
 
   const handleAddToCart = () => {
-    if (product && selectedVariation !== null) {
-      const selectedVar = product.variacoes.find((v) => v.id === selectedVariation);
+    const variationString = `${variationType}: ${
+      variationsOptions.find((variation) => variation.variationId === selectedVariation)
+        ?.variationName
+    }`;
 
-      // const productToAdd = convertProductIdToProduct(product);
+    console.log('VariationString', variationString);
 
-      // console.log('productToAdd', productToAdd);
+    const productToAdd = convertProductIdToProduct(
+      product,
+      selectedVariation,
+      variationString,
+    );
 
-      const productWithVariation = {
-        id: product.id,
-        imagemURL: selectedVar?.midia?.imagens?.externas[0]?.link || '',
-        nome: product.nome,
-        preco: product.preco,
-        variacao: variationsOptions.find((v) => v.variationId === selectedVariation),
-        quantidade: productQuantity,
-      };
-
-      console.log('productWithVariation', productWithVariation);
-
-      dispatch(
-        addProductToCart({ product: productWithVariation, quantidade: productQuantity }),
-      );
-    }
+    dispatch(addProductToCart({ product: productToAdd, quantidade: productQuantity }));
   };
 
   if (error) {
@@ -215,11 +208,13 @@ const Product: React.FC = () => {
                                 minWidth: 120,
                               }}
                             >
-                              {variationsOptions.map((variation, index) => (
-                                <MenuItem key={index} value={variation.variationId}>
-                                  {variation.variationName}
-                                </MenuItem>
-                              ))}
+                              {variationsOptions.map(
+                                (variation: VariationType, index: number) => (
+                                  <MenuItem key={index} value={variation.variationId}>
+                                    {variation.variationName}
+                                  </MenuItem>
+                                ),
+                              )}
                             </Select>
                           </div>
                         )}

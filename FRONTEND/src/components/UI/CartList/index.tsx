@@ -20,25 +20,32 @@ interface CartListProps {
 const defaultImageURL = '/public/assets/no-image.png';
 
 const CartList: React.FC<CartListProps> = ({ cartItems }) => {
+  console.log('CART ITEMS', cartItems);
+
   const dispatch = useDispatch();
 
-  const handleIncrement = (id: number) => {
-    dispatch(incrementProductQuantity(id));
+  const handleIncrement = (id: number, variationId?: number) => {
+    const itemId = variationId || id;
+    dispatch(incrementProductQuantity(itemId));
   };
 
-  const handleDecrement = (id: number) => {
-    dispatch(decrementProductQuantity(id));
+  const handleDecrement = (id: number, variationId?: number) => {
+    const itemId = variationId || id;
+
+    dispatch(decrementProductQuantity(itemId));
   };
 
-  const handleRemove = (id: number) => {
-    dispatch(removeProductFromCart(id));
+  const handleRemove = (id: number, variationId?: number) => {
+    const itemId = variationId || id;
+
+    dispatch(removeProductFromCart(itemId));
   };
 
   return (
     <div className="relative w-full h-full p-4 bg-white overflow-y-auto flex flex-col justify-between">
       <div>
-        {cartItems.map((item) => (
-          <div key={item.id} className="border-b border-gray-50 flex mb-6 gap-6">
+        {cartItems.map((item, index) => (
+          <div key={index} className="border-b border-gray-50 flex mb-6 gap-6">
             <img
               className="w-20 h-20 object-cover rounded-xl"
               src={item.imagemURL || defaultImageURL}
@@ -48,13 +55,13 @@ const CartList: React.FC<CartListProps> = ({ cartItems }) => {
               <div>
                 <p className="text-base font-semibold line-clamp-2 pr-3">{item.nome}</p>
               </div>
-              {item.variacao?.variationId && (
+              {item.variacao !== '' && (
                 <div className="flex flex-row gap-1 justify-start">
                   <p className="text-sm text-coolGray-400">
-                    {item.variacao?.variationType}:
+                    {item.variacao!.split(':')[0]}:
                   </p>
                   <p className="text-sm text-coolGray-400">
-                    {item.variacao?.variationName}
+                    {item.variacao!.split(':')[1]}
                   </p>
                 </div>
               )}

@@ -18,7 +18,7 @@ export const fetchProducts = async (query: ProductQueryType): Promise<IProduct[]
 
 export const fetchProduct = async (id: string): Promise<IProduct> => {
   const response = await axios.get<{ data: IProduct }>(`products/${id}`);
-  console.log(response.data.data);
+  console.log('NOME PRA GENTE ACHAR', response.data.data);
 
   return response.data.data;
 };

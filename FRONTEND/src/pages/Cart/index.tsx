@@ -72,12 +72,8 @@ const Cart: React.FC = () => {
                                 <h2 className="text-rhino-800 ">{item.nome}</h2>
                               </div>
                               <div className="flex flex-row gap-1">
-                                <p className="text-coolGray-400">
-                                  {item.variacao?.variationType}:
-                                </p>
-                                <p className="text-coolGray-400">
-                                  {item.variacao?.variationName}
-                                </p>
+                                <p className="text-coolGray-400">{item.variacao}:</p>
+                                <p className="text-coolGray-400">{item.variacao}</p>
                               </div>
                             </div>
                             <div className="flex flex-row items-center justify-between lg:mt-0 lg:ml-4">

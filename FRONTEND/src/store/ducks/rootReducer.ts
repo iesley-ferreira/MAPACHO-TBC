@@ -7,7 +7,6 @@ import passwordReducer from './password';
 import productReducer from './products';
 import shippingReducer from './shipping';
 import userReducer from './user';
-import passwordReducer from './password';
 
 const rootReducer = combineReducers({
   products: productReducer,
@@ -20,7 +19,6 @@ const rootReducer = combineReducers({
   password: passwordReducer,
   // checkout: checkoutReducer,
   // payment: paymentReducer,
-  password: passwordReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

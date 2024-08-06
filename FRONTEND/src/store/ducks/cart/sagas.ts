@@ -1,7 +1,7 @@
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
 import { fetchProduct } from '../../../api/productsApi';
 import { ICartItem } from '../../../interfaces/Cart';
-import { IProductId } from '../../../interfaces/Product';
+import { IFullProduct } from '../../../interfaces/Product';
 import { RootState } from '../rootReducer';
 import { fetchCartProductsFailure, fetchCartProductsSuccess } from './actions';
 import { CartActionTypes } from './types';
@@ -12,10 +12,8 @@ function* fetchCartProductsSaga() {
 
     const updatedCartItems: ICartItem[] = [];
     for (const item of cartItems) {
-      const productId = item.variacao?.variationId
-        ? item.variacao.variationId.toString()
-        : item.id.toString();
-      const product: IProductId = yield call(fetchProduct, productId);
+      const productId = item.variacao ? item.variacao.toString() : item.id.toString();
+      const product: IFullProduct = yield call(fetchProduct, productId);
       const formattedName = product.nome.replace(/\s?\w+:.*/, '');
 
       const updatedItem = {

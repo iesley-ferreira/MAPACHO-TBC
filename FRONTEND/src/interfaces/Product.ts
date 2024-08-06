@@ -3,7 +3,7 @@ export interface IProduct {
   nome: string;
   preco: number;
   imagemURL: string;
-  variacao?: VariationType;
+  variacao?: string;
   quantidade?: number;
 }
 
@@ -13,7 +13,7 @@ export type VariationType = {
   variationType: string;
 };
 
-export interface IProductId {
+export interface IFullProduct {
   id: number;
   categoria: {
     id: number;
@@ -48,7 +48,7 @@ export interface IProductId {
   variacoes: Array<IProductVariation>;
 }
 
-export interface IProductVariation extends IProductId {
+export interface IProductVariation extends IFullProduct {
   variacao: {
     nome: string;
     ordem: number;

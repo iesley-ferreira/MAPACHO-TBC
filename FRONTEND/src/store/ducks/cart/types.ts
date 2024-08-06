@@ -1,6 +1,6 @@
-import { ActionType } from 'typesafe-actions'
-import { ICartItem } from '../../../interfaces/Cart'
-import * as actions from './actions'
+import { ActionType } from 'typesafe-actions';
+import { ICartItem } from '../../../interfaces/Cart';
+import * as actions from './actions';
 
 export enum CartActionTypes {
   ADD_PRODUCT_TO_CART = 'ADD_PRODUCT_TO_CART',
@@ -12,10 +12,10 @@ export enum CartActionTypes {
   FETCH_CART_PRODUCTS_SUCCESS = 'FETCH_CART_PRODUCTS_SUCCESS',
   FETCH_CART_PRODUCTS_FAILURE = 'FETCH_CART_PRODUCTS_FAILURE',
 }
-export type CartActions = ActionType<typeof actions>
+export type CartActions = ActionType<typeof actions>;
 
 export interface CartState {
-  readonly items: ICartItem[]
-  readonly loading: boolean
-  readonly error: boolean
+  readonly items: ICartItem[];
+  readonly loading: boolean;
+  readonly error: boolean;
 }
