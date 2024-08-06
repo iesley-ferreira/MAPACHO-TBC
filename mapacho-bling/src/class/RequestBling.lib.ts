@@ -2,6 +2,8 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { IGetFistToken, IRefreshToken } from '../interfaces/instance.interface';
 import { IReturnToken } from '../interfaces/bling.interface';
 import { AuthBlingModel } from '../models/authBling.model';
+import cacheControll from '../cache/cache.controll';
+import { CategoriesBlingType } from '../interfaces/Category.interface';
 
 class RequestBling {
   private authBlingModel: AuthBlingModel = new AuthBlingModel();
@@ -65,20 +67,67 @@ class RequestBling {
   }
 
   public async getProducts() {
-    const tokenDataBase = await this.authBlingModel.getAuthBling();
 
-    const {} = await this.request({
+    const { data } = await this.request({
       url: '/produtos',
       method: 'get',
-      data: {
+      headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json',
-        'Authorization': `Bearer ${tokenDataBase?.access_token}`,
+        'Authorization': `Bearer ${cacheControll.token.get()}`,
       },
-      // params: {
-
-      // }
     });
+
+    return data;
+  }
+
+  public async getAllCategories(): Promise<CategoriesBlingType[]> {
+
+    console.log(cacheControll.token.get());
+
+    const { data } = await this.request({
+      url: '/categorias/produtos',
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cacheControll.token.get()}`,
+      },
+    });
+
+    return data.data;
+  }
+
+  public async getProductsByVariation(fatherProduct: string) {
+
+    const { data } = await this.request({
+      url: `/produtos/${fatherProduct}`,
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${cacheControll.token.get()}`,
+      },
+    });
+
+    return data;
+  }
+
+  public async getProductsByCategory(category: number) {
+      const { data } = await this.request({
+        url: `/produtos`,
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${cacheControll.token.get()}`,
+        },
+        params: {
+          'categoria': category,
+        },
+      });
+
+      return data.data
   }
 }
 

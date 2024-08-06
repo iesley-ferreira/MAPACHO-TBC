@@ -5,10 +5,13 @@ import { AuthBlingModel } from '../models/authBling.model';
 import { pathConfigJson } from '../conf/index.conf';
 import scheduleUtils from '../utils/schedules.utils';
 import { ITokenDataBase } from '../interfaces/bling.interface';
+import cacheControll from '../cache/cache.controll';
+import { FormatData } from './FormatData.lib';
 
 export class BlingLib {
   private requestBling: RequestBling = new RequestBling()
   private authBlingModel: AuthBlingModel = new AuthBlingModel()
+  private formatData = new FormatData();
   private dataToken: ITokenDataBase | null = null;
   private clientId: string = '';
   private clientSecret: string = '';
@@ -17,9 +20,7 @@ export class BlingLib {
   private directionsApiKey: string | undefined = undefined;
 
   public async initializer(data: Iinstance) {
-    const tokenDataBase = await this.authBlingModel.getAuthBling();
-
-    this.dataToken = tokenDataBase;
+    this.dataToken = await this.authBlingModel.getAuthBling();
     this.clientId = data.clientId;
     this.clientSecret = data.clientSecret;
     this.authCode = data.authCode;
@@ -29,9 +30,6 @@ export class BlingLib {
 
   private async tokenProcess() {
     const isExpiredTime = await this.verifyTokenTimeExpiration();
-
-    console.log(isExpiredTime);
-
 
     if (isExpiredTime && this.dataToken) {
       const newToken = await this.requestBling.refreshToken({
@@ -56,9 +54,12 @@ export class BlingLib {
     }
 
     if (this.dataToken) {
-      this.loopRefreshToken(this.dataToken.expires_in, this.dataToken.updatedAt);
+      await this.loopRefreshToken(this.dataToken.expires_in, this.dataToken.updatedAt);
+      cacheControll.token.set(this.dataToken?.access_token);
     }
 
+
+    await this.formatData.initiFormatData();
     return this.dataToken;
   }
 
@@ -74,11 +75,14 @@ export class BlingLib {
 
       await this.authBlingModel.updateAuthBling(newToken);
     });
+
+    // console.log('Token atualizado com sucesso');
+
   }
 
   private async verifyTokenTimeExpiration() {
     if (this.dataToken) {
-      console.log(scheduleUtils.timeSchedule(this.dataToken.expires_in, this.dataToken.updatedAt));
+      // console.log(scheduleUtils.timeSchedule(this.dataToken.expires_in, this.dataToken.updatedAt));
 
       return scheduleUtils.timeSchedule(this.dataToken.expires_in, this.dataToken.updatedAt) <= 0;
     }

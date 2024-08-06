@@ -3,7 +3,9 @@ import prisma from "../providers/prisma.provider";
 
 export class AuthBlingModel {
   public async getAuthBling() {
-    return await prisma.authBling.findFirst()
+    return await prisma.authBling.findFirst().then((res) => {
+      return res
+    })
   }
 
   public async updateAuthBling(data: IReturnToken) {

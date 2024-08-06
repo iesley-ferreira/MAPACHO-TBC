@@ -10,7 +10,7 @@ const PORT = PORT_SERVER || '3333';
 app.listen(PORT, async () => {
   await refresh_token_init(async (token) => {
     if (!token) return;
-    await request_products_cache(token)
+    // await request_products_cache(token)
   });
   console.log(`Server Listener on port: ${PORT}`);
 });
