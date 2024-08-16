@@ -1,11 +1,12 @@
 import react from '@vitejs/plugin-react';
+import reactRefresh from '@vitejs/plugin-react-refresh';
 import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
 
   return {
-    plugins: [react()],
+    plugins: [react(), reactRefresh()],
     root: '.',
     build: {
       rollupOptions: {

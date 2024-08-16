@@ -28,8 +28,8 @@ const SubCategoryCard: React.FC<CategoryShowcaseProps> = ({
   const subCategoryId = queryParams.get('idSubCategoria');
 
   const handleSubCategoryClick = (
-    subcategoryId: number,
     categoryId: number,
+    subcategoryId: number,
     categoryName: string,
     subCategoryName: string,
   ) => {
@@ -62,7 +62,7 @@ const SubCategoryCard: React.FC<CategoryShowcaseProps> = ({
             className="group flex flex-col max-w-sm"
             onClick={() =>
               handleSubCategoryClick(
-                Number(subcategory.id),
+                Number(category.id),
                 Number(subcategory.id),
                 category.description,
                 subcategory.description,
