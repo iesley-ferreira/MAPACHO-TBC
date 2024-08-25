@@ -11,14 +11,14 @@ type ProductQueryType = {
 
 export const fetchProducts = async (query: ProductQueryType): Promise<IProduct[]> => {
   const response = await axios.get<IProduct[]>(`products?${qs.stringify(query)}`);
-  console.log(response.data);
+  // console.log("FETCH_PRODUCTS", response.data);
 
   return response.data;
 };
 
 export const fetchProduct = async (id: string): Promise<IProduct> => {
   const response = await axios.get<{ data: IProduct }>(`products/${id}`);
-  console.log('NOME PRA GENTE ACHAR', response.data.data);
+  // console.log('FETCH_PRODUCT', response.data.data);
 
   return response.data.data;
 };

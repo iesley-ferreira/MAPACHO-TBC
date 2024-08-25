@@ -17,10 +17,11 @@ import SubMenuIcon from './SubMenuIcon';
 
 interface MenuProps {
   onClose?: () => void;
-  shouldCloseOnSubcategoryClick?: boolean;
+  // shouldCloseOnSubcategoryClick?: boolean;
 }
 
-const Menu: React.FC<MenuProps> = ({ onClose, shouldCloseOnSubcategoryClick = true }) => {
+// const Menu: React.FC<MenuProps> = ({ onClose, shouldCloseOnSubcategoryClick = true }) => {
+const Menu: React.FC<MenuProps> = ({ onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [expandedItemId, setExpandedItemId] = useState<number | null>(null);
@@ -44,7 +45,7 @@ const Menu: React.FC<MenuProps> = ({ onClose, shouldCloseOnSubcategoryClick = tr
       );
       dispatch(clearFilteredProducts());
       dispatch(setPage(1));
-      if (shouldCloseOnSubcategoryClick && onClose) {
+      if (onClose) {
         onClose();
       }
       return;
@@ -59,24 +60,27 @@ const Menu: React.FC<MenuProps> = ({ onClose, shouldCloseOnSubcategoryClick = tr
     categoryName: string,
     subCategoryName: string,
   ) => {
-    navigate(
-      `/categoria/${categoryName}?idCategoria=${categoryId}&idSubCategoria=${subcategoryId}`,
-    );
-    dispatch(setDisableButtonShowMore(false));
-    dispatch(setSearchValue(null));
-    dispatch(setSelectedCategory(subcategoryId.toString()));
-    dispatch(
-      setNewCategoryNames({
-        newCategoryName: categoryName,
-        newSubCategoryName: subCategoryName,
-      }),
-    );
-    dispatch(clearFilteredProducts());
-
-    dispatch(setPage(1));
-    if (shouldCloseOnSubcategoryClick && onClose) {
+    if (onClose) {
       onClose();
     }
+
+    setTimeout(() => {
+      navigate(
+        `/categoria/${categoryName}?idCategoria=${categoryId}&idSubCategoria=${subcategoryId}`,
+      );
+      dispatch(setDisableButtonShowMore(false));
+      dispatch(setSearchValue(null));
+      dispatch(setSelectedCategory(subcategoryId.toString()));
+      dispatch(
+        setNewCategoryNames({
+          newCategoryName: categoryName,
+          newSubCategoryName: subCategoryName,
+        }),
+      );
+      dispatch(clearFilteredProducts());
+
+      dispatch(setPage(1));
+    }, 100);
   };
 
   const getSubCategories = (parentId: number) => {

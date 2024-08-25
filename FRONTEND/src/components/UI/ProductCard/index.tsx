@@ -17,8 +17,6 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log('PRODUCT', product);
-
   const handleAddToCart = (event: React.MouseEvent) => {
     event.stopPropagation();
 
