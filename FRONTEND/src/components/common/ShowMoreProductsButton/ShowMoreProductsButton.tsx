@@ -1,5 +1,5 @@
 import { Button, CircularProgress } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface ShowMoreProductsButtonProps {
   loading: boolean;
@@ -14,9 +14,9 @@ const ShowMoreProductsButton: React.FC<ShowMoreProductsButtonProps> = ({
 }) => {
   const [isButtonLoading, setIsButtonLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (!loading) setIsButtonLoading(false);
-  // }, [loading]);
+  useEffect(() => {
+    if (!loading) setIsButtonLoading(false);
+  }, [loading]);
 
   const handleLoadMoreProducts = async () => {
     setIsButtonLoading(true);
