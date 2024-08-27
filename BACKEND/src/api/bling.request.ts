@@ -15,7 +15,104 @@ type BlingRequestTypes = {
     | {
         grant_type: 'refresh_token';
         refresh_token: string;
+      }
+    | {
+        numero: number;
+        numeroLoja: string;
+        data: string;
+        dataSaida: string;
+        dataPrevista: string;
+        contato: {
+          id: number;
+          tipoPessoa: string;
+          numeroDocumento: string;
+        };
+        loja: {
+          id: number;
+        };
+        numeroPedidoCompra: string;
+        outrasDespesas: number;
+        observacoes: string;
+        observacoesInternas: string;
+        desconto: {
+          valor: number;
+          unidade: string;
+        };
+        categoria: {
+          id: number;
+        };
+        tributacao: {
+          totalICMS: number;
+          totalIPI: number;
+        };
+        itens: {
+          codigo: string;
+          unidade: string;
+          quantidade: number;
+          desconto: number;
+          valor: number;
+          aliquotaIPI: number;
+          descricao: string;
+          descricaoDetalhada: string;
+          produto: {
+            id: number;
+          };
+          comissao: {
+            base: number;
+            aliquota: number;
+            valor: number;
+          };
+        }[];
+        parcelas: {
+          id: number;
+          dataVencimento: string;
+          valor: number;
+          observacoes: string;
+          formaPagamento: {
+            id: number;
+          };
+        }[];
+        transporte: {
+          fretePorConta: number;
+          frete: number;
+          quantidadeVolumes: number;
+          pesoBruto: number;
+          prazoEntrega: number;
+          contato: {
+            id: number;
+            nome: string;
+          };
+          etiqueta: {
+            nome: string;
+            endereco: string;
+            numero: string;
+            complemento: string;
+            municipio: string;
+            uf: string;
+            cep: string;
+            bairro: string;
+            nomePais: string;
+          };
+          volumes: {
+            id: number;
+            servico: string;
+            codigoRastreamento: string;
+          }[];
+        };
+        vendedor: {
+          id: number;
+        };
+        intermediador: {
+          cnpj: string;
+          nomeUsuario: string;
+        };
+        taxas: {
+          taxaComissao: number;
+          custoFrete: number;
+          valorBase: number;
+        };
       };
+
   token?: string;
   query?: QueryType;
 };
@@ -88,12 +185,47 @@ const getAllCategories = async (token: string, query?: QueryType) =>
     query,
   });
 
+const checkProductInStock = async (token: string, productIds: string[]) => {
+  const idsQuery = productIds.map((id) => `idsProdutos%5B%5D=${id}`).join('&');
+  const url = `/Api/v3/estoques/saldos?${idsQuery}`;
+
+  const response = await blingRequestAxios({
+    url,
+    method: 'get',
+    token,
+  });
+
+  console.log('RESPONSE CHECKPRODUCTINSTOCK STATUS:', response.status);
+  console.log('RESPONSE CHECKPRODUCTINSTOCK:', response);
+
+  return {
+    status: 200,
+    stockData: response.data.data,
+  };
+};
+
+const createSalesOrder = async (token: string, salesOrderData: any) => {
+  console.log('CHAMOU SALES ORDER DATA:');
+
+  const newSaleOrder = await blingRequestAxios({
+    url: '/Api/v3/pedidos/vendas',
+    method: 'post',
+    token,
+    data: salesOrderData,
+  });
+  console.log('NEW SALES ORDER BLING REQUEST:', newSaleOrder);
+  return newSaleOrder;
+};
+// ================== EXPORTS =========================== //
+
 const bling_request = {
   getToken,
   refreshToken,
   getAllProducts,
   getProductsByVariation,
   getAllCategories,
+  createSalesOrder,
+  checkProductInStock,
 };
 
 export default bling_request;

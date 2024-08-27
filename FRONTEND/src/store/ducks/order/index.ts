@@ -3,43 +3,57 @@ import * as actions from './actions';
 import { OrderActions, OrderState } from './types';
 
 const initialState: OrderState = {
-  order: {
-    transaction_amount: 0,
-    description: '',
-    paymentMethodId: '',
-    email: '',
-    identificationType: '',
-    number: '',
-  },
-  ticketUrl: '',
+  preferenceId: undefined,
+  paymentId: null,
+  paymentStatus: null,
+  paymentStatusDetails: null,
+  ticketUrl: null,
+  paymentDateOfExpiration: null,
   loading: false,
   error: false,
   message: '',
+  insufficientStockItems: null,
 };
 
 const orderReducer = createReducer<OrderState, OrderActions>(initialState)
-  .handleAction(actions.generateOrderByPixRequest, (state, action) => ({
+  .handleAction(actions.createPreferenceRequest, (state) => ({
     ...state,
     error: false,
     loading: true,
     message: '',
-    order: {
-      transaction_amount: action.payload.transaction_amount,
-      description: action.payload.description,
-      paymentMethodId: action.payload.paymentMethodId,
-      email: action.payload.email,
-      identificationType: action.payload.identificationType,
-      number: action.payload.number,
-    },
   }))
-  .handleAction(actions.generateOrderByPixSuccess, (state, action) => ({
+  .handleAction(actions.createPreferenceSuccess, (state, action) => ({
     ...state,
     loading: false,
     error: false,
     message: '',
-    ticketUrl: action.payload.ticketUrl,
+    preferenceId: action.payload,
   }))
-  .handleAction(actions.generateOrderByPixFailure, (state, action) => ({
+  .handleAction(actions.createPreferenceFailure, (state, action) => ({
+    ...state,
+    loading: false,
+    error: true,
+    message: action.payload.message,
+    insufficientStockItems: action.payload.insufficientStockItems!,
+  }))
+  .handleAction(actions.processPaymentRequest, (state) => ({
+    ...state,
+    error: false,
+    loading: true,
+    message: '',
+  }))
+  .handleAction(actions.processPaymentSuccess, (state, action) => ({
+    ...state,
+    loading: false,
+    error: false,
+    message: '',
+    paymentId: action.payload.payment_id.toString(),
+    paymentStatus: action.payload.payment_status,
+    paymentStatusDetails: action.payload.payment_status_detail,
+    ticketUrl: action.payload.ticket_url,
+    paymentDateOfExpiration: action.payload.date_of_expiration,
+  }))
+  .handleAction(actions.processPaymentFailure, (state, action) => ({
     ...state,
     loading: false,
     error: true,

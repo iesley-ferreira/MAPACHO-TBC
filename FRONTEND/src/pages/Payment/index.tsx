@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import CustomizedSteppers from '../../components/UI/CustomizedSteppers';
 import OrderView from '../../components/UI/OrderView';
@@ -9,6 +9,33 @@ const Payment: React.FC = () => {
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
   const { code, value } = useSelector((state: RootState) => state.discount);
   const { shippingOption } = useSelector((state: RootState) => state.shipping);
+  const [copiedText, setCopiedText] = useState('');
+
+  const handleCopy = (text: string) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          setCopiedText(text);
+          setTimeout(() => {
+            setCopiedText('');
+          }, 2000); // Reset the copied text after 2 seconds
+        })
+        .catch((error) => {
+          console.error('Failed to copy text: ', error);
+        });
+    } else {
+      console.error('Clipboard API not available');
+    }
+  };
+
+  const data = [
+    { label: 'Numero', value: '5031 4332 1540 6351' },
+    { label: 'Validade', value: '11/25' },
+    { label: 'CVV', value: '123' },
+    { label: 'Nome', value: 'APRO' },
+    { label: 'CPF', value: '12345678909' },
+  ];
 
   const totalCartPrice = cartItems.reduce(
     (total, item) => total + item.preco * item.quantidade,
@@ -30,6 +57,14 @@ const Payment: React.FC = () => {
         </div>
         <div className="flex flex-wrap justify-center -m-8">
           <div className="w-full md:w-7/12 p-4 lg:max-w-xl">
+            <div>
+              {data.map((item) => (
+                <div key={item.label} className="flex flex-row gap-3 items-center">
+                  <p>{item.label}:</p>
+                  <p>{item.value}</p>
+                </div>
+              ))}
+            </div>
             <PaymentForm />
           </div>
           <div className="w-full md:w-5/12 p-8">

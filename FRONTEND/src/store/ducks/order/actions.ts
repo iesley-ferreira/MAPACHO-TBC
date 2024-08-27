@@ -1,18 +1,31 @@
 import { createAction } from 'typesafe-actions';
 import {
-  IMercadoPagoCreatePixRequest,
-  IMercadoPagoCreatePixResponse,
-} from '../../../interfaces/mercadoPago';
-import { OrderActionTypes } from './types';
+  createPreferenceData,
+  createPreferenceFailureType,
+  OrderActionTypes,
+  processPaymentResponse,
+} from './types';
 
-export const generateOrderByPixRequest = createAction(
-  OrderActionTypes.GENERATE_ORDER_BY_PIX_REQUEST,
-)<IMercadoPagoCreatePixRequest>();
+export const createPreferenceRequest = createAction(
+  OrderActionTypes.CREATE_PREFERENCE_REQUEST,
+)<{ data: createPreferenceData }>();
 
-export const generateOrderByPixSuccess = createAction(
-  OrderActionTypes.GENERATE_ORDER_BY_PIX_SUCCESS,
-)<IMercadoPagoCreatePixResponse>();
+export const createPreferenceSuccess = createAction(
+  OrderActionTypes.CREATE_PREFERENCE_SUCCESS,
+)<string>();
 
-export const generateOrderByPixFailure = createAction(
-  OrderActionTypes.GENERATE_ORDER_BY_PIX_FAILURE,
+export const createPreferenceFailure = createAction(
+  OrderActionTypes.CREATE_PREFERENCE_FAILURE,
+)<createPreferenceFailureType>();
+
+export const processPaymentRequest = createAction(
+  OrderActionTypes.PROCESS_PAYMENT_REQUEST,
+)<string>();
+
+export const processPaymentSuccess = createAction(
+  OrderActionTypes.PROCESS_PAYMENT_SUCCESS,
+)<processPaymentResponse>();
+
+export const processPaymentFailure = createAction(
+  OrderActionTypes.PROCESS_PAYMENT_FAILURE,
 )<string>();
