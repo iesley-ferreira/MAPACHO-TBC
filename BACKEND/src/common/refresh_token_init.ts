@@ -1,15 +1,15 @@
-import bling_request from "../api/bling.request";
-import authBlingModel from "../app/models/authBling.model";
-import scheduleUtils from "../utils/scheduler.utils";
-import { AuthBlingUpdateType } from "../types/AuthBling.type";
-import { env } from "../env";
-import cache from "../cache";
+import bling_request from '../api/bling.request';
+import authBlingModel from '../app/models/authBling.model';
+import cache from '../cache';
+import { env } from '../env';
+import { AuthBlingUpdateType } from '../types/AuthBling.type';
+import scheduleUtils from '../utils/scheduler.utils';
 
 const now = new Date();
 
-const credentials = Buffer.from(
-  `${env.CLIENT_ID}:${env.CLIENT_SECRET}`,
-).toString("base64");
+const credentials = Buffer.from(`${env.CLIENT_ID}:${env.CLIENT_SECRET}`).toString(
+  'base64',
+);
 
 const refresh_token_init = async () => {
   const authBling = await authBlingModel.getAuthBling();
@@ -73,11 +73,7 @@ const refresh_token = async (
     authBlingUpdated.created_at,
   );
   scheduleUtils.scheduleTime(timeScheduleMs, () =>
-    refresh_token(
-      authBlingUpdated.id,
-      credentials,
-      authBlingUpdated.refresh_token,
-    ),
+    refresh_token(authBlingUpdated.id, credentials, authBlingUpdated.refresh_token),
   );
 };
 

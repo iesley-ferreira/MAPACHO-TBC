@@ -3,10 +3,10 @@ import paymentsController from '../controllers/payment.controller';
 
 const paymentsRouter = Router();
 
-paymentsRouter.route('/preference').post(paymentsController.getPreferenceId);
+paymentsRouter.route('/create_preference').post(paymentsController.getPreferenceId);
 
-paymentsRouter.route('/payment').post(paymentsController.handlePayment);
+paymentsRouter.route('/process_payment').post(paymentsController.processPayment);
 
-// paymentsRouter.route('/capture').post(paymentsController.capturePayment);
+paymentsRouter.route('/capture_payment').post(paymentsController.capturePayment);
 
 export default paymentsRouter;

@@ -1,153 +1,154 @@
+import { initMercadoPago, Payment } from '@mercadopago/sdk-react';
 import React, { useEffect, useState } from 'react';
-import axios from '../../../api/axiosConfig';
-
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { env } from '../../../env';
+import { TransformedProduct } from '../../../interfaces/Product';
+import { adjustCartProducts } from '../../../store/ducks/cart/actions';
+import {
+  createPreferenceRequest,
+  processPaymentRequest,
+} from '../../../store/ducks/order/actions';
 import { RootState } from '../../../store/ducks/rootReducer';
-import Status from './Status';
-
-// initMercadoPago(mercado_pago_public_key);
+import { getTotalWithShippingAndDiscount } from '../../../utils/getTotalAmountWhitDiscount';
+import { calculateInstallments } from '../../../utils/maxInstallments';
+import InsufficientStockModal from '../../common/InsufficientStockModal/InsufficientStockModal';
+import Status from '../PaymentStatus/PaymentStatus';
+import { transformProduct } from './helpers';
 
 const PaymentForm: React.FC = () => {
-  const dev_url = env.VITE_DEV_URL;
-  const mercadoPagoPublicKey = env.VITE_MERCADO_PAGO_PUBLIC_KEY;
-  const [preferenceId, setPreferenceId] = useState<string>('');
-  const [paymentId, setPaymentId] = useState<string | null>(null);
-
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = useSelector((state: RootState) => state.user);
-  console.log('mercadoPagoPublicKey', mercadoPagoPublicKey);
+  const { items } = useSelector((state: RootState) => state.cart);
+  const [showModal, setShowModal] = useState(false);
+  const { preferenceId, paymentId, insufficientStockItems } = useSelector(
+    (state: RootState) => state.order,
+  );
+  const { value, code } = useSelector((state: RootState) => state.discount);
+  const { shippingOption } = useSelector((state: RootState) => state.shipping);
 
-  const cartItems = [
-    {
-      id: '2907679857',
-      title: 'Bong',
-      description: 'Bong de vidro da massa.',
-      picture_url: 'https://http2.bongdamassa.png',
-      category_id: '2709997',
-      quantity: 1,
-      currency_id: 'BRL',
-      unit_price: 74.0,
-    },
-    {
-      id: '2904539857',
-      title: 'Piteira',
-      description: 'Piteira de vidro da massa.',
-      picture_url: 'https://http2.piteiradamassa.png',
-      category_id: '9643976',
-      quantity: 2,
-      currency_id: 'BRL',
-      unit_price: 2.0,
-    },
-  ];
+  const mercadoPagoPublicKey = env.VITE_MERCADO_PAGO_PUBLIC_KEY;
+  initMercadoPago(mercadoPagoPublicKey, { locale: 'pt-BR' });
 
-  const getPreferenceId = async (cartItems: any) => {
-    try {
-      const response = await axios.post(
-        `${dev_url}payments/preference?items=${encodeURIComponent(JSON.stringify(cartItems))}`,
-      );
-      return response.data.preferenceId;
-    } catch (error) {
-      console.error('Error creating preference ID:', error);
-      return null;
+  if (!mercadoPagoPublicKey) {
+    console.log('Error: public key not defined');
+    return null;
+  }
+
+  useEffect(() => {
+    if (insufficientStockItems && insufficientStockItems.length > 0) {
+      setShowModal(true);
     }
+  }, [insufficientStockItems]);
+
+  useEffect(() => {
+    const parsedItems: TransformedProduct[] = items.map((item) => transformProduct(item));
+
+    const orderInfo = {
+      discountCode: code,
+      discountValue: value || 0,
+      shippingMethod: shippingOption.selected,
+      shippingValue: shippingOption.value,
+      totalAmount: totalAmount,
+      customerId: user.id,
+    };
+
+    const data = {
+      items: parsedItems,
+      orderInfo,
+    };
+
+    dispatch(createPreferenceRequest({ data }));
+  }, [items]);
+
+  console.log('preferenceId', preferenceId);
+
+  const itemsAmount = items.reduce(
+    (total, item) => total + item.preco * item.quantidade,
+    0,
+  );
+  const maxInstallments = calculateInstallments(itemsAmount);
+
+  const totalAmount = getTotalWithShippingAndDiscount(
+    itemsAmount,
+    shippingOption.value,
+    value,
+  );
+
+  const initialization = {
+    amount: totalAmount,
+    preferenceId: preferenceId,
+    payer: {
+      firstName: user.name,
+      lastName: '',
+      email: user.email,
+      entityType: 'individual' as const,
+    },
+  };
+  const customization = {
+    paymentMethods: {
+      bankTransfer: ['pix'],
+      creditCard: 'all' as const,
+      debitCard: 'all' as const,
+      // mercadoPago: 'all' as const,
+      // ticket: 'all' as const,
+      maxInstallments,
+    },
+    backUrls: {
+      success: 'http://172.20.0.2:5173/pedido',
+      failure: 'http://172.20.0.2:5173/pagamento',
+    },
+    locale: 'pt-BR',
+    statement_descriptor: 'Mapacho Tabacaria',
+    shipments: {
+      cost: shippingOption.value,
+      mode: shippingOption.selected,
+    },
+  };
+  const onSubmit = async ({ formData }: any) => {
+    formData.description = 'Mapacho Tabacaria';
+
+    dispatch(processPaymentRequest(formData));
+  };
+  const onError = (error: any) => {
+    console.log(error);
+    toast.error('Ocorreu um erro inesperado. Por favor, tente novamente mais tarde.');
   };
 
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://sdk.mercadopago.com/js/v2';
-    script.async = true;
-    script.onload = () => initializeMercadoPago();
-    document.body.appendChild(script);
+  const onReady = async () => {
+    setIsLoading(false);
+  };
 
-    return () => {
-      if (window.paymentBrickController) {
-        window.paymentBrickController.unmount();
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    const createPreference = async () => {
-      const preferenceId = await getPreferenceId(cartItems);
-      setPreferenceId(preferenceId);
-    };
-
-    createPreference();
-  }, []);
-
-  const initializeMercadoPago = () => {
-    const mp = new (window as any).MercadoPago(mercadoPagoPublicKey, {
-      locale: 'pt-BR',
+  const onHide = () => {
+    insufficientStockItems?.forEach((item) => {
+      dispatch(adjustCartProducts(item));
     });
-
-    const settings = {
-      initialization: {
-        amount: cartItems.reduce(
-          (total, item) => total + item.unit_price * item.quantity,
-          0,
-        ),
-        preferenceId: preferenceId,
-        payer: {
-          firstName: user.name,
-          lastName: '',
-          email: user.email,
-        },
-      },
-      customization: {
-        visual: {
-          style: {
-            theme: 'default',
-          },
-        },
-        paymentMethods: {
-          creditCard: 'all',
-          pix: 'all',
-          bankTransfer: 'all',
-          onboarding_credits: 'all',
-          wallet_purchase: 'all',
-          maxInstallments: 1,
-        },
-      },
-      callbacks: {
-        onReady: () => console.log('Brick ready'),
-        onError: (error: any) => console.error('Brick error', error),
-        onSubmit: ({ formData }: any) => {
-          handlePayment(formData);
-        },
-      },
-      locale: 'pt-BR',
-    };
-
-    const bricks = mp.bricks();
-    bricks.create('payment', 'payment-form', settings);
+    setShowModal(false);
   };
-
-  const handlePayment = async (formData: any) => {
-    try {
-      const response = await axios.post(`${dev_url}payments/payment`, formData);
-      console.log('Payment response:', response.data);
-      const paymentId = response.data.id;
-      setPaymentId(paymentId);
-
-      // capturePayment(paymentId);
-    } catch (error) {
-      console.error('Error handling payment:', error);
-    }
-  };
-
-  // const capturePayment = async (paymentId: string) => {
-  //   try {
-  //     const response = await axios.post(`${dev_url}payments/capture`, {
-  //       paymentId,
-  //     });
-  //     console.log('Payment captured:', response);
-  //   } catch (error) {
-  //     console.error('Error capturing payment:', error);
-  //   }
-  // };
 
   return (
-    <>{!paymentId ? <div id="payment-form"></div> : <Status paymentId={paymentId} />}</>
+    <>
+      {isLoading && <p>Carregando...</p>}
+      {!paymentId ? (
+        <>
+          <Payment
+            initialization={initialization}
+            customization={customization}
+            onSubmit={onSubmit}
+            onReady={onReady}
+            onError={onError}
+          />
+          <InsufficientStockModal
+            show={showModal}
+            onHide={() => onHide()}
+            insufficientStockItems={insufficientStockItems || []}
+          />
+        </>
+      ) : (
+        <Status paymentId={paymentId} />
+      )}
+    </>
   );
 };
 

@@ -46,7 +46,7 @@ export default {
         body: '#9CA3AF',
       },
       fontFamily: {
-        // sans: ['Montserrat', 'sans-serif'],
+        cooper: ['Cooper Hewitt Bold', 'sans-serif'],
       },
       maxWidth: {
         'product-card': '244px',

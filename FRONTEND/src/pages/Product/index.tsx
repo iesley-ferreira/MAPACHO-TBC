@@ -136,7 +136,7 @@ const Product: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-around -mx-4 mb-2">
             <div className="w-full md:w-1/2 px-4 mb-8 md:mb-0">
-              <div className="relative mb-10 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-2xl h-[400px] md:h-[500px] lg:h-[600px] p-16">
+              {/* <div className="relative mb-10 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-2xl h-[400px] md:h-[500px] lg:h-[600px] p-16">
                 <img
                   className="object-cover w-full h-full"
                   style={{ objectFit: 'contain' }}
@@ -146,7 +146,11 @@ const Product: React.FC = () => {
                   }
                   alt="Product"
                 />
-              </div>
+              </div> */}
+              <div
+                className="elfsight-app-a48fcf38-b126-4cfb-ba4a-5a2b87c09aee"
+                data-elfsight-app-lazy
+              ></div>
               <div className="flex align-center max-w-[500px] content-center md:justify-center flex-wrap -mx-2">
                 {/* <Slider {...settings}>
                   {variationsImages?.map((variation, index) => (

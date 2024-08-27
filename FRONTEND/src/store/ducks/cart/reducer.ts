@@ -1,4 +1,5 @@
 import { createReducer } from 'typesafe-actions';
+import { ICartItem } from '../../../interfaces/Cart';
 import * as actions from './actions';
 import { CartActions, CartState } from './types';
 
@@ -66,6 +67,29 @@ const cartReducer = createReducer<CartState, CartActions>(initialState)
     ...state,
     loading: false,
     error: true,
-  }));
+  }))
+  .handleAction(actions.adjustCartProducts, (state, action) => {
+    const updatedCart = state.items.reduce<ICartItem[]>((acc, cartItem) => {
+      if (cartItem.id.toString() === action.payload.id.toString()) {
+        if (action.payload.availableQuantity === 0) {
+          return acc;
+        }
+        acc.push({
+          ...cartItem,
+          quantidade: action.payload.availableQuantity,
+        });
+        return acc;
+      }
+      acc.push(cartItem);
+      return acc;
+    }, []);
+
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+
+    return {
+      ...state,
+      items: updatedCart,
+    };
+  });
 
 export default cartReducer;

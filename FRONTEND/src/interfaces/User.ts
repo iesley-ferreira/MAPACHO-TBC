@@ -54,6 +54,7 @@ export interface IUser {
 }
 
 export interface IUserAddress {
+  id: number;
   zip_code: string;
   street: string;
   city: string;

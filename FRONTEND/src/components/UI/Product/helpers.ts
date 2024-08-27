@@ -1,4 +1,4 @@
-import { IProduct, IFullProduct } from '../../../interfaces/Product';
+import { IFullProduct, IProduct } from '../../../interfaces/Product';
 
 export const convertProductIdToProduct = (
   product: IFullProduct,
@@ -7,15 +7,14 @@ export const convertProductIdToProduct = (
 ): IProduct => {
   return {
     id: selectedVariation || product.id,
-    // idProdutoPai: product.categoria.id,
+    // idProdutoPai: productId.categoria.id,
     nome: product.nome,
-    // codigo: product.codigo,
+    // codigo: productId.codigo,
     preco: product.preco,
-    // tipo: product.tipo,
-    // situacao: product.situacao,
-    // formato: product.formato,
-    // descricaoCurta: product.descricaoCurta,
-    imagemURL: product.midia?.imagens?.externas[0]?.link || '',
+    // tipo: productId.tipo,
+    // situacao: productId.situacao,
+    // formato: productId.formato,
+    descricaoCurta: product.descricaoCurta,
     variacao: variationString,
   };
 };

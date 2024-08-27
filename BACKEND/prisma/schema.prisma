@@ -68,6 +68,17 @@ model Order {
   products Product[]
 }
 
+//adicionar discountCode
+//adicionar discountValue
+//adicionar shippingMethod
+//adicionar shippingValue
+//adicionar totalAmount
+
+//adicionar preferenceId
+//adicionar paymentId
+//adicionar paymentStatus
+// substituir status por orderStatus
+
 model Product {
   id             String @id @default(uuid())
   order_id       String
