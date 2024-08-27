@@ -34,7 +34,7 @@ const Layout: React.FC = () => {
       <main className="flex-grow">
         <Outlet />
       </main>
-      {!isLoginPage && !isSignUpPage && !isUserPage && !isAuthPage && <Footer />}
+      {!isLoginPage && !isSignUpPage && !isAuthPage && <Footer />}
     </div>
   );
 };
