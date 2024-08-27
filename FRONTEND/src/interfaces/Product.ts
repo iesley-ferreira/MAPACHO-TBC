@@ -7,7 +7,13 @@ export interface IProduct {
   quantidade?: number;
 }
 
-export interface IProductId {
+export type VariationType = {
+  variationId: number;
+  variationName: string;
+  variationType: string;
+};
+
+export interface IFullProduct {
   id: number;
   categoria: {
     id: number;
@@ -42,7 +48,7 @@ export interface IProductId {
   variacoes: Array<IProductVariation>;
 }
 
-export interface IProductVariation extends IProductId {
+export interface IProductVariation extends IFullProduct {
   variacao: {
     nome: string;
     ordem: number;

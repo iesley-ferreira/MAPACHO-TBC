@@ -8,9 +8,10 @@ import InstallmentPlan from '../InstallmentPlan';
 
 interface CartSummaryProps {
   totalPrice: number;
+  onClose: () => void;
 }
 
-const CartSummary: React.FC<CartSummaryProps> = ({ totalPrice }) => {
+const CartSummary: React.FC<CartSummaryProps> = ({ totalPrice, onClose }) => {
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -24,6 +25,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalPrice }) => {
   };
 
   const handleGoToCheckout = () => {
+    onClose();
     navigate('/envio');
   };
 
@@ -32,8 +34,8 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalPrice }) => {
   };
 
   return (
-    <div className="relative  bg-white rounded-xl lg:p-6 lg:mb-10 lg:sticky lg:top-20 ">
-      <div className="absolute p-2 z-20 shadow-[0px_-9px_12px_-3px_#0000001a] rounded-[50%] bg-white -top-10 left-1/2 transform -translate-x-1/2 cursor-pointer">
+    <div className="relative  bg-white rounded-xl lg:sticky lg:top-20 ">
+      <div className="absolute p-2 z-20 shadow-[0px_-9px_12px_-3px_#0000001a] rounded-[50%] bg-white -top-14 left-1/2 transform -translate-x-1/2 cursor-pointer">
         <button
           className="bg-white px-3 pt-2 rounded-full text-white"
           onClick={toggleCollapse}
@@ -87,7 +89,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({ totalPrice }) => {
       </div>
       <button
         className="bg-greenButton-500 hover:bg-emerald-600 py-3 px-4 rounded-[4px] text-white text-center leading-snug tracking-wider font-medium transition uppercase duration-200 w-full inline-block active:scale-105"
-        onClick={() => handleGoToCheckout()}
+        onClick={handleGoToCheckout}
       >
         Finalizar compra
       </button>

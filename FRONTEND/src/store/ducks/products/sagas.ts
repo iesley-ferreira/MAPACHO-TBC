@@ -1,6 +1,6 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 import * as productsApi from '../../../api/productsApi';
-import { IProduct, IProductId } from '../../../interfaces/Product';
+import { IProduct, IProductVariation } from '../../../interfaces/Product';
 import {
   fetchProductSuccess,
   fetchProductsFailure,
@@ -43,7 +43,10 @@ function* fetchProductSaga(action: {
   payload: string;
 }) {
   try {
-    const product: IProductId = yield call(productsApi.fetchProduct, action.payload);
+    const product: IProductVariation = yield call(
+      productsApi.fetchProduct,
+      action.payload,
+    );
     yield put(fetchProductSuccess(product));
   } catch (error: Error | unknown) {
     yield put(fetchProductsFailure((error as Error).message));

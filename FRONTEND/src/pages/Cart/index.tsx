@@ -68,9 +68,15 @@ const Cart: React.FC = () => {
                           </div>
                           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full ">
                             <div>
-                              <h2 className="text-rhino-800 ">{item.nome}</h2>
+                              <div>
+                                <h2 className="text-rhino-800 ">{item.nome}</h2>
+                              </div>
+                              <div className="flex flex-row gap-1">
+                                <p className="text-coolGray-400">{item.variacao}:</p>
+                                <p className="text-coolGray-400">{item.variacao}</p>
+                              </div>
                             </div>
-                            <div className="flex flex-row items-center justify-between mt-2 lg:mt-0 lg:ml-4">
+                            <div className="flex flex-row items-center justify-between lg:mt-0 lg:ml-4">
                               <p className="text-rhino-800 whitespace-nowrap">
                                 {priceFormatter.format(item.preco)}
                               </p>
@@ -112,7 +118,7 @@ const Cart: React.FC = () => {
               </div>
             </div>
             <div className="w-full lg:w-2/5 px-4">
-              <CartSummary totalPrice={totalPrice} />
+              <CartSummary totalPrice={totalPrice} onClose={() => {}} />
             </div>
           </div>
         )}

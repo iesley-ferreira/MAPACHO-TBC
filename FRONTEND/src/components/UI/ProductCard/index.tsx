@@ -19,7 +19,17 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
 
   const handleAddToCart = (event: React.MouseEvent) => {
     event.stopPropagation();
-    dispatch(addProductToCart({ product, quantidade: 1 }));
+
+    const productWithVariation = {
+      id: product.id,
+      imagemURL: product.imagemURL,
+      nome: product.nome,
+      preco: product.preco,
+      variacao: '',
+      quantidade: product.quantidade,
+    };
+
+    dispatch(addProductToCart({ product: productWithVariation, quantidade: 1 }));
   };
 
   const handleViewProduct = () => {

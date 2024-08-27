@@ -20,7 +20,10 @@
     "recuperarsenha",
     "Swal",
     "sweetalert",
+<<<<<<< HEAD
     "uuidv",
+=======
+>>>>>>> 130354f5b3a0e5fb676c88177bca140bc0dd8377
     "variacoes"
   ],
   "prisma-smart-formatter.typescript.defaultFormatter": "esbenp.prettier-vscode",

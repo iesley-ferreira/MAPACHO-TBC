@@ -46,29 +46,17 @@ const Categories: React.FC = () => {
   const { formattedCategories } = useSelector((state: RootState) => state.categories);
 
   useEffect(() => {
-    if (categoryId && subCategoryId) {
-      dispatch(
-        fetchProductsRequest({
-          page,
-          limit: 24,
-          categoryId: subCategoryId,
-          searchValue,
-        }),
-      );
-    }
-    if (categoryId && !subCategoryId) {
-      dispatch(
-        fetchProductsRequest({
-          page,
-          limit: 24,
-          categoryId: categoryId,
-          searchValue,
-        }),
-      );
-    }
+    dispatch(
+      fetchProductsRequest({
+        page,
+        limit: 24,
+        categoryId: subCategoryId ? subCategoryId : categoryId,
+        searchValue,
+      }),
+    );
   }, [page, categoryId, subCategoryId]);
 
-  productsListRef.current?.scrollIntoView({ behavior: 'smooth' });
+  productsListRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   useEffect(() => {}, [categoryId, subCategoryId]);
 
   useEffect(() => {
@@ -173,11 +161,13 @@ const Categories: React.FC = () => {
             </div>
           </div>
           <div>
-            <ShowMoreProductsButton
-              loading={loading}
-              loadMoreProducts={loadMoreProducts}
-              isShowMoreProductsButtonDisabled={isShowMoreProductsButtonDisabled}
-            />
+            {!loading && filteredProducts.length > 0 && (
+              <ShowMoreProductsButton
+                loading={loading}
+                loadMoreProducts={loadMoreProducts}
+                isShowMoreProductsButtonDisabled={isShowMoreProductsButtonDisabled}
+              />
+            )}
           </div>
         </div>
       </>

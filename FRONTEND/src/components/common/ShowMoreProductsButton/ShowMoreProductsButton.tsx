@@ -25,7 +25,7 @@ const ShowMoreProductsButton: React.FC<ShowMoreProductsButtonProps> = ({
   return (
     <Button
       onClick={handleLoadMoreProducts}
-      disabled={isShowMoreProductsButtonDisabled}
+      disabled={isShowMoreProductsButtonDisabled || loading}
       sx={{
         my: 8,
         border: '1px solid rgb(5 150 105)',
