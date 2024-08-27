@@ -1,14 +1,29 @@
 export interface IProduct {
-  id: number;
+  id: string;
   nome: string;
   preco: number;
   imagemURL: string;
+  descricaoCurta: string;
   variacao?: string;
   quantidade?: number;
 }
 
+export interface createPreferenceData {
+  items: TransformedProduct[];
+}
+
+export interface TransformedProduct {
+  id: string;
+  title: string;
+  description: string;
+  picture_url: string;
+  quantity: number;
+  unit_price: number;
+  currency_id: 'BRL';
+}
+
 export interface IProductId {
-  id: number;
+  id: string;
   categoria: {
     id: number;
   };
@@ -51,6 +66,13 @@ export interface IProductVariation extends IProductId {
     id: number;
     cloneInfo: boolean;
   };
+}
+
+export interface ProductQueryType {
+  pagina: number;
+  limite: number;
+  idCategoria?: string;
+  nome?: string;
 }
 
 export interface ProductResponse {

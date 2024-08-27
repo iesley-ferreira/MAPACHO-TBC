@@ -1,4 +1,5 @@
 import bling_request from '../../api/bling.request';
+import cache from '../../cache';
 import productsCache from '../../cache/productsCache';
 import { QueryType } from '../../types/Query.type';
 import { ReturnServiceType } from '../../types/ReturnService.type';
@@ -67,9 +68,23 @@ const getProductByVariation = async (
   }
 };
 
+const checkProductsAvailability = async (products: any) => {
+  const bling_token = cache.blingToken.get();
+  const productsIds = products.map((product: any) => product.id);
+  // verificar se a quantidade de produtos disponíveis é suficiente
+  const productsAvailability = await Promise.all(
+    productsIds.map((productId: string) => getProductByVariation(bling_token, productId)),
+  );
+
+  const allProductsAvailable = productsAvailability.every((product) => product.available);
+
+  return allProductsAvailable;
+};
+
 const productsService = {
   getAllProducts,
   getProductByVariation,
+  checkProductsAvailability,
 };
 
 export default productsService;
