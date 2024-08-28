@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "migrate:dev": "npx prisma migrate dev",
+    "migrate:dev": "npx prisma migrate dev --schema prisma/schema.prisma",
     "generate": "npx prisma generate",
-    "dev": "npm run migrate:dev && npm run generate && tsnd --exit-child ./src/http/server.ts"
+    "start": "tsnd --exit-child ./src/http/server.ts",
+    "dev": "npm run migrate:dev && npm run generate && npm run start"
   },
   "keywords": [],
   "author": "",

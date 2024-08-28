@@ -36,14 +36,14 @@ model User {
   isPending   Boolean  @default(true)
 
   AuthCode  AuthCode[]
-  Address   Address?
+  Address   Address[]
   orders    Order[]
   passwords Password[]
 }
 
 model Address {
   id           String   @id @default(uuid())
-  user_id      String   @unique
+  user_id      String
   cep          String
   address      String
   city         String
@@ -53,31 +53,29 @@ model Address {
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt()
 
-  USER User @relation(fields: [user_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
 }
 
 model Order {
-  id         String   @id @default(uuid())
-  user_id    String
-  total      Float
-  status     String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt()
+  id              String   @id @default(uuid())
+  user_id         String
+  total           Float
+  status          String
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt()
+  discount_code   String?
+  discount_value  Float?
+  shipping_method String?
+  shipping_value  Float?
+  total_amount    Float?
+  preference_id   String?
+  payment_id      String?
+  payment_status  String?
+  order_status    String?
 
   User     User      @relation(fields: [user_id], references: [id])
   products Product[]
 }
-
-//adicionar discountCode
-//adicionar discountValue
-//adicionar shippingMethod
-//adicionar shippingValue
-//adicionar totalAmount
-
-//adicionar preferenceId
-//adicionar paymentId
-//adicionar paymentStatus
-// substituir status por orderStatus
 
 model Product {
   id             String @id @default(uuid())
@@ -93,7 +91,7 @@ model Product {
   variacao       String
   quantidade     Int
 
-  Order Order @relation(fields: [order_id], references: [id])
+  order Order @relation(fields: [order_id], references: [id])
 }
 
 model AuthCode {
@@ -102,7 +100,7 @@ model AuthCode {
   code       String   @unique
   created_at DateTime @default(now())
 
-  USER User @relation(fields: [user_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
 }
 
 model Password {

@@ -24,21 +24,21 @@ const CartList: React.FC<CartListProps> = ({ cartItems }) => {
 
   const dispatch = useDispatch();
 
-  const handleIncrement = (id: number, variationId?: number) => {
+  const handleIncrement = (id: string, variationId?: number) => {
     const itemId = variationId || id;
-    dispatch(incrementProductQuantity(itemId));
+    dispatch(incrementProductQuantity(itemId.toString()));
   };
 
-  const handleDecrement = (id: number, variationId?: number) => {
+  const handleDecrement = (id: string, variationId?: number) => {
     const itemId = variationId || id;
 
-    dispatch(decrementProductQuantity(itemId));
+    dispatch(decrementProductQuantity(itemId.toString()));
   };
 
-  const handleRemove = (id: number, variationId?: number) => {
+  const handleRemove = (id: string, variationId?: number) => {
     const itemId = variationId || id;
 
-    dispatch(removeProductFromCart(itemId));
+    dispatch(removeProductFromCart(itemId.toString()));
   };
 
   return (
@@ -72,7 +72,7 @@ const CartList: React.FC<CartListProps> = ({ cartItems }) => {
                 <div className="flex items-center gap-2">
                   {item.quantidade > 1 ? (
                     <IconButton
-                      onClick={() => handleDecrement(item.id)}
+                      onClick={() => handleDecrement(item.id.toString())}
                       disabled={item.quantidade === 1}
                       className="bg-white border border-gray-200 rounded-full hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 w-6 h-6 flex items-center justify-center transition duration-200"
                     >
@@ -80,7 +80,7 @@ const CartList: React.FC<CartListProps> = ({ cartItems }) => {
                     </IconButton>
                   ) : (
                     <IconButton
-                      onClick={() => handleRemove(item.id)}
+                      onClick={() => handleRemove(item.id.toString())}
                       className="group bg-white border border-gray-200 rounded-full hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 w-6 h-6 flex items-center justify-center transition duration-200"
                     >
                       <DeleteIcon className="text-gray-400 group-hover:text-gray-500 transition duration-200" />
@@ -88,7 +88,7 @@ const CartList: React.FC<CartListProps> = ({ cartItems }) => {
                   )}
                   <span className="text-sm font-semibold">{item.quantidade}</span>
                   <IconButton
-                    onClick={() => handleIncrement(item.id)}
+                    onClick={() => handleIncrement(item.id.toString())}
                     className="bg-white border border-gray-200 rounded-full hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 w-6 h-6 flex items-center justify-center transition duration-200"
                   >
                     <AddIcon />
