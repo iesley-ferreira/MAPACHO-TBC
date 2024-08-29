@@ -17,11 +17,12 @@ function* fetchCartProductsSaga() {
       const formattedName = product.nome.replace(/\s?\w+:.*/, '');
 
       const updatedItem = {
-        id: product.id,
+        id: product.id.toString(),
         nome: formattedName,
         preco: product.preco,
         imagemURL: product.midia.imagens.externas[0].link,
         quantidade: item.quantidade,
+        descricaoCurta: product.descricaoCurta,
       };
 
       updatedCartItems.push({

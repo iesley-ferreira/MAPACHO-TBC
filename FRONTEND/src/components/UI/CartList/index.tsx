@@ -24,21 +24,22 @@ const CartList: React.FC<CartListProps> = ({ cartItems }) => {
 
   const dispatch = useDispatch();
 
-  const handleIncrement = (id: string, variationId?: number) => {
+  const handleIncrement = (id: string, variationId?: string) => {
     const itemId = variationId || id;
-    dispatch(incrementProductQuantity(itemId.toString()));
+
+    dispatch(incrementProductQuantity(itemId));
   };
 
-  const handleDecrement = (id: string, variationId?: number) => {
+  const handleDecrement = (id: string, variationId?: string) => {
     const itemId = variationId || id;
 
-    dispatch(decrementProductQuantity(itemId.toString()));
+    dispatch(decrementProductQuantity(itemId));
   };
 
-  const handleRemove = (id: string, variationId?: number) => {
+  const handleRemove = (id: string, variationId?: string) => {
     const itemId = variationId || id;
 
-    dispatch(removeProductFromCart(itemId.toString()));
+    dispatch(removeProductFromCart(itemId));
   };
 
   return (

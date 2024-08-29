@@ -17,14 +17,18 @@ const Cart: React.FC = () => {
   const { items: cartItems } = useSelector((state: RootState) => state.cart);
 
   const handleIncrement = (id: string) => {
+    console.log('handleIncrement', id);
+
     dispatch(incrementProductQuantity(id));
   };
 
   const handleDecrement = (id: string) => {
+    console.log('handleDecrement', id);
     dispatch(decrementProductQuantity(id));
   };
 
   const handleRemove = (id: string) => {
+    console.log('handleRemove', id);
     dispatch(removeProductFromCart(id));
   };
 

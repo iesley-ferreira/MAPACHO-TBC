@@ -33,15 +33,23 @@ const cartReducer = createReducer<CartState, CartActions>(initialState)
   .handleAction(actions.incrementProductQuantity, (state, action) => ({
     ...state,
     items: state.items.map((item) =>
-      item.id === action.payload ? { ...item, quantidade: item.quantidade + 1 } : item,
+      item.id.toString() === action.payload
+        ? { ...item, quantidade: item.quantidade + 1 }
+        : item,
     ),
   }))
   .handleAction(actions.decrementProductQuantity, (state, action) => {
+    console.log('decrementProductQuantity SAGA', action.payload);
+
     const updatedItems = state.items
       .map((item) =>
-        item.id === action.payload ? { ...item, quantidade: item.quantidade - 1 } : item,
+        item.id.toString() === action.payload
+          ? { ...item, quantidade: item.quantidade - 1 }
+          : item,
       )
       .filter((item) => item.quantidade > 0);
+
+    console.log('updatedItems', updatedItems);
 
     return {
       ...state,
@@ -50,7 +58,7 @@ const cartReducer = createReducer<CartState, CartActions>(initialState)
   })
   .handleAction(actions.removeProductFromCart, (state, action) => ({
     ...state,
-    items: state.items.filter((item) => item.id !== action.payload),
+    items: state.items.filter((item) => item.id.toString() !== action.payload),
   }))
   .handleAction(actions.fetchCartProductsRequest, (state) => ({
     ...state,

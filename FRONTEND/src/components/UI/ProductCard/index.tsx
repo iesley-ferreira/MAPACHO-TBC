@@ -26,6 +26,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
       nome: product.nome,
       preco: product.preco,
       variacao: '',
+      descricaoCurta: product.descricaoCurta,
       quantidade: product.quantidade,
     };
 

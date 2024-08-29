@@ -23,7 +23,7 @@ export interface TransformedProduct {
 }
 
 export type VariationType = {
-  variationId: number;
+  variationId: string;
   variationName: string;
   variationType: string;
 };
